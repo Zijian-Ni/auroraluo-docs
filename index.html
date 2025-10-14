@@ -12,15 +12,17 @@
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-themeable/dist/css/theme-simple.css">
     <!-- 注意：版本号用于刷新缓存 -->
-    <link rel="stylesheet" href="assets/css/custom.css?v=glass-fix-2">
+    <link rel="stylesheet" href="assets/css/custom.css?v=glass-fix-3">
   </head>
   <body>
+    <!-- 顶部阅读进度条（显式保留，更直观稳定） -->
+    <div id="reading-progress"></div>
 
-    <!-- 返回顶部按钮（若被删，脚本会兜底重建） -->
+    <!-- 返回顶部按钮 -->
     <button id="back-to-top" aria-label="返回顶部">↑</button>
 
-    <!-- 主题切换按钮（会克隆到右上导航） -->
-    <button id="theme-toggle" aria-label="切换主题" class="theme-toggle-clone">🌓</button>
+    <!-- 左下角：原始主题切换按钮（不要加 theme-toggle-clone 这个类） -->
+    <button id="theme-toggle" aria-label="切换主题">🌓</button>
 
     <div id="app">加载中… Loading…</div>
 
@@ -66,7 +68,7 @@
         }
         initTheme();
 
-        /* ========== 兜底创建/获取 UI 元素（防止为 null） ========== */
+        /* ========== 兜底创建/获取 UI 元素 ========== */
         function ensureEl(id, tag, attrs = {}) {
           let el = document.getElementById(id);
           if (!el) {
@@ -78,7 +80,7 @@
           return el;
         }
         const themeBtn = ensureEl('theme-toggle', 'button', { 'aria-label': '切换主题' });
-        themeBtn.textContent = '🌓';
+        if (!themeBtn.textContent) themeBtn.textContent = '🌓';
         themeBtn.addEventListener('click', toggleTheme);
 
         /* ========== 将主题按钮克隆到右上导航；支持 DOM 重建/路由切换 ========== */
@@ -88,7 +90,7 @@
           if (!document.getElementById('theme-toggle-nav')) {
             const clone = themeBtn.cloneNode(true);
             clone.id = 'theme-toggle-nav';
-            clone.classList.add('theme-toggle-clone');
+            clone.classList.add('theme-toggle-clone'); // 这个类只用于右上角克隆
             clone.addEventListener('click', toggleTheme);
             nav.appendChild(clone);
           }
@@ -131,7 +133,6 @@
         const progress = ensureEl('reading-progress', 'div');
 
         function onScrollFeedback() {
-          // 若元素还未在 DOM 中，直接跳过，避免 TypeError
           if (!progress || !progress.style) return;
           if (window.scrollY > 300) backBtn.classList.add('show'); else backBtn.classList.remove('show');
           const scrollTop = document.documentElement.scrollTop || document.body.scrollTop || 0;
@@ -145,31 +146,23 @@
         const plugins = window.$docsify.plugins || [];
         plugins.push(function (hook, vm) {
           hook.doneEach(function () {
-            // 每次路由切换后，重挂按钮、观测导航、绑定侧栏事件、修复锚点、刷新滚动状态
             mountThemeToggleToNav();
             observeNav();
             bindSidebarLinksAutoClose();
             scrollToHashAnchor();
             onScrollFeedback();
           });
-
-          // hash 变化也补一次（部分主题先变 hash 再重绘）
           window.addEventListener('hashchange', () => {
             setTimeout(mountThemeToggleToNav, 0);
             setTimeout(scrollToHashAnchor, 0);
             setTimeout(closeSidebarIfNarrow, 0);
           });
-
-          // 监听尺寸变化
           window.addEventListener('resize', () => {
             if (NARROW()) document.body.classList.add('close');
             else document.body.classList.remove('close');
           });
-
-          // 滚动反馈（加保护）
           window.addEventListener('scroll', onScrollFeedback);
 
-          // 首次就绪：补挂按钮与观察者
           document.addEventListener('DOMContentLoaded', () => {
             mountThemeToggleToNav();
             observeNav();
