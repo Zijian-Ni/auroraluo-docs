@@ -13,9 +13,19 @@
     <link rel="stylesheet" href="assets/css/custom.css">
   </head>
   <body>
+    <!-- 顶部阅读进度条 -->
+    <div id="reading-progress"></div>
+
+    <!-- 返回顶部按钮 -->
+    <button id="back-to-top" aria-label="返回顶部">↑</button>
+
+    <!-- 暗黑模式切换按钮（注：也会插入到右上角导航） -->
+    <button id="theme-toggle" aria-label="切换主题">🌓</button>
+
     <div id="app">加载中… Loading…</div>
 
     <script>
+      // ===== Docsify 基础配置 =====
       window.$docsify = {
         name: 'Aurora Luo',
         repo: '',
@@ -42,71 +52,115 @@
     <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-json.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-python.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-ini.min.js"></script>
-    <!-- 侧边栏折叠 + Emoji（可选） -->
+    <!-- 侧边栏折叠 + Emoji -->
     <script src="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"></script>
 
-    <!-- 修复：侧栏收起时的左侧“空白带” + 小标题锚点跳转 -->
+    <!-- 交互增强脚本 -->
     <script>
       (function () {
-        function isNarrow() { return window.innerWidth < 1300; }
+        // ===== 主题（暗黑/明亮）切换 & 记忆 =====
+        const root = document.documentElement;
+        const LS_KEY = 'aurora-theme';
+        function applyTheme(theme) {
+          root.setAttribute('data-theme', theme);
+          localStorage.setItem(LS_KEY, theme);
+        }
+        function initTheme() {
+          const saved = localStorage.getItem(LS_KEY);
+          if (saved) return applyTheme(saved);
+          // 跟随系统
+          const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+          applyTheme(prefersDark ? 'dark' : 'light');
+        }
+        function toggleTheme() {
+          const now = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+          applyTheme(now);
+        }
+        initTheme();
+        const themeBtn = document.getElementById('theme-toggle');
+        themeBtn.addEventListener('click', toggleTheme);
 
-        function closeSidebarIfNarrow() {
-          if (isNarrow()) document.body.classList.add('close');
+        // 把主题按钮复制到右上角导航（app-nav）处，保持固定
+        function mountThemeToggleToNav() {
+          const nav = document.querySelector('.app-nav');
+          if (!nav || nav.querySelector('.theme-toggle-clone')) return;
+          const clone = themeBtn.cloneNode(true);
+          clone.id = 'theme-toggle-nav';
+          clone.classList.add('theme-toggle-clone');
+          clone.addEventListener('click', toggleTheme);
+          nav.appendChild(clone);
         }
 
-        function installLinkAutoClose() {
-          var sidebar = document.querySelector('.sidebar');
+        // ===== 侧栏交互：窄屏自动收起（无留白） =====
+        const NARROW = () => window.innerWidth < 1300;
+        function closeSidebarIfNarrow() { if (NARROW()) document.body.classList.add('close'); }
+        function bindSidebarLinksAutoClose() {
+          const sidebar = document.querySelector('.sidebar');
           if (!sidebar) return;
-          sidebar.querySelectorAll('a').forEach(function (a) {
-            a.addEventListener('click', function () {
-              // 路由切换完成后再收起，避免阻断点击
-              setTimeout(closeSidebarIfNarrow, 60);
-            });
+          sidebar.querySelectorAll('a').forEach(a => {
+            a.addEventListener('click', () => setTimeout(closeSidebarIfNarrow, 60));
           });
         }
 
-        // 更稳健的锚点滚动（中文 ID 也兼容）
+        // ===== 锚点滚动（小标题精准定位，兼容中文） =====
         function scrollToHashAnchor() {
-          var hash = decodeURIComponent(location.hash || '');
-          var m = hash.match(/\?id=(.+)$/);     // #/page?id=xxx
+          const hash = decodeURIComponent(location.hash || '');
+          const m = hash.match(/\?id=(.+)$/);     // #/page?id=xxx
           if (!m) return;
-          var id = m[1];
+          const id = m[1];
+          let el = null;
           try {
-            var el = document.getElementById(id) || document.querySelector('[id="' + CSS.escape(id) + '"]');
-            if (el) {
-              el.scrollIntoView({ block: 'start' });
-              // 额外上移一点，避免被顶部“吸顶空隙”遮住
-              window.scrollBy(0, -80);
-            }
+            el = document.getElementById(id) || document.querySelector('[id="' + CSS.escape(id) + '"]');
           } catch (e) {
-            // 某些浏览器不支持 CSS.escape 时的兜底
-            var el2 = document.getElementById(id);
-            if (el2) { el2.scrollIntoView({ block: 'start' }); window.scrollBy(0, -80); }
+            el = document.getElementById(id);
+          }
+          if (el) {
+            el.scrollIntoView({ block: 'start' });
+            window.scrollBy(0, -90); // 顶部偏移，避免被吸顶遮挡
           }
         }
 
+        // ===== 返回顶部按钮 & 阅读进度条 =====
+        const backBtn = document.getElementById('back-to-top');
+        const progress = document.getElementById('reading-progress');
+
+        function onScrollFeedback() {
+          // back-to-top 显示逻辑
+          if (window.scrollY > 300) backBtn.classList.add('show');
+          else backBtn.classList.remove('show');
+
+          // 阅读进度
+          const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+          const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+          const percent = height > 0 ? (scrollTop / height) * 100 : 0;
+          progress.style.width = percent + '%';
+        }
+        backBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+        // ===== Docsify 生命周期挂载 =====
         window.$docsify = window.$docsify || {};
-        var plugins = window.$docsify.plugins || [];
+        const plugins = window.$docsify.plugins || [];
         plugins.push(function (hook, vm) {
           hook.doneEach(function () {
-            // 每次页面/路由变化：处理锚点 + 侧栏自动收起（窄屏）
+            // 每次渲染完成：挂按钮、修锚点、侧栏收起
+            mountThemeToggleToNav();
             scrollToHashAnchor();
             closeSidebarIfNarrow();
-            installLinkAutoClose();
+            bindSidebarLinksAutoClose();
+            onScrollFeedback();
           });
 
-          // 页内锚点变化也处理一次
-          window.addEventListener('hashchange', function () {
+          // 锚点变化 / 窗口尺寸变化
+          window.addEventListener('hashchange', () => {
             setTimeout(scrollToHashAnchor, 0);
             setTimeout(closeSidebarIfNarrow, 0);
           });
-
-          // 宽度切换：>=1300 常驻侧栏；<1300 收起
-          window.addEventListener('resize', function () {
-            if (isNarrow()) document.body.classList.add('close');
+          window.addEventListener('resize', () => {
+            if (NARROW()) document.body.classList.add('close');
             else document.body.classList.remove('close');
           });
+          window.addEventListener('scroll', onScrollFeedback);
         });
         window.$docsify.plugins = plugins;
       })();
