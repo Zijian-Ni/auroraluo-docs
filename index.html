@@ -7,20 +7,21 @@
     <title>Aurora Luo · Wiki</title>
     <meta name="description" content="Aurora Luo - QQ 群智能助理：AI 对话、知识检索、Bilibili、百科、菜单卡片、HTTP 扩展等">
     <link rel="icon" href="data:,">
-    <!-- Theme (Docsify + Themeable) -->
+    <!-- 主题（Docsify + Themeable） -->
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-themeable/dist/css/theme-simple.css">
     <link rel="stylesheet" href="assets/css/custom.css">
   </head>
   <body>
     <div id="app">加载中… Loading…</div>
+
     <script>
       window.$docsify = {
         name: 'Aurora Luo',
         repo: '',
         loadSidebar: true,
         loadNavbar: true,
-        subMaxLevel: 3,
+        subMaxLevel: 3,              // 允许展示到三级小标题（解决小 Topic 跳转）
         auto2top: true,
         themeColor: '#7c4dff',
         formatUpdated: '{MM}/{DD} {HH}:{mm}',
@@ -38,17 +39,63 @@
         }
       };
     </script>
-    <!-- Docsify core -->
+
+    <!-- Docsify 核心 -->
     <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
-    <!-- Plugins -->
+    <!-- 常用插件 -->
     <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
-    <!-- Syntax highlight -->
+    <!-- 语法高亮 -->
     <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-bash.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-json.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-python.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-ini.min.js"></script>
+
+    <!-- 侧边栏折叠插件 + Emoji（可选） -->
+    <script src="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"></script>
+
+    <!-- 修复：窄屏下侧栏点击后不收起 / 遮挡正文；锚点跳转更顺滑 -->
+    <script>
+      (function() {
+        function closeSidebarIfNarrow() {
+          if (window.innerWidth < 1300) {
+            document.body.classList.add('close');
+          }
+        }
+        function installLinkAutoClose() {
+          var sidebar = document.querySelector('.sidebar');
+          if (!sidebar) return;
+          sidebar.querySelectorAll('a').forEach(function(a) {
+            a.addEventListener('click', function() {
+              // 延迟关闭，等路由切换后再收起，避免阻断点击
+              setTimeout(closeSidebarIfNarrow, 50);
+            });
+          });
+        }
+        window.$docsify = window.$docsify || {};
+        var userPlugins = window.$docsify.plugins || [];
+        userPlugins.push(function(hook, vm) {
+          hook.doneEach(function() {
+            // 每次导航完成后：收起侧栏（在窄屏），并重新绑定侧栏内链接的点击事件
+            closeSidebarIfNarrow();
+            installLinkAutoClose();
+          });
+          // 哈希变化（页内小标题锚点）也触发一次
+          window.addEventListener('hashchange', closeSidebarIfNarrow);
+          // 宽度变化时，>=1300 常驻侧栏；<1300 自动收起
+          window.addEventListener('resize', function() {
+            if (window.innerWidth >= 1300) {
+              document.body.classList.remove('close');
+            } else {
+              closeSidebarIfNarrow();
+            }
+          });
+        });
+        window.$docsify.plugins = userPlugins;
+      })();
+    </script>
   </body>
 </html>
