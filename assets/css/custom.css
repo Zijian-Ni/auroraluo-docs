@@ -1,36 +1,110 @@
+/* ===== 主题变量（亮色 / 暗色） ===== */
 :root {
   --theme-color: #7c4dff;
+
+  /* 基础尺寸 */
   --base-font-size: 17px;
-  /* 明确声明侧栏宽度，配合下面的覆盖规则消除“空白带” */
   --sidebar-width: 280px;
   --content-max-width: 920px;
+
+  /* 亮色主题 */
+  --bg: #ffffff;
+  --text: #1b2430;
+  --muted: #6c7a89;
+  --card: #fafafe;
+  --border: #e9e6ff;
+  --quote-bg: #f8f7ff;
+  --code-bg: #f6f8fa;
+  --link: #5b6cff;
+  --link-hover: #3742fa;
 }
 
-/* 基础排版 */
+:root[data-theme="dark"] {
+  --bg: #101317;
+  --text: #e6edf3;
+  --muted: #9aa7b2;
+  --card: #191e24;
+  --border: #2a3340;
+  --quote-bg: #171c22;
+  --code-bg: #0f141a;
+  --link: #8ea0ff;
+  --link-hover: #b9c4ff;
+}
+
+/* ===== 全局排版 ===== */
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); }
+
 .sidebar { font-size: 15px; }
+.app-name { font-weight: 700; }
+
 .markdown-section {
-  line-height: 1.8;
+  line-height: 1.85;
   font-size: var(--base-font-size);
   max-width: var(--content-max-width);
 }
-.markdown-section h1, .markdown-section h2, .markdown-section h3 { margin-top: 2.2rem; }
+
+.markdown-section h1,
+.markdown-section h2,
+.markdown-section h3 {
+  margin-top: 2.2rem;
+  color: var(--text);
+}
+
+/* 引用块 */
 .markdown-section blockquote {
   border-left: 4px solid var(--theme-color);
-  background: #f8f7ff;
+  background: var(--quote-bg);
   padding: 0.6rem 1rem;
 }
-.markdown-section table { display: table; width: 100%; }
-.app-name { font-weight: 700; }
 
-/* ========== 关键修复：关闭侧栏时不要保留左侧空白 ========== */
-/* themeable/vue 主题会给 .content/.app-nav 预留 --sidebar-width，这里强制覆盖 */
+/* 表格 */
+.markdown-section table {
+  display: table;
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--card);
+  border: 1px solid var(--border);
+}
+.markdown-section table th,
+.markdown-section table td {
+  border: 1px solid var(--border);
+  padding: 8px 10px;
+}
+
+/* 代码块 / 行内代码 */
+.markdown-section pre {
+  background: var(--code-bg) !important;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+.markdown-section code:not(pre code) {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0 4px;
+}
+
+/* 链接 */
+.markdown-section a {
+  color: var(--link);
+  text-decoration: none;
+  border-bottom: 1px dashed transparent;
+}
+.markdown-section a:hover {
+  color: var(--link-hover);
+  border-bottom-color: var(--link-hover);
+}
+
+/* ===== 关键修复：关闭侧栏时不要保留左侧空白 ===== */
 .sidebar { width: var(--sidebar-width) !important; }
 
 /* 桌面宽度：侧栏常驻，内容左移 sidebar 宽度 */
 @media (min-width: 1300px) {
   .content { left: var(--sidebar-width) !important; transition: left .25s ease; }
   .app-nav { left: var(--sidebar-width) !important; transition: left .25s ease; }
-  body.close .content { left: var(--sidebar-width) !important; } /* 桌面不自动收起 */
+  body.close .content { left: var(--sidebar-width) !important; }
   body.close .app-nav { left: var(--sidebar-width) !important; }
 }
 
@@ -44,12 +118,63 @@
   body:not(.close) .app-nav { left: var(--sidebar-width) !important; }
 }
 
-/* ========== 锚点滚动优化：跳转到小标题时避免被顶部遮住 ========== */
+/* 锚点滚动优化：跳转到小标题时避免被顶部遮住（与 JS -90px 配合） */
 .markdown-section h1[id],
 .markdown-section h2[id],
 .markdown-section h3[id],
 .markdown-section h4[id],
 .markdown-section h5[id],
 .markdown-section h6[id] {
-  scroll-margin-top: 80px; /* 与 JS 中 window.scrollBy(-80) 配合，更稳 */
+  scroll-margin-top: 90px;
 }
+
+/* ===== 顶部阅读进度条 ===== */
+#reading-progress {
+  position: fixed;
+  top: 0; left: 0; height: 3px;
+  width: 0%;
+  z-index: 9999;
+  background: linear-gradient(90deg, var(--theme-color), #00d4ff);
+  box-shadow: 0 0 6px rgba(124, 77, 255, .5);
+}
+
+/* ===== 返回顶部按钮 ===== */
+#back-to-top {
+  position: fixed;
+  right: 22px; bottom: 28px;
+  width: 38px; height: 38px;
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid var(--border);
+  box-shadow: 0 8px 20px rgba(0,0,0,.12);
+  cursor: pointer;
+  opacity: 0; visibility: hidden; transform: translateY(10px);
+  transition: all .25s ease;
+}
+#back-to-top.show { opacity: 1; visibility: visible; transform: translateY(0); }
+#back-to-top:hover { border-color: var(--theme-color); }
+
+/* ===== 主题按钮（页面左下）与导航处克隆 ===== */
+#theme-toggle, #theme-toggle-nav {
+  position: fixed;
+  left: 22px; bottom: 28px;
+  width: 38px; height: 38px;
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid var(--border);
+  box-shadow: 0 8px 20px rgba(0,0,0,.12);
+  cursor: pointer;
+  transition: all .25s ease;
+}
+#theme-toggle:hover, #theme-toggle-nav:hover { border-color: var(--theme-color); }
+
+/* 右上角导航内的主题按钮样式与位置 */
+.theme-toggle-clone {
+  position: static !important;
+  margin-left: 10px;
+}
+
+/* 卡片感小节（可选：给内容区背景） */
+.content { background: transparent; }
