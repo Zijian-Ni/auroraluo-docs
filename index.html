@@ -1,16 +1,18 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="light">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="color-scheme" content="light">
     <title>Aurora Luo · Wiki</title>
     <meta name="description" content="Aurora Luo - QQ 群智能助理：AI 对话、知识检索、Bilibili、百科、菜单卡片、HTTP 扩展等">
     <link rel="icon" href="data:,">
     <!-- 主题（Docsify + Themeable） -->
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-themeable/dist/css/theme-simple.css">
-    <link rel="stylesheet" href="assets/css/custom.css?v=fix-navbar-dark-1">
+    <!-- 注意：版本号用于刷新缓存 -->
+    <link rel="stylesheet" href="assets/css/custom.css?v=force-light-2">
   </head>
   <body>
     <!-- 顶部阅读进度条 -->
@@ -53,26 +55,30 @@
     <script src="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"></script>
 
-    <!-- 交互增强 & 主题固定默认 light -->
+    <!-- 交互增强 & 主题强制默认 Light（不持久化） -->
     <script>
       (function () {
-        // ===== 固定默认主题为 Light（仅当本地未手动切换过） =====
+        // ===== 主题：强制默认 light，每次进入都重置，不记忆 =====
         const LS_KEY = 'aurora-theme';
         const root = document.documentElement;
+
         function applyTheme(theme) {
           root.setAttribute('data-theme', theme);
-          localStorage.setItem(LS_KEY, theme);
         }
+
         function initTheme() {
-          const saved = localStorage.getItem(LS_KEY);
-          // 有保存就尊重保存；没有则固定默认 light（不再跟随系统）
-          applyTheme(saved ? saved : 'light');
+          try { localStorage.removeItem(LS_KEY); } catch (e) {}
+          applyTheme('light'); // 每次加载都设为 light
         }
+
         function toggleTheme() {
           const now = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
           applyTheme(now);
+          // 不再写入 localStorage（刷新后恢复 light）
         }
+
         initTheme();
+
         // 左下按钮 & 右上导航克隆
         const themeBtn = document.getElementById('theme-toggle');
         themeBtn.addEventListener('click', toggleTheme);
