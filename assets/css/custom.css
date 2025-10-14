@@ -248,7 +248,7 @@ body {
 /* ===== 顶部阅读进度条（镭射风） ===== */
 #reading-progress {
   position: fixed; top: 0; left: 0; height: 3px; width: 0%;
-  z-index: 9999;
+  z-index: 10010;
   background: linear-gradient(90deg, var(--theme-color), #00d4ff);
   box-shadow: 0 0 6px rgba(124,77,255,.5);
 }
@@ -261,23 +261,34 @@ body {
   border: 1px solid var(--border);
   box-shadow: 0 8px 26px rgba(0,0,0,.12);
   cursor: pointer;
+  display: grid; place-items: center;        /* 垂直水平居中箭头 */
+  font-size: 18px; line-height: 1;
   opacity: 0; visibility: hidden; transform: translateY(10px);
   transition: all .25s ease;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  z-index: 10010;                             /* 确保不被覆盖 */
 }
 #back-to-top.show { opacity: 1; visibility: visible; transform: translateY(0); }
 #back-to-top:hover { border-color: var(--theme-color); }
 
 /* ===== 主题按钮（左下）与导航克隆（玻璃态） ===== */
 #theme-toggle, #theme-toggle-nav {
-  position: fixed; left: 22px; bottom: 28px;
   width: 42px; height: 42px; border-radius: 999px;
   background: var(--card); color: var(--text);
   border: 1px solid var(--border);
   box-shadow: 0 8px 26px rgba(0,0,0,.12);
   cursor: pointer; transition: all .25s ease;
   backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  display: grid; place-items: center; font-size: 18px; line-height: 1;
+}
+/* 左下角固定按钮位置 */
+#theme-toggle {
+  position: fixed; left: 22px; bottom: 28px;
+}
+/* 右上角克隆按钮位于导航内部，不改变定位流，只做轻微间距 */
+#theme-toggle-nav.theme-toggle-clone {
+  position: static !important;
+  margin-left: 10px;
 }
 #theme-toggle:hover, #theme-toggle-nav:hover { border-color: var(--theme-color); }
-.theme-toggle-clone { position: static !important; margin-left: 10px; }
