@@ -1,59 +1,55 @@
 :root {
   --theme-color: #7c4dff;
   --base-font-size: 17px;
+  /* 明确声明侧栏宽度，配合下面的覆盖规则消除“空白带” */
   --sidebar-width: 280px;
   --content-max-width: 920px;
 }
 
-.sidebar {
-  font-size: 15px;
-}
-
+/* 基础排版 */
+.sidebar { font-size: 15px; }
 .markdown-section {
   line-height: 1.8;
   font-size: var(--base-font-size);
   max-width: var(--content-max-width);
 }
-
-.markdown-section h1,
-.markdown-section h2,
-.markdown-section h3 {
-  margin-top: 2.2rem;
-}
-
+.markdown-section h1, .markdown-section h2, .markdown-section h3 { margin-top: 2.2rem; }
 .markdown-section blockquote {
   border-left: 4px solid var(--theme-color);
   background: #f8f7ff;
   padding: 0.6rem 1rem;
 }
+.markdown-section table { display: table; width: 100%; }
+.app-name { font-weight: 700; }
 
-.markdown-section table {
-  display: table;
-  width: 100%;
+/* ========== 关键修复：关闭侧栏时不要保留左侧空白 ========== */
+/* themeable/vue 主题会给 .content/.app-nav 预留 --sidebar-width，这里强制覆盖 */
+.sidebar { width: var(--sidebar-width) !important; }
+
+/* 桌面宽度：侧栏常驻，内容左移 sidebar 宽度 */
+@media (min-width: 1300px) {
+  .content { left: var(--sidebar-width) !important; transition: left .25s ease; }
+  .app-nav { left: var(--sidebar-width) !important; transition: left .25s ease; }
+  body.close .content { left: var(--sidebar-width) !important; } /* 桌面不自动收起 */
+  body.close .app-nav { left: var(--sidebar-width) !important; }
 }
 
-.app-name {
-  font-weight: 700;
-}
-
-/* ===== 修复与优化：侧栏在窄屏遮挡正文，点击后不收起 ===== */
+/* 窄屏：默认收起时，内容紧贴左侧（不留白） */
 @media (max-width: 1299px) {
-  /* Docsify 本身会通过给 body 添加/移除 .close 来控制侧栏，这里强化动画与行为 */
-  .sidebar {
-    will-change: transform;
-    transition: transform .25s ease;
-  }
-  body.close .sidebar {
-    transform: translateX(-100%);
-  }
+  .content { left: 0 !important; transition: left .25s ease; }
+  .app-nav { left: 0 !important; transition: left .25s ease; }
+  .sidebar { will-change: transform; transition: transform .25s ease; }
+  body.close .sidebar { transform: translateX(-100%); } /* 收起彻底隐藏 */
+  body:not(.close) .content { left: var(--sidebar-width) !important; }
+  body:not(.close) .app-nav { left: var(--sidebar-width) !important; }
 }
 
-/* ===== 锚点滚动优化：跳转到小标题时避免被顶部遮住 ===== */
+/* ========== 锚点滚动优化：跳转到小标题时避免被顶部遮住 ========== */
 .markdown-section h1[id],
 .markdown-section h2[id],
 .markdown-section h3[id],
 .markdown-section h4[id],
 .markdown-section h5[id],
 .markdown-section h6[id] {
-  scroll-margin-top: 20px;
+  scroll-margin-top: 80px; /* 与 JS 中 window.scrollBy(-80) 配合，更稳 */
 }
