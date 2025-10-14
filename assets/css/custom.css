@@ -27,6 +27,13 @@
   /* 顶部导航（亮） */
   --nav-bg: #ffffff;
   --nav-text: #1b2430;
+
+  /* 顶部导航下拉（亮） */
+  --dropdown-bg: #ffffff;
+  --dropdown-text: #1b2430;
+  --dropdown-border: #ececff;
+  --dropdown-shadow: 0 10px 30px rgba(0,0,0,.10);
+  --dropdown-hover-bg: #f5f7fb;
 }
 
 :root[data-theme="dark"] {
@@ -49,6 +56,13 @@
   /* 顶部导航（暗） */
   --nav-bg: #0e1116;
   --nav-text: #e6edf3;
+
+  /* 顶部导航下拉（暗） */
+  --dropdown-bg: #0e1116;
+  --dropdown-text: #e6edf3;
+  --dropdown-border: #222a35;
+  --dropdown-shadow: 0 10px 30px rgba(0,0,0,.45);
+  --dropdown-hover-bg: #161b22;
 }
 
 /* ===== 全局排版 ===== */
@@ -108,15 +122,34 @@ body { background: var(--bg); color: var(--text); }
 }
 .app-nav a { color: var(--nav-text) !important; }
 
-/* ===== 侧栏（核心修复：暗色强制生效） ===== */
+/* 顶部导航下拉菜单（Themeable/Docsify 的各种 DOM 形态都覆盖） */
+.app-nav .dropdown,
+.app-nav .dropdown .menu,
+.app-nav .dropdown .dropdown-content,
+.app-nav ul li ul,
+.app-nav .links .dropdown .menu {
+  background: var(--dropdown-bg) !important;
+  color: var(--dropdown-text) !important;
+  border: 1px solid var(--dropdown-border) !important;
+  box-shadow: var(--dropdown-shadow) !important;
+  border-radius: 10px !important;
+}
+.app-nav .dropdown a,
+.app-nav ul li ul a {
+  color: var(--dropdown-text) !important;
+}
+.app-nav .dropdown a:hover,
+.app-nav ul li ul a:hover {
+  background: var(--dropdown-hover-bg) !important;
+}
+
+/* ===== 侧栏（暗色强制生效） ===== */
 .sidebar {
   width: var(--sidebar-width) !important;
   background-color: var(--sidebar-bg) !important;
   color: var(--sidebar-text) !important;
   border-right: 1px solid var(--sidebar-border) !important;
 }
-
-/* themeable & vue 主题里这些节点常有白底，逐一覆盖 */
 .sidebar, .sidebar .sidebar-nav, .sidebar .app-name,
 .sidebar .app-name-link, .sidebar .search, .sidebar .search .input-wrap,
 .sidebar .links, .sidebar .app-sub-sidebar, .sidebar ul, .sidebar .menu {
@@ -124,8 +157,6 @@ body { background: var(--bg); color: var(--text); }
   color: var(--sidebar-text) !important;
   border-color: var(--sidebar-border) !important;
 }
-
-/* 侧栏搜索框 */
 .sidebar .search .input-wrap input {
   background: var(--card) !important;
   color: var(--sidebar-text) !important;
@@ -134,35 +165,16 @@ body { background: var(--bg); color: var(--text); }
 .sidebar .search .clear-button, .sidebar .search .search-keyword {
   color: var(--muted) !important;
 }
-
-/* 侧栏链接与 hover/active */
-.sidebar a, .sidebar li > a {
-  color: var(--sidebar-text) !important;
-}
-.sidebar li > a:hover, .sidebar li > a:focus {
-  background: var(--sidebar-hover-bg) !important;
-}
-.sidebar li.active > a {
-  background: var(--sidebar-hover-bg) !important;
-  color: var(--sidebar-text) !important;
-}
-
-/* 侧栏分割线/组标题 */
-.sidebar .sidebar-nav > ul > li {
-  border-bottom: 1px solid var(--sidebar-border) !important;
-}
+.sidebar a, .sidebar li > a { color: var(--sidebar-text) !important; }
+.sidebar li > a:hover, .sidebar li > a:focus { background: var(--sidebar-hover-bg) !important; }
+.sidebar li.active > a { background: var(--sidebar-hover-bg) !important; color: var(--sidebar-text) !important; }
+.sidebar .sidebar-nav > ul > li { border-bottom: 1px solid var(--sidebar-border) !important; }
 .sidebar .sidebar-nav .section-link, .sidebar .sidebar-nav .subtitle,
-.sidebar .sidebar-nav .app-sub-sidebar > li > p {
-  color: var(--muted) !important;
-}
-
-/* 折叠菜单箭头（docsify-sidebar-collapse） */
+.sidebar .sidebar-nav .app-sub-sidebar > li > p { color: var(--muted) !important; }
 .sidebar .sidebar-nav li::marker { color: var(--muted) !important; }
 
 /* 汉堡按钮（左上角） */
-.sidebar-toggle {
-  background: transparent !important;
-}
+.sidebar-toggle { background: transparent !important; }
 .sidebar-toggle .sidebar-toggle-button {
   background: transparent !important;
   border: 1px solid var(--sidebar-border) !important;
@@ -218,7 +230,7 @@ body { background: var(--bg); color: var(--text); }
 #back-to-top.show { opacity: 1; visibility: visible; transform: translateY(0); }
 #back-to-top:hover { border-color: var(--theme-color); }
 
-/* ===== 主题按钮（页面左下）与导航处克隆 ===== */
+/* ===== 主题按钮（页面左下）与导航处克隆） ===== */
 #theme-toggle, #theme-toggle-nav {
   position: fixed; left: 22px; bottom: 28px;
   width: 38px; height: 38px; border-radius: 999px;
