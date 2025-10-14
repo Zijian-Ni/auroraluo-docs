@@ -21,22 +21,12 @@
         repo: '',
         loadSidebar: true,
         loadNavbar: true,
-        subMaxLevel: 3,              // 允许展示到三级小标题（解决小 Topic 跳转）
+        subMaxLevel: 3,              // 展示到三级小标题
         auto2top: true,
         themeColor: '#7c4dff',
         formatUpdated: '{MM}/{DD} {HH}:{mm}',
-        search: {
-          paths: 'auto',
-          placeholder: '搜索文档…',
-          noData: '未找到结果',
-          depth: 3
-        },
-        pagination: {
-          previousText: '上一页',
-          nextText: '下一页',
-          crossChapter: true,
-          crossChapterText: true
-        }
+        search: { paths: 'auto', placeholder: '搜索文档…', noData: '未找到结果', depth: 3 },
+        pagination: { previousText: '上一页', nextText: '下一页', crossChapter: true, crossChapterText: true }
       };
     </script>
 
@@ -52,49 +42,73 @@
     <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-json.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-python.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-ini.min.js"></script>
-
-    <!-- 侧边栏折叠插件 + Emoji（可选） -->
+    <!-- 侧边栏折叠 + Emoji（可选） -->
     <script src="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"></script>
 
-    <!-- 修复：窄屏下侧栏点击后不收起 / 遮挡正文；锚点跳转更顺滑 -->
+    <!-- 修复：侧栏收起时的左侧“空白带” + 小标题锚点跳转 -->
     <script>
-      (function() {
+      (function () {
+        function isNarrow() { return window.innerWidth < 1300; }
+
         function closeSidebarIfNarrow() {
-          if (window.innerWidth < 1300) {
-            document.body.classList.add('close');
-          }
+          if (isNarrow()) document.body.classList.add('close');
         }
+
         function installLinkAutoClose() {
           var sidebar = document.querySelector('.sidebar');
           if (!sidebar) return;
-          sidebar.querySelectorAll('a').forEach(function(a) {
-            a.addEventListener('click', function() {
-              // 延迟关闭，等路由切换后再收起，避免阻断点击
-              setTimeout(closeSidebarIfNarrow, 50);
+          sidebar.querySelectorAll('a').forEach(function (a) {
+            a.addEventListener('click', function () {
+              // 路由切换完成后再收起，避免阻断点击
+              setTimeout(closeSidebarIfNarrow, 60);
             });
           });
         }
+
+        // 更稳健的锚点滚动（中文 ID 也兼容）
+        function scrollToHashAnchor() {
+          var hash = decodeURIComponent(location.hash || '');
+          var m = hash.match(/\?id=(.+)$/);     // #/page?id=xxx
+          if (!m) return;
+          var id = m[1];
+          try {
+            var el = document.getElementById(id) || document.querySelector('[id="' + CSS.escape(id) + '"]');
+            if (el) {
+              el.scrollIntoView({ block: 'start' });
+              // 额外上移一点，避免被顶部“吸顶空隙”遮住
+              window.scrollBy(0, -80);
+            }
+          } catch (e) {
+            // 某些浏览器不支持 CSS.escape 时的兜底
+            var el2 = document.getElementById(id);
+            if (el2) { el2.scrollIntoView({ block: 'start' }); window.scrollBy(0, -80); }
+          }
+        }
+
         window.$docsify = window.$docsify || {};
-        var userPlugins = window.$docsify.plugins || [];
-        userPlugins.push(function(hook, vm) {
-          hook.doneEach(function() {
-            // 每次导航完成后：收起侧栏（在窄屏），并重新绑定侧栏内链接的点击事件
+        var plugins = window.$docsify.plugins || [];
+        plugins.push(function (hook, vm) {
+          hook.doneEach(function () {
+            // 每次页面/路由变化：处理锚点 + 侧栏自动收起（窄屏）
+            scrollToHashAnchor();
             closeSidebarIfNarrow();
             installLinkAutoClose();
           });
-          // 哈希变化（页内小标题锚点）也触发一次
-          window.addEventListener('hashchange', closeSidebarIfNarrow);
-          // 宽度变化时，>=1300 常驻侧栏；<1300 自动收起
-          window.addEventListener('resize', function() {
-            if (window.innerWidth >= 1300) {
-              document.body.classList.remove('close');
-            } else {
-              closeSidebarIfNarrow();
-            }
+
+          // 页内锚点变化也处理一次
+          window.addEventListener('hashchange', function () {
+            setTimeout(scrollToHashAnchor, 0);
+            setTimeout(closeSidebarIfNarrow, 0);
+          });
+
+          // 宽度切换：>=1300 常驻侧栏；<1300 收起
+          window.addEventListener('resize', function () {
+            if (isNarrow()) document.body.classList.add('close');
+            else document.body.classList.remove('close');
           });
         });
-        window.$docsify.plugins = userPlugins;
+        window.$docsify.plugins = plugins;
       })();
     </script>
   </body>
