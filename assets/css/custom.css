@@ -17,6 +17,9 @@
   --code-bg: #f6f8fa;
   --link: #5b6cff;
   --link-hover: #3742fa;
+
+  --sidebar-bg: #ffffff;
+  --nav-bg: #ffffff;
 }
 
 :root[data-theme="dark"] {
@@ -29,14 +32,25 @@
   --code-bg: #0f141a;
   --link: #8ea0ff;
   --link-hover: #b9c4ff;
+
+  --sidebar-bg: #0e1116;
+  --nav-bg: #0e1116;
 }
 
 /* ===== 全局排版 ===== */
 html { scroll-behavior: smooth; }
 body { background: var(--bg); color: var(--text); }
 
-.sidebar { font-size: 15px; }
+.sidebar {
+  font-size: 15px;
+  background-color: var(--sidebar-bg) !important;
+}
 .app-name { font-weight: 700; }
+
+.app-nav {
+  background-color: var(--nav-bg) !important;
+  transition: background-color 0.25s ease;
+}
 
 .markdown-section {
   line-height: 1.85;
@@ -113,12 +127,12 @@ body { background: var(--bg); color: var(--text); }
   .content { left: 0 !important; transition: left .25s ease; }
   .app-nav { left: 0 !important; transition: left .25s ease; }
   .sidebar { will-change: transform; transition: transform .25s ease; }
-  body.close .sidebar { transform: translateX(-100%); } /* 收起彻底隐藏 */
+  body.close .sidebar { transform: translateX(-100%); }
   body:not(.close) .content { left: var(--sidebar-width) !important; }
   body:not(.close) .app-nav { left: var(--sidebar-width) !important; }
 }
 
-/* 锚点滚动优化：跳转到小标题时避免被顶部遮住（与 JS -90px 配合） */
+/* 锚点滚动优化 */
 .markdown-section h1[id],
 .markdown-section h2[id],
 .markdown-section h3[id],
@@ -170,11 +184,7 @@ body { background: var(--bg); color: var(--text); }
 }
 #theme-toggle:hover, #theme-toggle-nav:hover { border-color: var(--theme-color); }
 
-/* 右上角导航内的主题按钮样式与位置 */
 .theme-toggle-clone {
   position: static !important;
   margin-left: 10px;
 }
-
-/* 卡片感小节（可选：给内容区背景） */
-.content { background: transparent; }
