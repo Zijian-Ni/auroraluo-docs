@@ -12,11 +12,11 @@
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-themeable/dist/css/theme-simple.css">
     <!-- 注意：版本号用于刷新缓存 -->
-    <link rel="stylesheet" href="assets/css/custom.css?v=glass-1">
+    <link rel="stylesheet" href="assets/css/custom.css?v=glass-fix-2">
   </head>
   <body>
 
-    <!-- 返回顶部按钮 -->
+    <!-- 返回顶部按钮（若被删，脚本会兜底重建） -->
     <button id="back-to-top" aria-label="返回顶部">↑</button>
 
     <!-- 主题切换按钮（会克隆到右上导航） -->
@@ -53,33 +53,57 @@
     <script src="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"></script>
 
-    <!-- 交互增强 & 默认固定 Light（不持久化） -->
+    <!-- 交互增强 & 默认固定 Light（不持久化） + BUG 修复版 -->
     <script>
       (function () {
-        // ===== 主题：每次进入都强制 light（不记忆） =====
+        /* ========== 主题逻辑：每次进入都强制 light；会话内可切换，刷新恢复 light ========== */
         const root = document.documentElement;
         function applyTheme(theme) { root.setAttribute('data-theme', theme); }
-        function initTheme() { applyTheme('light'); }             // 无论如何都设为 light
-        function toggleTheme() {                                  // 会话内切换，刷新恢复 light
+        function initTheme() { applyTheme('light'); }
+        function toggleTheme() {
           const now = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
           applyTheme(now);
         }
         initTheme();
 
-        // 左下按钮 & 右上导航克隆
-        const themeBtn = document.getElementById('theme-toggle');
+        /* ========== 兜底创建/获取 UI 元素（防止为 null） ========== */
+        function ensureEl(id, tag, attrs = {}) {
+          let el = document.getElementById(id);
+          if (!el) {
+            el = document.createElement(tag);
+            el.id = id;
+            Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, v));
+            document.body.appendChild(el);
+          }
+          return el;
+        }
+        const themeBtn = ensureEl('theme-toggle', 'button', { 'aria-label': '切换主题' });
+        themeBtn.textContent = '🌓';
         themeBtn.addEventListener('click', toggleTheme);
+
+        /* ========== 将主题按钮克隆到右上导航；支持 DOM 重建/路由切换 ========== */
         function mountThemeToggleToNav() {
           const nav = document.querySelector('.app-nav');
-          if (!nav || nav.querySelector('#theme-toggle-nav')) return;
-          const clone = themeBtn.cloneNode(true);
-          clone.id = 'theme-toggle-nav';
-          clone.classList.add('theme-toggle-clone');
-          clone.addEventListener('click', toggleTheme);
-          nav.appendChild(clone);
+          if (!nav) return;
+          if (!document.getElementById('theme-toggle-nav')) {
+            const clone = themeBtn.cloneNode(true);
+            clone.id = 'theme-toggle-nav';
+            clone.classList.add('theme-toggle-clone');
+            clone.addEventListener('click', toggleTheme);
+            nav.appendChild(clone);
+          }
         }
 
-        // ===== 侧栏交互（窄屏自动收起、无留白） =====
+        // 监听 .app-nav 的 DOM 变化，丢失时自动补回
+        const navObserver = new MutationObserver(() => {
+          setTimeout(mountThemeToggleToNav, 0);
+        });
+        const observeNav = () => {
+          const nav = document.querySelector('.app-nav');
+          if (nav) navObserver.observe(nav, { childList: true, subtree: true });
+        };
+
+        /* ========== 窄屏侧栏自动收起 ========== */
         const NARROW = () => window.innerWidth < 1300;
         function closeSidebarIfNarrow() { if (NARROW()) document.body.classList.add('close'); }
         function bindSidebarLinksAutoClose() {
@@ -87,7 +111,7 @@
           sidebar.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setTimeout(closeSidebarIfNarrow, 60)));
         }
 
-        // ===== 锚点滚动（中文标题兼容） =====
+        /* ========== 锚点滚动（中文标题兼容） ========== */
         function scrollToHashAnchor() {
           const hash = decodeURIComponent(location.hash || '');
           const m = hash.match(/\?id=(.+)$/);
@@ -99,31 +123,58 @@
           if (el) { el.scrollIntoView({ block: 'start' }); window.scrollBy(0, -90); }
         }
 
-        // ===== 返回顶部 & 阅读进度条 =====
-        const backBtn = document.getElementById('back-to-top');
-        const progress = document.getElementById('reading-progress');
-        function onScrollFeedback() {
-          if (window.scrollY > 300) backBtn.classList.add('show'); else backBtn.classList.remove('show');
-          const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-          const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-          progress.style.width = (height > 0 ? (scrollTop / height) * 100 : 0) + '%';
-        }
-        backBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+        /* ========== 返回顶部 & 阅读进度条（空值保护 + 兜底创建） ========== */
+        const backBtn = ensureEl('back-to-top', 'button', { 'aria-label': '返回顶部' });
+        if (!backBtn.textContent) backBtn.textContent = '↑';
+        backBtn.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
-        // ===== Docsify 生命周期 =====
+        const progress = ensureEl('reading-progress', 'div');
+
+        function onScrollFeedback() {
+          // 若元素还未在 DOM 中，直接跳过，避免 TypeError
+          if (!progress || !progress.style) return;
+          if (window.scrollY > 300) backBtn.classList.add('show'); else backBtn.classList.remove('show');
+          const scrollTop = document.documentElement.scrollTop || document.body.scrollTop || 0;
+          const height = (document.documentElement.scrollHeight - document.documentElement.clientHeight) || 0;
+          const pct = height > 0 ? (scrollTop / height) * 100 : 0;
+          progress.style.width = pct + '%';
+        }
+
+        /* ========== Docsify 生命周期钩子 ========== */
         window.$docsify = window.$docsify || {};
         const plugins = window.$docsify.plugins || [];
         plugins.push(function (hook, vm) {
           hook.doneEach(function () {
+            // 每次路由切换后，重挂按钮、观测导航、绑定侧栏事件、修复锚点、刷新滚动状态
             mountThemeToggleToNav();
-            scrollToHashAnchor();
-            closeSidebarIfNarrow();
+            observeNav();
             bindSidebarLinksAutoClose();
+            scrollToHashAnchor();
             onScrollFeedback();
           });
-          window.addEventListener('hashchange', () => { setTimeout(scrollToHashAnchor, 0); setTimeout(closeSidebarIfNarrow, 0); });
-          window.addEventListener('resize', () => { if (NARROW()) document.body.classList.add('close'); else document.body.classList.remove('close'); });
+
+          // hash 变化也补一次（部分主题先变 hash 再重绘）
+          window.addEventListener('hashchange', () => {
+            setTimeout(mountThemeToggleToNav, 0);
+            setTimeout(scrollToHashAnchor, 0);
+            setTimeout(closeSidebarIfNarrow, 0);
+          });
+
+          // 监听尺寸变化
+          window.addEventListener('resize', () => {
+            if (NARROW()) document.body.classList.add('close');
+            else document.body.classList.remove('close');
+          });
+
+          // 滚动反馈（加保护）
           window.addEventListener('scroll', onScrollFeedback);
+
+          // 首次就绪：补挂按钮与观察者
+          document.addEventListener('DOMContentLoaded', () => {
+            mountThemeToggleToNav();
+            observeNav();
+            onScrollFeedback();
+          });
         });
         window.$docsify.plugins = plugins;
       })();
