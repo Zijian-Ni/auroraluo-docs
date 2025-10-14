@@ -1,0 +1,36 @@
+:root {
+  --theme-color: #7c4dff;
+  --base-font-size: 17px;
+  --sidebar-width: 280px;
+  --content-max-width: 920px;
+}
+
+.sidebar {
+  font-size: 15px;
+}
+
+.markdown-section {
+  line-height: 1.8;
+  font-size: var(--base-font-size);
+}
+
+.markdown-section h1,
+.markdown-section h2,
+.markdown-section h3 {
+  margin-top: 2.2rem;
+}
+
+.markdown-section blockquote {
+  border-left: 4px solid var(--theme-color);
+  background: #f8f7ff;
+  padding: 0.6rem 1rem;
+}
+
+.markdown-section table {
+  display: table;
+  width: 100%;
+}
+
+.app-name {
+  font-weight: 700;
+}
