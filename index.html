@@ -12,16 +12,14 @@
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-themeable/dist/css/theme-simple.css">
     <!-- 注意：版本号用于刷新缓存 -->
-    <link rel="stylesheet" href="assets/css/custom.css?v=force-light-2">
+    <link rel="stylesheet" href="assets/css/custom.css?v=glass-1">
   </head>
   <body>
-    <!-- 顶部阅读进度条 -->
-    <!-- <div id="reading-progress"></div> -->
 
     <!-- 返回顶部按钮 -->
     <button id="back-to-top" aria-label="返回顶部">↑</button>
 
-    <!-- 主题切换按钮 -->
+    <!-- 主题切换按钮（会克隆到右上导航） -->
     <button id="theme-toggle" aria-label="切换主题">🌓</button>
 
     <div id="app">加载中… Loading…</div>
@@ -55,28 +53,17 @@
     <script src="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"></script>
 
-    <!-- 交互增强 & 主题强制默认 Light（不持久化） -->
+    <!-- 交互增强 & 默认固定 Light（不持久化） -->
     <script>
       (function () {
-        // ===== 主题：强制默认 light，每次进入都重置，不记忆 =====
-        const LS_KEY = 'aurora-theme';
+        // ===== 主题：每次进入都强制 light（不记忆） =====
         const root = document.documentElement;
-
-        function applyTheme(theme) {
-          root.setAttribute('data-theme', theme);
-        }
-
-        function initTheme() {
-          try { localStorage.removeItem(LS_KEY); } catch (e) {}
-          applyTheme('light'); // 每次加载都设为 light
-        }
-
-        function toggleTheme() {
+        function applyTheme(theme) { root.setAttribute('data-theme', theme); }
+        function initTheme() { applyTheme('light'); }             // 无论如何都设为 light
+        function toggleTheme() {                                  // 会话内切换，刷新恢复 light
           const now = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
           applyTheme(now);
-          // 不再写入 localStorage（刷新后恢复 light）
         }
-
         initTheme();
 
         // 左下按钮 & 右上导航克隆
