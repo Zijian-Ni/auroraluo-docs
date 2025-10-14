@@ -122,26 +122,43 @@ body { background: var(--bg); color: var(--text); }
 }
 .app-nav a { color: var(--nav-text) !important; }
 
-/* 顶部导航下拉菜单（Themeable/Docsify 的各种 DOM 形态都覆盖） */
+/* 顶部导航下拉（覆盖所有常见 DOM 结构） */
 .app-nav .dropdown,
 .app-nav .dropdown .menu,
 .app-nav .dropdown .dropdown-content,
-.app-nav ul li ul,
-.app-nav .links .dropdown .menu {
+.app-nav .links .dropdown .menu,
+.app-nav .links li > ul,
+.app-nav ul li > ul,
+.app-nav .menu {
   background: var(--dropdown-bg) !important;
   color: var(--dropdown-text) !important;
   border: 1px solid var(--dropdown-border) !important;
   box-shadow: var(--dropdown-shadow) !important;
   border-radius: 10px !important;
 }
+
+/* 下拉中的链接 */
 .app-nav .dropdown a,
-.app-nav ul li ul a {
+.app-nav .links li > ul a,
+.app-nav ul li > ul a,
+.app-nav .menu a {
   color: var(--dropdown-text) !important;
 }
 .app-nav .dropdown a:hover,
-.app-nav ul li ul a:hover {
+.app-nav .links li > ul a:hover,
+.app-nav ul li > ul a:hover,
+.app-nav .menu a:hover {
   background: var(--dropdown-hover-bg) !important;
 }
+
+/* 某些主题会插入小三角或 before 元素，统一隐藏避免白边 */
+.app-nav ul li ul::before,
+.app-nav .dropdown .menu::before,
+.app-nav .links .dropdown .menu::before { display: none !important; }
+
+/* 确保下拉层级足够高 */
+.app-nav .dropdown .menu,
+.app-nav ul li > ul { z-index: 9999 !important; }
 
 /* ===== 侧栏（暗色强制生效） ===== */
 .sidebar {
@@ -184,7 +201,7 @@ body { background: var(--bg); color: var(--text); }
   background: var(--sidebar-text) !important;
 }
 
-/* ===== 关键：关闭侧栏时不要保留左侧空白 ===== */
+/* ===== 侧栏留白修复（与响应式） ===== */
 @media (min-width: 1300px) {
   .content { left: var(--sidebar-width) !important; transition: left .25s ease; }
   .app-nav { left: var(--sidebar-width) !important; transition: left .25s ease; }
@@ -230,7 +247,7 @@ body { background: var(--bg); color: var(--text); }
 #back-to-top.show { opacity: 1; visibility: visible; transform: translateY(0); }
 #back-to-top:hover { border-color: var(--theme-color); }
 
-/* ===== 主题按钮（页面左下）与导航处克隆） ===== */
+/* ===== 主题按钮（左下）及导航克隆 ===== */
 #theme-toggle, #theme-toggle-nav {
   position: fixed; left: 22px; bottom: 28px;
   width: 38px; height: 38px; border-radius: 999px;
