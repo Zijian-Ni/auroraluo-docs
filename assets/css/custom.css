@@ -11,8 +11,8 @@
   --bg: #f5f7fb;
   --text: #1b2430;
   --muted: #6c7a89;
-  --card: rgba(255, 255, 255, 0.65);         /* 毛玻璃面板底色（透明） */
-  --border: rgba(124, 77, 255, 0.18);        /* 细描边（半透明） */
+  --card: rgba(255, 255, 255, 0.65);
+  --border: rgba(124, 77, 255, 0.18);
   --quote-bg: rgba(124, 77, 255, 0.08);
   --code-bg: rgba(16, 22, 30, 0.04);
   --link: #5b6cff;
@@ -91,6 +91,7 @@ body {
   backdrop-filter: saturate(160%) blur(12px);
   -webkit-backdrop-filter: saturate(160%) blur(12px);
   transition: background-color .25s ease, color .25s ease;
+  z-index: 10005;
 }
 .app-nav a { color: var(--nav-text) !important; }
 
@@ -125,7 +126,7 @@ body {
 .app-nav ul li ul::before,
 .app-nav .dropdown .menu::before,
 .app-nav .links .dropdown .menu::before { display: none !important; }
-.app-nav .dropdown .menu, .app-nav ul li > ul { z-index: 9999 !important; }
+.app-nav .dropdown .menu, .app-nav ul li > ul { z-index: 10006 !important; }
 
 /* ===== 侧栏（毛玻璃 + 无留白） ===== */
 .sidebar {
@@ -135,11 +136,12 @@ body {
   border-right: 1px solid var(--sidebar-border) !important;
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
+  z-index: 10004;
 }
 .sidebar, .sidebar .sidebar-nav, .sidebar .app-name,
 .sidebar .app-name-link, .sidebar .search, .sidebar .search .input-wrap,
 .sidebar .links, .sidebar .app-sub-sidebar, .sidebar ul, .sidebar .menu {
-  background: transparent !important; /* 由 .sidebar 统一毛玻璃 */
+  background: transparent !important;
   color: var(--sidebar-text) !important;
   border-color: var(--sidebar-border) !important;
 }
@@ -261,16 +263,21 @@ body {
   border: 1px solid var(--border);
   box-shadow: 0 8px 26px rgba(0,0,0,.12);
   cursor: pointer;
-  display: grid; place-items: center;        /* 垂直水平居中箭头 */
+  display: grid; place-items: center;
   font-size: 18px; line-height: 1;
   opacity: 0; visibility: hidden; transform: translateY(10px);
   transition: all .25s ease;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  z-index: 10010;                             /* 确保不被覆盖 */
+  z-index: 10010;
 }
 #back-to-top.show { opacity: 1; visibility: visible; transform: translateY(0); }
 #back-to-top:hover { border-color: var(--theme-color); }
+
+/* 小屏位置微调，避免被系统栏遮挡 */
+@media (max-width: 640px) {
+  #back-to-top { right: 16px; bottom: 16px; }
+}
 
 /* ===== 主题按钮（左下）与导航克隆（玻璃态） ===== */
 #theme-toggle, #theme-toggle-nav {
@@ -285,8 +292,9 @@ body {
 /* 左下角固定按钮位置 */
 #theme-toggle {
   position: fixed; left: 22px; bottom: 28px;
+  z-index: 10010;
 }
-/* 右上角克隆按钮位于导航内部，不改变定位流，只做轻微间距 */
+/* 右上角克隆按钮：只对 #theme-toggle-nav.theme-toggle-clone 生效 */
 #theme-toggle-nav.theme-toggle-clone {
   position: static !important;
   margin-left: 10px;
