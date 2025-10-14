@@ -12,6 +12,7 @@
 .markdown-section {
   line-height: 1.8;
   font-size: var(--base-font-size);
+  max-width: var(--content-max-width);
 }
 
 .markdown-section h1,
@@ -33,4 +34,26 @@
 
 .app-name {
   font-weight: 700;
+}
+
+/* ===== 修复与优化：侧栏在窄屏遮挡正文，点击后不收起 ===== */
+@media (max-width: 1299px) {
+  /* Docsify 本身会通过给 body 添加/移除 .close 来控制侧栏，这里强化动画与行为 */
+  .sidebar {
+    will-change: transform;
+    transition: transform .25s ease;
+  }
+  body.close .sidebar {
+    transform: translateX(-100%);
+  }
+}
+
+/* ===== 锚点滚动优化：跳转到小标题时避免被顶部遮住 ===== */
+.markdown-section h1[id],
+.markdown-section h2[id],
+.markdown-section h3[id],
+.markdown-section h4[id],
+.markdown-section h5[id],
+.markdown-section h6[id] {
+  scroll-margin-top: 20px;
 }
