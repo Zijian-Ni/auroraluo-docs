@@ -1,210 +1,176 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="light">
   <head>
     <meta charset="UTF-8" />
-    <title>Aurora Luo</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <!-- Docsify 主题样式（多重回落） -->
-    <link id="docsify-theme" rel="stylesheet"
-      href="https://unpkg.com/docsify@4/themes/vue.css"
-      onerror="this.href='https://cdn.jsdelivr.net/npm/docsify@4/themes/vue.css';this.onerror=null;" />
-
-    <!-- 自定义样式：相对路径，适配 GitHub Pages 项目页二级路径 -->
-    <link rel="stylesheet" href="assets/css/custom.css" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="color-scheme" content="light">
+    <title>Aurora Luo · Wiki</title>
+    <meta name="description" content="Aurora Luo - QQ 群智能助理：AI 对话、知识检索、Bilibili、百科、菜单卡片、HTTP 扩展等">
+    <link rel="icon" href="data:,">
+    <!-- 主题（Docsify + Themeable） -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-themeable/dist/css/theme-simple.css">
+    <!-- 注意：版本号用于刷新缓存 -->
+    <link rel="stylesheet" href="assets/css/custom.css?v=glass-fix-3">
   </head>
-
   <body>
-    <!-- Docsify 应用挂载点 -->
-    <div id="app">加载中...</div>
-
-    <!-- 固定右上角主题切换 -->
-    <div id="aurora-theme-toggle">
-      <button id="theme-switch-btn" aria-label="切换主题">🌓</button>
-    </div>
-
-    <!-- 回到顶部 -->
-    <button id="back-to-top" title="返回顶部" aria-label="返回顶部">↑</button>
-
-    <!-- 阅读进度条 -->
+    <!-- 顶部阅读进度条（显式保留，更直观稳定） -->
     <div id="reading-progress"></div>
 
-    <!-- ========= Docsify 核心：三重回落 ========= -->
-    <script>
-      (function loadScript(srcs, attr) {
-        function tryLoad(i) {
-          if (i >= srcs.length) return;
-          var s = document.createElement('script');
-          s.src = srcs[i];
-          if (attr && attr.defer) s.defer = true;
-          s.onerror = function(){ tryLoad(i+1); };
-          document.head.appendChild(s);
-        }
-        // docsify 主库
-        tryLoad(0);
-      })([
-        'https://unpkg.com/docsify@4/lib/docsify.min.js',
-        'https://cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js',
-        'https://cdnjs.cloudflare.com/ajax/libs/docsify/4.13.1/docsify.min.js'
-      ], {defer:true});
-    </script>
+    <!-- 返回顶部按钮 -->
+    <button id="back-to-top" aria-label="返回顶部">↑</button>
 
-    <!-- 搜索插件 -->
-    <script>
-      (function loadScript(srcs) {
-        function tryLoad(i) {
-          if (i >= srcs.length) return;
-          var s = document.createElement('script');
-          s.src = srcs[i]; s.defer = true;
-          s.onerror = function(){ tryLoad(i+1); };
-          document.head.appendChild(s);
-        }
-        tryLoad(0);
-      })([
-        'https://unpkg.com/docsify@4/lib/plugins/search.min.js',
-        'https://cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.min.js',
-        'https://cdnjs.cloudflare.com/ajax/libs/docsify/4.13.1/plugins/search.min.js'
-      ]);
-    </script>
+    <!-- 左下角：原始主题切换按钮（不要加 theme-toggle-clone 这个类） -->
+    <button id="theme-toggle" aria-label="切换主题">🌓</button>
 
-    <!-- 复制代码按钮插件 -->
-    <script>
-      (function loadScript(srcs) {
-        function tryLoad(i) {
-          if (i >= srcs.length) return;
-          var s = document.createElement('script');
-          s.src = srcs[i]; s.defer = true;
-          s.onerror = function(){ tryLoad(i+1); };
-          document.head.appendChild(s);
-        }
-        tryLoad(0);
-      })([
-        'https://unpkg.com/docsify-copy-code@3/dist/docsify-copy-code.min.js',
-        'https://cdn.jsdelivr.net/npm/docsify-copy-code@3/dist/docsify-copy-code.min.js',
-        'https://cdnjs.cloudflare.com/ajax/libs/docsify-copy-code/3.0.0/docsify-copy-code.min.js'
-      ]);
-    </script>
+    <div id="app">加载中… Loading…</div>
 
-    <!-- ===== 先挂 Docsify 配置 ===== -->
     <script>
+      // ===== Docsify 基础配置 =====
       window.$docsify = {
         name: 'Aurora Luo',
         repo: '',
         loadSidebar: true,
-        subMaxLevel: 2,
+        loadNavbar: true,
+        subMaxLevel: 3,
         auto2top: true,
-        routerMode: 'hash',     // SPA hash 路由，适合 GitHub Pages
-        relativePath: true,     // 相对路径检索 README / _sidebar
-        search: { paths: 'auto', placeholder: '搜索文档…', noData: '未找到结果' },
-        plugins: [
-          function (hook, vm) {
-            function getAnchorOffset() {
-              const nav = document.querySelector('.app-nav');
-              const navH = nav ? nav.getBoundingClientRect().height : 52;
-              const bar = document.querySelector('#reading-progress')
-                        || document.querySelector('.progress')
-                        || document.querySelector('.progressbar');
-              const barH = bar ? bar.getBoundingClientRect().height : 6;
-              return Math.round(navH + barH + 10);
-            }
-            function smartScrollFix() {
-              if (!location.hash) return;
-              const el = document.querySelector(decodeURIComponent(location.hash));
-              if (!el) return;
-              setTimeout(() => {
-                const y = Math.max(0, window.pageYOffset - getAnchorOffset());
-                window.scrollTo({ top: y }); // 同步滚动更稳
-              }, 0);
-            }
-            hook.doneEach(() => {
-              smartScrollFix();
-              if (window.__auroraBackToTopUpdate) window.__auroraBackToTopUpdate();
-            });
-            window.addEventListener('hashchange', smartScrollFix, false);
-          },
-        ],
+        themeColor: '#7c4dff',
+        formatUpdated: '{MM}/{DD} {HH}:{mm}',
+        search: { paths: 'auto', placeholder: '搜索文档…', noData: '未找到结果', depth: 3 },
+        pagination: { previousText: '上一页', nextText: '下一页', crossChapter: true, crossChapterText: true }
       };
     </script>
 
-    <!-- ===== 站点功能脚本：主题切换 / 进度条 / 回顶 ===== -->
-    <script>
-      // 主题切换
-      (function () {
-        const btn = document.getElementById('theme-switch-btn');
-        const KEY = 'aurora_theme';
-        const root = document.documentElement;
+    <!-- Docsify 核心与插件 -->
+    <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+    <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-bash.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-json.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-python.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-ini.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"></script>
 
-        function apply(theme) {
-          if (theme === 'dark') {
-            root.setAttribute('data-theme', 'dark');
-            btn.textContent = '🌞';
-            btn.setAttribute('aria-label', '切换到亮色主题');
-          } else {
-            root.removeAttribute('data-theme');
-            btn.textContent = '🌓';
-            btn.setAttribute('aria-label', '切换到暗色主题');
+    <!-- 交互增强 & 默认固定 Light（不持久化） + BUG 修复版 -->
+    <script>
+      (function () {
+        /* ========== 主题逻辑：每次进入都强制 light；会话内可切换，刷新恢复 light ========== */
+        const root = document.documentElement;
+        function applyTheme(theme) { root.setAttribute('data-theme', theme); }
+        function initTheme() { applyTheme('light'); }
+        function toggleTheme() {
+          const now = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+          applyTheme(now);
+        }
+        initTheme();
+
+        /* ========== 兜底创建/获取 UI 元素 ========== */
+        function ensureEl(id, tag, attrs = {}) {
+          let el = document.getElementById(id);
+          if (!el) {
+            el = document.createElement(tag);
+            el.id = id;
+            Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, v));
+            document.body.appendChild(el);
+          }
+          return el;
+        }
+        const themeBtn = ensureEl('theme-toggle', 'button', { 'aria-label': '切换主题' });
+        if (!themeBtn.textContent) themeBtn.textContent = '🌓';
+        themeBtn.addEventListener('click', toggleTheme);
+
+        /* ========== 将主题按钮克隆到右上导航；支持 DOM 重建/路由切换 ========== */
+        function mountThemeToggleToNav() {
+          const nav = document.querySelector('.app-nav');
+          if (!nav) return;
+          if (!document.getElementById('theme-toggle-nav')) {
+            const clone = themeBtn.cloneNode(true);
+            clone.id = 'theme-toggle-nav';
+            clone.classList.add('theme-toggle-clone'); // 这个类只用于右上角克隆
+            clone.addEventListener('click', toggleTheme);
+            nav.appendChild(clone);
           }
         }
-        function getTheme() { return localStorage.getItem(KEY) || 'light'; }
-        function toggle() {
-          const next = getTheme() === 'dark' ? 'light' : 'dark';
-          localStorage.setItem(KEY, next);
-          apply(next);
-        }
-        apply(getTheme());
-        btn.addEventListener('click', toggle);
 
-        new MutationObserver(() => apply(getTheme()))
-          .observe(document.body, { childList: true, subtree: true });
+        // 监听 .app-nav 的 DOM 变化，丢失时自动补回
+        const navObserver = new MutationObserver(() => {
+          setTimeout(mountThemeToggleToNav, 0);
+        });
+        const observeNav = () => {
+          const nav = document.querySelector('.app-nav');
+          if (nav) navObserver.observe(nav, { childList: true, subtree: true });
+        };
+
+        /* ========== 窄屏侧栏自动收起 ========== */
+        const NARROW = () => window.innerWidth < 1300;
+        function closeSidebarIfNarrow() { if (NARROW()) document.body.classList.add('close'); }
+        function bindSidebarLinksAutoClose() {
+          const sidebar = document.querySelector('.sidebar'); if (!sidebar) return;
+          sidebar.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setTimeout(closeSidebarIfNarrow, 60)));
+        }
+
+        /* ========== 锚点滚动（中文标题兼容） ========== */
+        function scrollToHashAnchor() {
+          const hash = decodeURIComponent(location.hash || '');
+          const m = hash.match(/\?id=(.+)$/);
+          if (!m) return;
+          const id = m[1];
+          let el = null;
+          try { el = document.getElementById(id) || document.querySelector('[id="' + CSS.escape(id) + '"]'); }
+          catch (e) { el = document.getElementById(id); }
+          if (el) { el.scrollIntoView({ block: 'start' }); window.scrollBy(0, -90); }
+        }
+
+        /* ========== 返回顶部 & 阅读进度条（空值保护 + 兜底创建） ========== */
+        const backBtn = ensureEl('back-to-top', 'button', { 'aria-label': '返回顶部' });
+        if (!backBtn.textContent) backBtn.textContent = '↑';
+        backBtn.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        const progress = ensureEl('reading-progress', 'div');
+
+        function onScrollFeedback() {
+          if (!progress || !progress.style) return;
+          if (window.scrollY > 300) backBtn.classList.add('show'); else backBtn.classList.remove('show');
+          const scrollTop = document.documentElement.scrollTop || document.body.scrollTop || 0;
+          const height = (document.documentElement.scrollHeight - document.documentElement.clientHeight) || 0;
+          const pct = height > 0 ? (scrollTop / height) * 100 : 0;
+          progress.style.width = pct + '%';
+        }
+
+        /* ========== Docsify 生命周期钩子 ========== */
+        window.$docsify = window.$docsify || {};
+        const plugins = window.$docsify.plugins || [];
+        plugins.push(function (hook, vm) {
+          hook.doneEach(function () {
+            mountThemeToggleToNav();
+            observeNav();
+            bindSidebarLinksAutoClose();
+            scrollToHashAnchor();
+            onScrollFeedback();
+          });
+          window.addEventListener('hashchange', () => {
+            setTimeout(mountThemeToggleToNav, 0);
+            setTimeout(scrollToHashAnchor, 0);
+            setTimeout(closeSidebarIfNarrow, 0);
+          });
+          window.addEventListener('resize', () => {
+            if (NARROW()) document.body.classList.add('close');
+            else document.body.classList.remove('close');
+          });
+          window.addEventListener('scroll', onScrollFeedback);
+
+          document.addEventListener('DOMContentLoaded', () => {
+            mountThemeToggleToNav();
+            observeNav();
+            onScrollFeedback();
+          });
+        });
+        window.$docsify.plugins = plugins;
       })();
-
-      // 阅读进度条
-      (function () {
-        const bar = document.getElementById('reading-progress');
-        if (!bar) return;
-        function update() {
-          const article = document.querySelector('.content');
-          if (!article) { bar.style.width = '0%'; return; }
-          const total = article.scrollHeight - window.innerHeight;
-          const scrolled = window.scrollY - article.offsetTop;
-          const pct = Math.max(0, Math.min(1, scrolled / Math.max(1, total)));
-          bar.style.width = (pct * 100) + '%';
-        }
-        window.addEventListener('scroll', update, { passive: true });
-        window.addEventListener('resize', update);
-        document.addEventListener('DOMContentLoaded', update);
-      })();
-
-      // 回到顶部（暴露刷新函数）
-      (function () {
-        const btn = document.getElementById('back-to-top');
-        function updateVisibility() {
-          if (window.scrollY > 300) btn.classList.add('show');
-          else btn.classList.remove('show');
-        }
-        btn.addEventListener('click', () =>
-          window.scrollTo({ top: 0, behavior: 'smooth' })
-        );
-        window.addEventListener('scroll', updateVisibility, { passive: true });
-        window.__auroraBackToTopUpdate = updateVisibility;
-        updateVisibility();
-      })();
-    </script>
-
-    <!-- ===== 兜底提示：3 秒后仍未就绪，给出常见原因 ===== -->
-    <script>
-      setTimeout(() => {
-        // Docsify 挂载后会把 #app 内容替换为正文
-        if (!window.Docsify) {
-          const el = document.getElementById('app');
-          el.innerHTML =
-            '🚧 页面未能加载。常见原因：<br>' +
-            '1) CDN 被拦（已内置多重回落，可刷新 / 换网络）；<br>' +
-            '2) GitHub Pages 未指向正确分支/路径（Settings → Pages）；<br>' +
-            '3) 根目录缺少 <code>README.md</code>；<br>' +
-            '4) 未创建 <code>.nojekyll</code>。';
-        }
-      }, 3000);
     </script>
   </body>
 </html>
