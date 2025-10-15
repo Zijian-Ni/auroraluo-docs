@@ -13,7 +13,7 @@
           onerror="this.onerror=null;this.href='https://unpkg.com/docsify@4/lib/themes/vue.css'">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable/dist/css/theme-simple.css"
           onerror="this.onerror=null;this.href='https://unpkg.com/docsify-themeable/dist/css/theme-simple.css'">
-    <!-- 自定义样式（版本号用于刷新缓存） -->
+    <!-- 自定义样式 -->
     <link rel="stylesheet" href="assets/css/custom.css?v=responsive-3">
   </head>
   <body>
@@ -71,24 +71,24 @@
     <script src="https://cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"
             onerror="this.onerror=null;this.src='https://unpkg.com/docsify/lib/plugins/emoji.min.js'"></script>
 
-    <!-- 交互增强：默认亮色（刷新重置）、滚动反馈、锚点、窄屏行为、刘海安全区 -->
+    <!-- 交互增强：默认亮色、鲁棒锚点滚动、窄屏行为、滚动反馈 -->
     <script>
       (function () {
-        // 1) 主题：刷新恢复 light；会话内可切换
+        /* ========== 主题：刷新恢复 light；会话内可切换 ========== */
         const root = document.documentElement;
         const applyTheme = t => root.setAttribute('data-theme', t);
         const toggleTheme = () => applyTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
         applyTheme('light');
         document.getElementById('theme-switch-btn').addEventListener('click', toggleTheme);
 
-        // 2) 兜底创建
+        /* ========== 兜底创建 ========== */
         function ensureEl(id, tag) {
           let el = document.getElementById(id);
           if (!el) { el = document.createElement(tag); el.id = id; document.body.appendChild(el); }
           return el;
         }
 
-        // 3) 返回顶部 + 阅读进度
+        /* ========== 回到顶部 + 阅读进度 ========== */
         const backBtn = ensureEl('back-to-top', 'button');
         if (!backBtn.textContent) backBtn.textContent = '↑';
         backBtn.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -103,29 +103,83 @@
         window.addEventListener('scroll', onScroll);
         document.addEventListener('DOMContentLoaded', onScroll);
 
-        // 4) Docsify 钩子：锚点修正 + 窄屏侧栏收起
+        /* ========== 鲁棒锚点滚动（修复“左侧小点不跳转”） ========== */
+        function esc(id) {
+          try { return CSS.escape(id); } catch { return id; }
+        }
+        function findHeading(id) {
+          if (!id) return null;
+          // 1) 直接命中
+          let el = document.getElementById(id) || document.querySelector('#' + esc(id));
+          if (el) return el;
+          // 2) 常见 slug 变体：小写、空格->连字符
+          const alt = id.replace(/\s+/g, '-').toLowerCase();
+          if (alt !== id) {
+            el = document.getElementById(alt) || document.querySelector('#' + esc(alt));
+            if (el) return el;
+          }
+          // 3) 点号被去除的情况（如“1.2 模式”）
+          const noDot = alt.replace(/\./g, '');
+          if (noDot !== alt) {
+            el = document.getElementById(noDot) || document.querySelector('#' + esc(noDot));
+            if (el) return el;
+          }
+          return null;
+        }
+        function scrollToId(id) {
+          const el = findHeading(id);
+          if (!el) return false;
+          el.scrollIntoView({ block: 'start' });
+          // 顶部预留偏移（避免被导航遮挡）
+          window.scrollBy(0, -90);
+          return true;
+        }
+        function getHashId() {
+          const hash = decodeURIComponent(location.hash || '');
+          const m = hash.match(/\?id=([^&]+)/);  // 兼容 #/page?id=xxx&xxx
+          return m ? m[1] : null;
+        }
+        // 带重试（等待 Docsify 渲染完成）
+        function scrollToHashRobust() {
+          const id = getHashId();
+          if (!id) return;
+          let tries = 0;
+          const tick = () => {
+            if (scrollToId(id) || tries > 20) return;
+            tries += 1;
+            setTimeout(tick, 25);
+          };
+          tick();
+        }
+
+        /* ========== Docsify 生命周期：锚点 & 窄屏侧栏 ========== */
         window.$docsify = window.$docsify || {};
         const plugins = window.$docsify.plugins || [];
         plugins.push(function (hook, vm) {
           hook.ready(() => { if (window.innerWidth < 1300) document.body.classList.add('close'); });
           hook.doneEach(() => {
-            // 锚点（兼容中文标题）
-            const m = decodeURIComponent(location.hash || '').match(/\?id=(.+)$/);
-            if (m) {
-              const el = document.getElementById(m[1]);
-              if (el) { el.scrollIntoView({ block: 'start' }); window.scrollBy(0, -90); }
-            }
-            // 窄屏侧栏点击后收起
+            scrollToHashRobust();   // 页面加载/切换后就位
+            onScroll();
+            // 窄屏：点击侧栏链接后自动收起
             const sb = document.querySelector('.sidebar');
             if (sb && window.innerWidth < 1300) {
-              sb.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setTimeout(() => document.body.classList.add('close'), 60)));
+              sb.querySelectorAll('a').forEach(a =>
+                a.addEventListener('click', () => setTimeout(() => document.body.classList.add('close'), 60)));
             }
-            onScroll();
           });
         });
         window.$docsify.plugins = plugins;
 
-        // 5) 简易失败提示
+        // 侧栏内小点点击：再触发一次定位（兼容第三方折叠插件）
+        document.addEventListener('click', (e) => {
+          const a = e.target.closest('.sidebar a[href*="?id="]');
+          if (a) setTimeout(scrollToHashRobust, 0);
+        });
+
+        // hash 变化也定位
+        window.addEventListener('hashchange', () => setTimeout(scrollToHashRobust, 0));
+
+        /* ========== 简易失败提示 ========== */
         setTimeout(() => {
           const app = document.getElementById('app');
           if (app && app.textContent.includes('加载中')) {
