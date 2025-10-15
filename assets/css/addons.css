@@ -171,3 +171,22 @@ abbr.glossary { text-decoration: underline dotted; cursor: help; }
 
 /* —— 小屏适配 —— */
 @media (max-width: 480px) { #cmdk { top: 10%; } }
+
+/* === 动态对齐顶栏到 Sidebar 右缘（由 JS 写入 --sidebar-offset） === */
+:root {
+  /* JS（nav-align.js）会根据 Sidebar 可见宽度实时更新该变量 */
+  --sidebar-offset: 0px;
+}
+
+/* 让 app-nav.no-badge 永远从 Sidebar 右缘开始，并占满剩余宽度 */
+.app-nav.no-badge {
+  margin-left: var(--sidebar-offset);
+  width: calc(100% - var(--sidebar-offset));
+  box-sizing: border-box;
+  transition: margin-left .2s ease, width .2s ease;
+}
+
+/* 避免内部元素撑破（可选，提升小屏表现） */
+.app-nav.no-badge * {
+  min-width: 0;
+}
