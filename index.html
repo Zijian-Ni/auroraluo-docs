@@ -11,37 +11,41 @@
     <link rel="icon" href="data:,">
     <link rel="manifest" href="manifest.webmanifest">
 
-    <!-- Docsify + Themeable（多 CDN 兜底） -->
+    <!-- Docsify + Themeable -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css"
           onerror="this.onerror=null;this.href='https://unpkg.com/docsify@4/lib/themes/vue.css'">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable/dist/css/theme-simple.css"
           onerror="this.onerror=null;this.href='https://unpkg.com/docsify-themeable/dist/css/theme-simple.css'">
 
-    <!-- Prism 行号插件样式 -->
+    <!-- Prism line-numbers -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.css"
           onerror="this.onerror=null;this.href='https://unpkg.com/prismjs/plugins/line-numbers/prism-line-numbers.css'">
 
-    <!-- NProgress 进度条样式 -->
+    <!-- NProgress -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress/nprogress.css"
           onerror="this.onerror=null;this.href='https://unpkg.com/nprogress/nprogress.css'">
 
-    <!-- 自定义样式 -->
+    <!-- Custom -->
     <link rel="stylesheet" href="assets/css/custom.css?v=responsive-3">
-    <link rel="stylesheet" href="assets/css/addons.css?v=20251015">
+    <link rel="stylesheet" href="assets/css/addons.css?v=20251015-2">
   </head>
   <body>
-    <!-- 顶部阅读进度条 -->
+    <!-- 顶部阅读进度 -->
     <div id="reading-progress"></div>
 
-    <!-- 返回顶部按钮 -->
+    <!-- 回到顶部 -->
     <button id="back-to-top" aria-label="返回顶部" title="回到顶部">↑</button>
 
-    <!-- 右上角主题切换（固定，不依赖导航 DOM） -->
+    <!-- 右上角操作条（主题/搜索/设置/分享/打印） -->
     <div id="aurora-theme-toggle">
+      <button id="cmdk-open-btn" aria-label="快速跳转 (Ctrl/⌘+K)" title="快速跳转">🔎</button>
       <button id="theme-switch-btn" aria-label="切换主题" title="切换明/暗">🌓</button>
+      <button id="prefs-btn" aria-label="偏好设置" title="偏好设置">⚙️</button>
+      <button id="share-btn" aria-label="分享本页" title="分享本页">📤</button>
+      <button id="print-btn" aria-label="打印本页" title="打印本页">🖨️</button>
     </div>
 
-    <!-- Docsify 挂载点 -->
+    <!-- Docsify 挂载 -->
     <div id="app">加载中… Loading…</div>
 
     <!-- Docsify 配置 -->
@@ -57,18 +61,11 @@
         formatUpdated: '{MM}/{DD} {HH}:{mm}',
         search: { paths: 'auto', placeholder: '搜索文档…', noData: '未找到结果', depth: 3 },
         pagination: { previousText: '上一页', nextText: '下一页', crossChapter: true, crossChapterText: true },
-
-        // docsify-tabs
-        tabs: {
-          persist    : true,
-          sync       : true,
-          theme      : 'classic',
-          tabComments: true
-        }
+        tabs: { persist: true, sync: true, theme: 'classic', tabComments: true }
       };
     </script>
 
-    <!-- Docsify 主体与插件（多 CDN 兜底） -->
+    <!-- Docsify & Plugins -->
     <script src="https://cdn.jsdelivr.net/npm/docsify@4"
             onerror="this.onerror=null;this.src='https://unpkg.com/docsify@4'"></script>
     <script src="https://cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"
@@ -85,125 +82,29 @@
             onerror="this.onerror=null;this.src='https://unpkg.com/prismjs/components/prism-json.min.js'"></script>
     <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-python.min.js"
             onerror="this.onerror=null;this.src='https://unpkg.com/prismjs/components/prism-python.min.js'"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-ini.min.js"
-            onerror="this.onerror=null;this.src='https://unpkg.com/prismjs/components/prism-ini.min.js'"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.min.js"
+            onerror="this.onerror=null;this.src='https://unpkg.com/prismjs/plugins/line-numbers/prism-line-numbers.min.js'"></script>
     <script src="https://cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"
             onerror="this.onerror=null;this.src='https://unpkg.com/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js'"></script>
     <script src="https://cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"
             onerror="this.onerror=null;this.src='https://unpkg.com/docsify/lib/plugins/emoji.min.js'"></script>
-
-    <!-- Tabs 插件 -->
     <script src="https://cdn.jsdelivr.net/npm/docsify-tabs/dist/docsify-tabs.min.js"
             onerror="this.onerror=null;this.src='https://unpkg.com/docsify-tabs/dist/docsify-tabs.min.js'"></script>
 
-    <!-- Mermaid（流程图/时序图等） -->
+    <!-- Mermaid -->
     <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"
             onerror="this.onerror=null;this.src='https://unpkg.com/mermaid/dist/mermaid.min.js'"></script>
 
-    <!-- Prism 行号插件脚本 -->
-    <script src="https://cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.min.js"
-            onerror="this.onerror=null;this.src='https://unpkg.com/prismjs/plugins/line-numbers/prism-line-numbers.min.js'"></script>
-
-    <!-- NProgress 进度条脚本 -->
+    <!-- NProgress -->
     <script src="https://cdn.jsdelivr.net/npm/nprogress/nprogress.js"
             onerror="this.onerror=null;this.src='https://unpkg.com/nprogress/nprogress.js'"></script>
 
-    <!-- 交互增强：默认亮色、鲁棒锚点滚动、窄屏行为、滚动反馈（保留你的原有逻辑） -->
-    <script>
-      (function () {
-        /* ========== 主题：刷新恢复 light；会话内可切换 ========== */
-        const root = document.documentElement;
-        const applyTheme = t => root.setAttribute('data-theme', t);
-        const toggleTheme = () => applyTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
-        applyTheme('light');
-        document.getElementById('theme-switch-btn').addEventListener('click', toggleTheme);
-
-        /* ========== 兜底创建 ========== */
-        function ensureEl(id, tag) {
-          let el = document.getElementById(id);
-          if (!el) { el = document.createElement(tag); el.id = id; document.body.appendChild(el); }
-          return el;
-        }
-
-        /* ========== 回到顶部 + 阅读进度 ========== */
-        const backBtn = ensureEl('back-to-top', 'button');
-        if (!backBtn.textContent) backBtn.textContent = '↑';
-        backBtn.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
-        const progress = ensureEl('reading-progress', 'div');
-        const onScroll = () => {
-          if (!progress || !progress.style) return;
-          backBtn.classList.toggle('show', window.scrollY > 300);
-          const st = document.documentElement.scrollTop || document.body.scrollTop || 0;
-          const h  = (document.documentElement.scrollHeight - document.documentElement.clientHeight) || 1;
-          progress.style.width = (st / h) * 100 + '%';
-        };
-        window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
-
-        /* ========== 锚点滚动（保留） ========== */
-        const HEADER_OFFSET = 90;
-        function findHeading(id) {
-          const qs = [
-            `h1[id="${id}"]`, `h2[id="${id}"]`, `h3[id="${id}"]`,
-            `h4[id="${id}"]`, `h5[id="${id}"]`, `h6[id="${id}"]`
-          ];
-          for (const sel of qs) {
-            const el = document.querySelector(sel);
-            if (el) return el;
-          }
-          return null;
-        }
-        function scrollToId(id) {
-          const el = findHeading(id);
-          if (!el) return false;
-          el.scrollIntoView({ block: 'start' });
-          window.scrollBy(0, -HEADER_OFFSET);
-          return true;
-        }
-        function getHashId() {
-          const hash = decodeURIComponent(location.hash || '');
-          const m = hash.match(/\?id=([^&]+)/);
-          return m ? m[1] : null;
-        }
-        function scrollToHashRobust() {
-          const id = getHashId();
-          if (!id) return;
-          let tries = 0;
-          const tick = () => {
-            if (scrollToId(id) || tries > 20) return;
-            tries += 1;
-            setTimeout(tick, 25);
-          };
-          tick();
-        }
-
-        window.$docsify = window.$docsify || {};
-        const plugins = window.$docsify.plugins || [];
-        plugins.push(function (hook, vm) {
-          hook.doneEach(function () {
-            // 首屏渲染后进行一次定位
-            setTimeout(scrollToHashRobust, 0);
-          });
-        });
-        window.$docsify.plugins = plugins;
-
-        // hash 变化也定位
-        window.addEventListener('hashchange', () => setTimeout(scrollToHashRobust, 0));
-
-        /* ========== 简易失败提示（保留） ========== */
-        setTimeout(() => {
-          const app = document.getElementById('app');
-          if (app && app.textContent.includes('加载中')) {
-            app.innerHTML = '⏳ 可能是 Pages 未启用或 CDN 受限。请确认根目录存在 <code>.nojekyll</code> 与 <code>_sidebar.md</code>。';
-          }
-        }, 3000);
-      })();
-    </script>
-
-    <!-- 新增增强脚本（按需顺序） -->
+    <!-- 你的上一批增强（保持） -->
     <script src="assets/js/nprogress-plugin.js?v=1"></script>
     <script src="assets/js/link-normalizer.js?v=1"></script>
     <script src="assets/js/toc.js?v=1"></script>
     <script src="assets/js/anchors-copy.js?v=1"></script>
+    <script src="assets/js/copy-anchors-markdown.js?v=1"></script>
     <script src="assets/js/shortcuts.js?v=1"></script>
     <script src="assets/js/lazyload.js?v=1"></script>
     <script src="assets/js/mermaid-init.js?v=1"></script>
@@ -211,8 +112,25 @@
     <script src="assets/js/line-numbers.js?v=1"></script>
     <script src="assets/js/collapse-all.js?v=1"></script>
     <script src="assets/js/scroll-spy.js?v=1"></script>
-    <!-- 开发期可打开坏链检测：把下面这行解除注释 -->
     <!-- <script src="assets/js/dev-link-check.js?v=1"></script> -->
     <script src="assets/js/pwa.js?v=1"></script>
+
+    <!-- 本次新增的通用 UI 工具 -->
+    <script src="assets/js/ui-utils.js?v=1"></script>
+
+    <!-- 本次新增的大功能 -->
+    <script src="assets/js/command-palette.js?v=1"></script>
+    <script src="assets/js/preferences.js?v=1"></script>
+    <script src="assets/js/reading-metrics.js?v=1"></script>
+    <script src="assets/js/scroll-restore.js?v=1"></script>
+    <script src="assets/js/annotations.js?v=1"></script>
+    <script src="assets/js/related-pages.js?v=1"></script>
+    <script src="assets/js/share.js?v=1"></script>
+    <script src="assets/js/sw-updates.js?v=1"></script>
+    <script src="assets/js/offline-indicator.js?v=1"></script>
+    <script src="assets/js/broken-image-handler.js?v=1"></script>
+    <script src="assets/js/footnote-popover.js?v=1"></script>
+    <script src="assets/js/glossary-tooltips.js?v=1"></script>
+    <script src="assets/js/print-button.js?v=1"></script>
   </body>
 </html>
