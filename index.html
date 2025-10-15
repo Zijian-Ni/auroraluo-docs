@@ -1,160 +1,152 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="light">
   <head>
     <meta charset="UTF-8" />
-    <title>Aurora Luo</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <!-- 主题样式（固定 https 源 + 回落） -->
-    <link id="docsify-theme" rel="stylesheet"
-      href="https://unpkg.com/docsify@4/themes/vue.css"
-      onerror="this.href='https://cdn.jsdelivr.net/npm/docsify@4/themes/vue.css'"/>
-
-    <!-- 自定义样式：修正为实际路径 -->
-    <link rel="stylesheet" href="assets/css/custom.css" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="color-scheme" content="light">
+    <title>Aurora Luo · Wiki</title>
+    <meta name="description" content="Aurora Luo - QQ 群智能助理：AI 对话、知识检索、Bilibili、百科、菜单卡片、HTTP 扩展等">
+    <link rel="icon" href="data:,">
+    <!-- 主题（Docsify + Themeable），多 CDN 兜底 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css"
+          onerror="this.onerror=null;this.href='https://unpkg.com/docsify@4/lib/themes/vue.css'">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable/dist/css/theme-simple.css"
+          onerror="this.onerror=null;this.href='https://unpkg.com/docsify-themeable/dist/css/theme-simple.css'">
+    <!-- 自定义样式（版本号用于刷新缓存） -->
+    <link rel="stylesheet" href="assets/css/custom.css?v=ultimate-1">
   </head>
-
   <body>
-    <div id="app">加载中...</div>
+    <!-- 顶部阅读进度条 -->
+    <div id="reading-progress"></div>
 
-    <!-- 固定在右上角的主题切换 -->
+    <!-- 返回顶部按钮 -->
+    <button id="back-to-top" aria-label="返回顶部">↑</button>
+
+    <!-- 右上角主题切换按钮（固定，不会跟随导航被销毁） -->
     <div id="aurora-theme-toggle">
       <button id="theme-switch-btn" aria-label="切换主题">🌓</button>
     </div>
 
-    <!-- 回到顶部 -->
-    <button id="back-to-top" title="返回顶部" aria-label="返回顶部">↑</button>
+    <!-- Docsify 挂载点 -->
+    <div id="app">加载中… Loading…（若长时间停留，可能是 CDN 被拦截或 Pages 未配置）</div>
 
-    <!-- 阅读进度条 -->
-    <div id="reading-progress"></div>
-
-    <!-- ===== Docsify 核心（固定版本 + 回落） ===== -->
-    <script defer src="https://unpkg.com/docsify@4/lib/docsify.min.js"
-      onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js'"></script>
-    <script defer src="https://unpkg.com/docsify@4/lib/plugins/search.min.js"
-      onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.min.js'"></script>
-    <script defer src="https://unpkg.com/docsify-copy-code@3/dist/docsify-copy-code.min.js"
-      onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/docsify-copy-code@3/dist/docsify-copy-code.min.js'"></script>
-
-    <!-- 站点配置：在 docsify 之前挂 config -->
     <script>
+      // ===== Docsify 基础配置 =====
       window.$docsify = {
         name: 'Aurora Luo',
         repo: '',
-        loadSidebar: true,
-        subMaxLevel: 2,
+        loadSidebar: true,      // 需在根目录放 _sidebar.md
+        loadNavbar: true,       // 需在根目录放 _navbar.md（可选）
+        subMaxLevel: 3,
         auto2top: true,
-        routerMode: 'hash',
-        search: { paths: 'auto', placeholder: '搜索文档…', noData: '未找到结果' },
-        plugins: [
-          function (hook, vm) {
-            function getAnchorOffset() {
-              const nav = document.querySelector('.app-nav');
-              const navH = nav ? nav.getBoundingClientRect().height : 52;
-              const bar = document.querySelector('#reading-progress') ||
-                          document.querySelector('.progress') ||
-                          document.querySelector('.progressbar');
-              const barH = bar ? bar.getBoundingClientRect().height : 6;
-              return Math.round(navH + barH + 10);
-            }
-            function smartScrollFix() {
-              if (!location.hash) return;
-              const el = document.querySelector(decodeURIComponent(location.hash));
-              if (!el) return;
-              // 让 docsify 自滚完成后再校正
-              setTimeout(() => {
-                const y = Math.max(0, window.pageYOffset - getAnchorOffset());
-                window.scrollTo({ top: y }); // 同步滚动更稳
-              }, 0);
-            }
-            hook.doneEach(() => {
-              smartScrollFix();
-              if (window.__auroraBackToTopUpdate) window.__auroraBackToTopUpdate();
-            });
-            window.addEventListener('hashchange', smartScrollFix, false);
-          },
-        ],
+        themeColor: '#7c4dff',
+        formatUpdated: '{MM}/{DD} {HH}:{mm}',
+        search: { paths: 'auto', placeholder: '搜索文档…', noData: '未找到结果', depth: 3 },
+        pagination: { previousText: '上一页', nextText: '下一页', crossChapter: true, crossChapterText: true }
       };
     </script>
 
-    <!-- 功能脚本：主题切换 / 进度条 / 回顶 -->
+    <!-- Docsify 核心与插件（多 CDN 兜底） -->
+    <script src="https://cdn.jsdelivr.net/npm/docsify@4"
+            onerror="this.onerror=null;this.src='https://unpkg.com/docsify@4'"></script>
+    <script src="https://cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"
+            onerror="this.onerror=null;this.src='https://unpkg.com/docsify/lib/plugins/search.min.js'"></script>
+    <script src="https://cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"
+            onerror="this.onerror=null;this.src='https://unpkg.com/docsify/lib/plugins/zoom-image.min.js'"></script>
+    <script src="https://cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"
+            onerror="this.onerror=null;this.src='https://unpkg.com/docsify-copy-code/dist/docsify-copy-code.min.js'"></script>
+    <script src="https://cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"
+            onerror="this.onerror=null;this.src='https://unpkg.com/docsify-pagination/dist/docsify-pagination.min.js'"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-bash.min.js"
+            onerror="this.onerror=null;this.src='https://unpkg.com/prismjs/components/prism-bash.min.js'"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-json.min.js"
+            onerror="this.onerror=null;this.src='https://unpkg.com/prismjs/components/prism-json.min.js'"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-python.min.js"
+            onerror="this.onerror=null;this.src='https://unpkg.com/prismjs/components/prism-python.min.js'"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-ini.min.js"
+            onerror="this.onerror=null;this.src='https://unpkg.com/prismjs/components/prism-ini.min.js'"></script>
+    <script src="https://cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"
+            onerror="this.onerror=null;this.src='https://unpkg.com/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js'"></script>
+    <script src="https://cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"
+            onerror="this.onerror=null;this.src='https://unpkg.com/docsify/lib/plugins/emoji.min.js'"></script>
+
+    <!-- 交互增强：默认亮色（不持久化）；进度条/回顶/锚点修复；失败提示 -->
     <script>
-      // ===== 主题切换 =====
       (function () {
-        const btn = document.getElementById('theme-switch-btn');
-        const KEY = 'aurora_theme';
+        /* ========== 主题逻辑：每次进入都强制 light；会话内可切换，刷新恢复 light ========== */
         const root = document.documentElement;
+        function applyTheme(theme) { root.setAttribute('data-theme', theme); }
+        function initTheme() { applyTheme('light'); }
+        function toggleTheme() {
+          applyTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+        }
+        initTheme();
 
-        function apply(theme) {
-          if (theme === 'dark') {
-            root.setAttribute('data-theme', 'dark');
-            btn.textContent = '🌞';
-            btn.setAttribute('aria-label', '切换到亮色主题');
-          } else {
-            root.removeAttribute('data-theme');
-            btn.textContent = '🌓';
-            btn.setAttribute('aria-label', '切换到暗色主题');
+        /* ========== 兜底创建工具 ========== */
+        function ensureEl(id, tag, attrs = {}) {
+          let el = document.getElementById(id);
+          if (!el) {
+            el = document.createElement(tag);
+            el.id = id;
+            Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, v));
+            document.body.appendChild(el);
           }
+          return el;
         }
-        function getTheme() { return localStorage.getItem(KEY) || 'light'; }
-        function toggle() {
-          const next = getTheme() === 'dark' ? 'light' : 'dark';
-          localStorage.setItem(KEY, next);
-          apply(next);
-        }
-        apply(getTheme());
-        btn.addEventListener('click', toggle);
 
-        // 保护：若 DOM 被重绘，重新套用主题
-        new MutationObserver(() => apply(getTheme()))
-          .observe(document.body, { childList: true, subtree: true });
+        /* ========== 主题按钮（右上固定） ========== */
+        const themeBtn = document.getElementById('theme-switch-btn');
+        if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
+
+        /* ========== 返回顶部 & 阅读进度条 ========== */
+        const backBtn = ensureEl('back-to-top', 'button', { 'aria-label': '返回顶部' });
+        if (!backBtn.textContent) backBtn.textContent = '↑';
+        backBtn.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        const progress = ensureEl('reading-progress', 'div');
+
+        function onScrollFeedback() {
+          if (!progress || !progress.style) return; // 空值保护
+          backBtn.classList.toggle('show', window.scrollY > 300);
+          const scrollTop = document.documentElement.scrollTop || document.body.scrollTop || 0;
+          const height = (document.documentElement.scrollHeight - document.documentElement.clientHeight) || 1;
+          progress.style.width = (scrollTop / height) * 100 + '%';
+        }
+        window.addEventListener('scroll', onScrollFeedback);
+        document.addEventListener('DOMContentLoaded', onScrollFeedback);
+
+        /* ========== Docsify 生命周期：锚点滚动修正 + 小屏侧栏自动收起 ========== */
+        window.$docsify = window.$docsify || {};
+        const plugins = window.$docsify.plugins || [];
+        plugins.push(function (hook, vm) {
+          hook.doneEach(function () {
+            // 修正中文标题锚点定位
+            const hash = decodeURIComponent(location.hash || '');
+            const m = hash.match(/\?id=(.+)$/);
+            if (m) {
+              const id = m[1];
+              const el = document.getElementById(id);
+              if (el) { el.scrollIntoView({ block: 'start' }); window.scrollBy(0, -90); }
+            }
+            onScrollFeedback();
+          });
+        });
+        window.$docsify.plugins = plugins;
+
+        /* ========== 资源加载失败提示（兜底文案） ========== */
+        setTimeout(() => {
+          const app = document.getElementById('app');
+          if (app && app.textContent.includes('加载中')) {
+            app.innerHTML = '🚧 资源可能被网络拦截或 Pages 未配置。<br>请检查：<br>1) Settings → Pages 是否启用且目录正确；<br>2) 根目录存在 <code>index.html</code>、<code>_sidebar.md</code>、<code>.nojekyll</code>；<br>3) 若在国内网络，CDN 可能不可达，已自动尝试备用 CDN。';
+          }
+        }, 3000);
+
+        /* ========== SPA 404 兜底（通常用不到，放着更稳） ========== */
+        if (location.pathname.endsWith('/404.html')) {
+          location.replace(location.origin + location.pathname.replace('/404.html','/') + (location.hash || '#/'));
+        }
       })();
-
-      // ===== 阅读进度条 =====
-      (function () {
-        const bar = document.getElementById('reading-progress');
-        if (!bar) return;
-        function update() {
-          const article = document.querySelector('.content');
-          if (!article) { bar.style.width = '0%'; return; }
-          const total = article.scrollHeight - window.innerHeight;
-          const scrolled = window.scrollY - article.offsetTop;
-          const pct = Math.max(0, Math.min(1, scrolled / Math.max(1, total)));
-          bar.style.width = (pct * 100) + '%';
-        }
-        window.addEventListener('scroll', update, { passive: true });
-        window.addEventListener('resize', update);
-        document.addEventListener('DOMContentLoaded', update);
-      })();
-
-      // ===== 回到顶部（对外暴露刷新函数） =====
-      (function () {
-        const btn = document.getElementById('back-to-top');
-        function updateVisibility() {
-          if (window.scrollY > 300) btn.classList.add('show');
-          else btn.classList.remove('show');
-        }
-        btn.addEventListener('click', () =>
-          window.scrollTo({ top: 0, behavior: 'smooth' })
-        );
-        window.addEventListener('scroll', updateVisibility, { passive: true });
-        window.__auroraBackToTopUpdate = updateVisibility;
-        updateVisibility();
-      })();
-    </script>
-
-    <!-- 兜底提示：3 秒后还未加载，给出常见原因 -->
-    <script>
-      setTimeout(() => {
-        if (!window.Docsify) {
-          const el = document.getElementById('app');
-          el.innerHTML =
-            '🚧 页面未能加载。常见原因：<br>' +
-            '1) CDN 被拦（已内置自动回落，请刷新再试）；<br>' +
-            '2) 用 file:// 打开，请使用本地服务器（如：<code>npx docsify serve .</code> 或 <code>python -m http.server 5500</code>）；<br>' +
-            '3) 根目录缺少 <code>README.md</code>。';
-        }
-      }, 3000);
     </script>
   </body>
 </html>
