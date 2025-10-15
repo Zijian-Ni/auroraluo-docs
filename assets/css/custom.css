@@ -247,3 +247,14 @@ html, body {
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-thumb { background: rgba(0,0,0,.15); border-radius: 8px; }
 :root[data-theme="dark"] ::-webkit-scrollbar-thumb { background: rgba(255,255,255,.15); }
+
+/* === 覆盖：无论断点如何，no-badge 顶栏始终从 Sidebar 右缘起始 === */
+.app-nav.no-badge {
+  /* 交给 addons.css 中的 --sidebar-offset 控制偏移与宽度 */
+  left: 0 !important;
+  right: 0 !important;
+  margin-left: var(--sidebar-offset);
+  width: calc(100% - var(--sidebar-offset));
+  box-sizing: border-box;
+}
+
