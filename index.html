@@ -3,41 +3,41 @@
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, viewport-fit=cover">
     <meta name="color-scheme" content="light">
     <title>Aurora Luo · Wiki</title>
     <meta name="description" content="Aurora Luo - QQ 群智能助理：AI 对话、知识检索、Bilibili、百科、菜单卡片、HTTP 扩展等">
     <link rel="icon" href="data:,">
-    <!-- 主题（Docsify + Themeable），多 CDN 兜底 -->
+    <!-- Docsify + Themeable（多 CDN 兜底） -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css"
           onerror="this.onerror=null;this.href='https://unpkg.com/docsify@4/lib/themes/vue.css'">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable/dist/css/theme-simple.css"
           onerror="this.onerror=null;this.href='https://unpkg.com/docsify-themeable/dist/css/theme-simple.css'">
     <!-- 自定义样式（版本号用于刷新缓存） -->
-    <link rel="stylesheet" href="assets/css/custom.css?v=ultimate-1">
+    <link rel="stylesheet" href="assets/css/custom.css?v=responsive-3">
   </head>
   <body>
     <!-- 顶部阅读进度条 -->
     <div id="reading-progress"></div>
 
     <!-- 返回顶部按钮 -->
-    <button id="back-to-top" aria-label="返回顶部">↑</button>
+    <button id="back-to-top" aria-label="返回顶部" title="回到顶部">↑</button>
 
-    <!-- 右上角主题切换按钮（固定，不会跟随导航被销毁） -->
+    <!-- 右上角主题切换（固定，不依赖导航 DOM） -->
     <div id="aurora-theme-toggle">
-      <button id="theme-switch-btn" aria-label="切换主题">🌓</button>
+      <button id="theme-switch-btn" aria-label="切换主题" title="切换明/暗">🌓</button>
     </div>
 
     <!-- Docsify 挂载点 -->
-    <div id="app">加载中… Loading…（若长时间停留，可能是 CDN 被拦截或 Pages 未配置）</div>
+    <div id="app">加载中… Loading…</div>
 
+    <!-- Docsify 配置 -->
     <script>
-      // ===== Docsify 基础配置 =====
       window.$docsify = {
         name: 'Aurora Luo',
         repo: '',
-        loadSidebar: true,      // 需在根目录放 _sidebar.md
-        loadNavbar: true,       // 需在根目录放 _navbar.md（可选）
+        loadSidebar: true,
+        loadNavbar: true,
         subMaxLevel: 3,
         auto2top: true,
         themeColor: '#7c4dff',
@@ -47,7 +47,7 @@
       };
     </script>
 
-    <!-- Docsify 核心与插件（多 CDN 兜底） -->
+    <!-- Docsify 主体与插件（多 CDN 兜底） -->
     <script src="https://cdn.jsdelivr.net/npm/docsify@4"
             onerror="this.onerror=null;this.src='https://unpkg.com/docsify@4'"></script>
     <script src="https://cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"
@@ -71,81 +71,67 @@
     <script src="https://cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"
             onerror="this.onerror=null;this.src='https://unpkg.com/docsify/lib/plugins/emoji.min.js'"></script>
 
-    <!-- 交互增强：默认亮色（不持久化）；进度条/回顶/锚点修复；失败提示 -->
+    <!-- 交互增强：默认亮色（刷新重置）、滚动反馈、锚点、窄屏行为、刘海安全区 -->
     <script>
       (function () {
-        /* ========== 主题逻辑：每次进入都强制 light；会话内可切换，刷新恢复 light ========== */
+        // 1) 主题：刷新恢复 light；会话内可切换
         const root = document.documentElement;
-        function applyTheme(theme) { root.setAttribute('data-theme', theme); }
-        function initTheme() { applyTheme('light'); }
-        function toggleTheme() {
-          applyTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
-        }
-        initTheme();
+        const applyTheme = t => root.setAttribute('data-theme', t);
+        const toggleTheme = () => applyTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+        applyTheme('light');
+        document.getElementById('theme-switch-btn').addEventListener('click', toggleTheme);
 
-        /* ========== 兜底创建工具 ========== */
-        function ensureEl(id, tag, attrs = {}) {
+        // 2) 兜底创建
+        function ensureEl(id, tag) {
           let el = document.getElementById(id);
-          if (!el) {
-            el = document.createElement(tag);
-            el.id = id;
-            Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, v));
-            document.body.appendChild(el);
-          }
+          if (!el) { el = document.createElement(tag); el.id = id; document.body.appendChild(el); }
           return el;
         }
 
-        /* ========== 主题按钮（右上固定） ========== */
-        const themeBtn = document.getElementById('theme-switch-btn');
-        if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
-
-        /* ========== 返回顶部 & 阅读进度条 ========== */
-        const backBtn = ensureEl('back-to-top', 'button', { 'aria-label': '返回顶部' });
+        // 3) 返回顶部 + 阅读进度
+        const backBtn = ensureEl('back-to-top', 'button');
         if (!backBtn.textContent) backBtn.textContent = '↑';
         backBtn.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
-
         const progress = ensureEl('reading-progress', 'div');
-
-        function onScrollFeedback() {
-          if (!progress || !progress.style) return; // 空值保护
+        const onScroll = () => {
+          if (!progress || !progress.style) return;
           backBtn.classList.toggle('show', window.scrollY > 300);
-          const scrollTop = document.documentElement.scrollTop || document.body.scrollTop || 0;
-          const height = (document.documentElement.scrollHeight - document.documentElement.clientHeight) || 1;
-          progress.style.width = (scrollTop / height) * 100 + '%';
-        }
-        window.addEventListener('scroll', onScrollFeedback);
-        document.addEventListener('DOMContentLoaded', onScrollFeedback);
+          const st = document.documentElement.scrollTop || document.body.scrollTop || 0;
+          const h  = (document.documentElement.scrollHeight - document.documentElement.clientHeight) || 1;
+          progress.style.width = (st / h) * 100 + '%';
+        };
+        window.addEventListener('scroll', onScroll);
+        document.addEventListener('DOMContentLoaded', onScroll);
 
-        /* ========== Docsify 生命周期：锚点滚动修正 + 小屏侧栏自动收起 ========== */
+        // 4) Docsify 钩子：锚点修正 + 窄屏侧栏收起
         window.$docsify = window.$docsify || {};
         const plugins = window.$docsify.plugins || [];
         plugins.push(function (hook, vm) {
-          hook.doneEach(function () {
-            // 修正中文标题锚点定位
-            const hash = decodeURIComponent(location.hash || '');
-            const m = hash.match(/\?id=(.+)$/);
+          hook.ready(() => { if (window.innerWidth < 1300) document.body.classList.add('close'); });
+          hook.doneEach(() => {
+            // 锚点（兼容中文标题）
+            const m = decodeURIComponent(location.hash || '').match(/\?id=(.+)$/);
             if (m) {
-              const id = m[1];
-              const el = document.getElementById(id);
+              const el = document.getElementById(m[1]);
               if (el) { el.scrollIntoView({ block: 'start' }); window.scrollBy(0, -90); }
             }
-            onScrollFeedback();
+            // 窄屏侧栏点击后收起
+            const sb = document.querySelector('.sidebar');
+            if (sb && window.innerWidth < 1300) {
+              sb.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setTimeout(() => document.body.classList.add('close'), 60)));
+            }
+            onScroll();
           });
         });
         window.$docsify.plugins = plugins;
 
-        /* ========== 资源加载失败提示（兜底文案） ========== */
+        // 5) 简易失败提示
         setTimeout(() => {
           const app = document.getElementById('app');
           if (app && app.textContent.includes('加载中')) {
-            app.innerHTML = '🚧 资源可能被网络拦截或 Pages 未配置。<br>请检查：<br>1) Settings → Pages 是否启用且目录正确；<br>2) 根目录存在 <code>index.html</code>、<code>_sidebar.md</code>、<code>.nojekyll</code>；<br>3) 若在国内网络，CDN 可能不可达，已自动尝试备用 CDN。';
+            app.innerHTML = '⏳ 可能是 Pages 未启用或 CDN 受限。请确认根目录存在 <code>.nojekyll</code> 与 <code>_sidebar.md</code>。';
           }
         }, 3000);
-
-        /* ========== SPA 404 兜底（通常用不到，放着更稳） ========== */
-        if (location.pathname.endsWith('/404.html')) {
-          location.replace(location.origin + location.pathname.replace('/404.html','/') + (location.hash || '#/'));
-        }
       })();
     </script>
   </body>
