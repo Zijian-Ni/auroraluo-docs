@@ -4,37 +4,32 @@
     <meta charset="UTF-8" />
     <title>Aurora Luo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <!-- Docsify 基础样式 -->
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify/themes/vue.css" />
-
-    <!-- 自定义样式（包含：固定右上角主题按钮、锚点偏移、回到顶部位置修复、毛玻璃等） -->
     <link rel="stylesheet" href="custom.css" />
   </head>
 
   <body>
-    <!-- Docsify 容器 -->
     <div id="app">加载中...</div>
 
-    <!-- 右上角：主题切换按钮容器（被 CSS 固定在右上角） -->
+    <!-- 固定在右上角的主题切换 -->
     <div id="aurora-theme-toggle">
       <button id="theme-switch-btn" aria-label="切换主题">🌓</button>
     </div>
 
-    <!-- 回到顶部按钮（位置在 CSS 中调整，避免被遮挡） -->
+    <!-- 回到顶部 -->
     <button id="back-to-top" title="返回顶部" aria-label="返回顶部">↑</button>
 
-    <!-- 阅读进度条（若不需要可删） -->
+    <!-- 阅读进度条 -->
     <div id="reading-progress"></div>
 
-    <!-- Docsify 核心脚本 -->
+    <!-- Docsify -->
     <script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
 
     <script>
       // =========================
-      // Docsify 配置（保持你现有基线，并补上锚点与行为）
+      // Docsify 配置
       // =========================
       window.$docsify = {
         name: 'Aurora Luo',
@@ -42,61 +37,45 @@
         loadSidebar: true,
         subMaxLevel: 2,
         auto2top: true,
-        search: {
-          paths: 'auto',
-          placeholder: '搜索文档…',
-          noData: '未找到结果',
-        },
-        // 保持锚点：#xxx
+        search: { paths: 'auto', placeholder: '搜索文档…', noData: '未找到结果' },
         routerMode: 'hash',
-
-        // 插件：锚点偏移兜底（与 CSS 的 scroll-margin-top 搭配）
         plugins: [
           function (hook, vm) {
             function getAnchorOffset() {
               const nav = document.querySelector('.app-nav');
               const navH = nav ? nav.getBoundingClientRect().height : 52;
-
               const bar =
                 document.querySelector('#reading-progress') ||
                 document.querySelector('.progress') ||
                 document.querySelector('.progressbar');
               const barH = bar ? bar.getBoundingClientRect().height : 6;
-
-              return Math.round(navH + barH + 10); // 与 custom.css 中的 --anchor-offset 对齐
+              return Math.round(navH + barH + 10);
             }
-
             function smartScrollFix() {
               if (!location.hash) return;
               const id = decodeURIComponent(location.hash);
               const el = document.querySelector(id);
               if (!el) return;
-
-              // 让 docsify 先滚，再进行偏移修正
               setTimeout(() => {
                 const y = window.pageYOffset - getAnchorOffset();
                 window.scrollTo({ top: y >= 0 ? y : 0, behavior: 'instant' });
               }, 0);
             }
-
             hook.doneEach(() => {
               smartScrollFix();
-              // 初始化回到顶部按钮的显示/隐藏
-              handleBackToTopVisibility();
+              // 让回到顶部按钮在每次路由完成后刷新可见性
+              if (window.__auroraBackToTopUpdate) window.__auroraBackToTopUpdate();
             });
-
             window.addEventListener('hashchange', smartScrollFix, false);
           },
         ],
       };
 
       // =========================
-      // 主题切换按钮：固定 + 观察保护（防止被 Docsify 重绘覆盖）
+      // 主题切换按钮
       // =========================
       (function mountThemeSwitch() {
         const btn = document.getElementById('theme-switch-btn');
-
-        // 当前仅在“亮/暗”切换上做演示，如需“跟随系统”等，可扩展
         const THEME_KEY = 'aurora_theme';
         const root = document.documentElement;
 
@@ -111,31 +90,24 @@
             btn.setAttribute('aria-label', '切换到暗色主题');
           }
         }
-
         function getSavedTheme() {
-          return localStorage.getItem(THEME_KEY) || 'light'; // 你的基线是默认亮色
+          return localStorage.getItem(THEME_KEY) || 'light';
         }
-
         function toggleTheme() {
           const next = getSavedTheme() === 'dark' ? 'light' : 'dark';
           localStorage.setItem(THEME_KEY, next);
           applyTheme(next);
         }
 
-        // 初始应用
         applyTheme(getSavedTheme());
         btn.addEventListener('click', toggleTheme);
 
-        // MutationObserver：如果 Docsify 重绘顶部导航，不影响这个固定按钮
-        const observer = new MutationObserver(() => {
-          // 若按钮被外部样式影响，可在这里二次校正样式或重新挂载事件
-          applyTheme(getSavedTheme());
-        });
+        const observer = new MutationObserver(() => applyTheme(getSavedTheme()));
         observer.observe(document.body, { childList: true, subtree: true });
       })();
 
       // =========================
-      // 阅读进度条（你基线已有，这里给一个健壮实现）
+      // 阅读进度条
       // =========================
       (function readingProgress() {
         const bar = document.getElementById('reading-progress');
@@ -147,7 +119,6 @@
             bar.style.width = '0%';
             return;
           }
-          const rect = article.getBoundingClientRect();
           const total = article.scrollHeight - window.innerHeight;
           const scrolled = window.scrollY - article.offsetTop;
           const pct = Math.max(0, Math.min(1, scrolled / Math.max(1, total)));
@@ -160,24 +131,29 @@
       })();
 
       // =========================
-      // 回到顶部按钮（避免被遮挡，位置已在 CSS 让出给主题按钮）
+      // 回到顶部（把更新函数挂到全局，供插件调用）
       // =========================
       (function backToTop() {
         const btn = document.getElementById('back-to-top');
 
-        btn.addEventListener('click', () => {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-
-        window.addEventListener('scroll', handleBackToTopVisibility, { passive: true });
-
-        function handleBackToTopVisibility() {
+        function updateVisibility() {
           if (window.scrollY > 300) {
             btn.classList.add('show');
           } else {
             btn.classList.remove('show');
           }
         }
+
+        btn.addEventListener('click', () => {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        window.addEventListener('scroll', updateVisibility, { passive: true });
+
+        // 暴露给外部（docsify 插件 doneEach 调用）
+        window.__auroraBackToTopUpdate = updateVisibility;
+
+        // 首次进入也判断一次
+        updateVisibility();
       })();
     </script>
   </body>
