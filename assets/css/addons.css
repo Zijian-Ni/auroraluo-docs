@@ -1,0 +1,129 @@
+/* ===========================
+   Aurora Addons (JS 扩展样式)
+   =========================== */
+
+:root {
+  --header-offset: 90px;
+  --aside-width: 280px;
+  --toc-width: 260px;
+  --z-toc: 10002;
+  --z-help: 10020;
+}
+
+/* —— 浮动 TOC —— */
+#toc-float {
+  position: fixed;
+  top: calc(80px + var(--safe-top, 0px));
+  right: calc(16px + var(--safe-right, 0px));
+  width: var(--toc-width);
+  max-height: calc(100vh - 140px);
+  overflow: auto;
+  background: var(--card, rgba(255,255,255,.65));
+  border: 1px solid var(--border, rgba(124,77,255,.18));
+  border-radius: 14px;
+  padding: 12px 12px 8px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0,0,0,.08);
+  z-index: var(--z-toc);
+}
+#toc-float h4 {
+  margin: 0 0 6px 2px;
+  font-size: 13px;
+  opacity: .8;
+}
+#toc-float ul { list-style: none; padding: 0; margin: 0; }
+#toc-float li { margin: 2px 0; }
+#toc-float a {
+  display: block;
+  font-size: 13px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  color: var(--text, #222);
+  text-decoration: none;
+}
+#toc-float a:hover { background: rgba(124,77,255,.08); }
+#toc-float a.active { background: rgba(124,77,255,.15); }
+
+/* 大屏显示，小屏隐藏 */
+@media (max-width: 1200px) {
+  #toc-float { display: none; }
+}
+
+/* —— 标题锚点复制 —— */
+.heading-anchor {
+  margin-left: .35em;
+  opacity: 0;
+  transition: opacity .15s ease;
+  text-decoration: none;
+  font-size: .9em;
+}
+h1:hover .heading-anchor,
+h2:hover .heading-anchor,
+h3:hover .heading-anchor,
+h4:hover .heading-anchor,
+h5:hover .heading-anchor,
+h6:hover .heading-anchor { opacity: .9; }
+
+/* —— 键盘快捷键帮助弹窗 —— */
+.kbd-help-mask {
+  position: fixed; inset: 0; background: rgba(0,0,0,.35);
+  z-index: var(--z-help); display: none;
+}
+.kbd-help {
+  position: fixed; left: 50%; top: 50%;
+  transform: translate(-50%,-50%);
+  width: min(680px, 92vw);
+  background: var(--card, rgba(255,255,255,.88));
+  border: 1px solid var(--border, rgba(124,77,255,.18));
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.2);
+  padding: 18px 20px;
+  z-index: var(--z-help);
+  display: none;
+}
+.kbd-help h3 { margin: 0 0 10px; }
+.kbd-help kbd {
+  display: inline-block; min-width: 1.6em; text-align: center;
+  border: 1px solid var(--border);
+  border-bottom-width: 3px;
+  border-radius: 6px;
+  padding: 2px 6px; margin: 0 .25em;
+  background: rgba(0,0,0,.06);
+}
+.kbd-help table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.kbd-help td { padding: 6px 4px; border-bottom: 1px dashed rgba(0,0,0,.08); }
+.kbd-help .close {
+  margin-top: 10px;
+  float: right;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+/* —— 侧栏工具按钮（展开/折叠） —— */
+#sidebar-tools {
+  display: flex; gap: 8px; align-items: center;
+  margin: 8px 8px 10px 8px;
+}
+#sidebar-tools button {
+  font-size: 12px; padding: 4px 8px; border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  cursor: pointer;
+}
+
+/* —— 代码行号：让 pre 按需适配 —— */
+pre.line-numbers { padding-left: 3.2em !important; }
+
+/* —— 外链图标（可选） —— */
+a[target="_blank"].external::after {
+  content: "↗";
+  margin-left: .25em; font-size: .85em; opacity: .6;
+}
+
+/* —— 打印优化 —— */
+@media print {
+  #aurora-theme-toggle, #reading-progress, #back-to-top, #toc-float { display: none !important; }
+}
