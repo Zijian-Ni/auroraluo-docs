@@ -1,10 +1,5 @@
 /* ==============================
    Aurora Luo Docsify 自定义样式
-   - 默认亮色主题（可切暗色）
-   - 顶部“主题切换按钮”固定
-   - 锚点滚动偏移修复
-   - 阅读进度条 / 回到顶部
-   - 毛玻璃与窄侧栏等基线样式
    ============================== */
 
 /* 主题变量（亮 / 暗） */
@@ -56,7 +51,7 @@ html, body {
   max-width: var(--content-max-width);
 }
 
-/* 侧栏窄屏自适应（保持你基线的“自动折叠/无内边距”风格） */
+/* 侧栏（窄屏无内边距 / 毛玻璃） */
 .sidebar {
   width: var(--sidebar-width);
   backdrop-filter: blur(10px);
@@ -75,13 +70,9 @@ html, body {
   border-radius: 12px;
 }
 
-/* 链接 */
-a {
-  color: var(--link);
-}
-a:hover {
-  color: var(--link-hover);
-}
+/* 链接色 */
+a { color: var(--link); }
+a:hover { color: var(--link-hover); }
 
 /* 代码块背景 */
 .markdown-section pre,
@@ -89,38 +80,30 @@ a:hover {
   background: var(--code-bg);
 }
 
-/* ======================
-   1) 顶部导航单行 + 不换行
-   ====================== */
+/* 顶部导航单行 + 不换行 */
 .app-nav {
   display: flex;
   align-items: center;
   gap: 10px;
-  flex-wrap: nowrap;    /* 关键：不允许换行，避免“第二行按钮” */
+  flex-wrap: nowrap;
   min-height: 52px;
   padding: 6px 12px;
 }
-
-/* 导航内部元素防止把按钮挤走 */
 .app-nav > * {
   white-space: nowrap;
   min-width: 0;
 }
 
-/* 若右上角还有搜索/语言切换，给固定按钮让位 */
+/* 为右上角固定按钮留空间（如果有搜索/语言切换） */
 .search,
-.lang-switcher {
-  margin-right: 56px;   /* 为右上角固定按钮留出空间 */
-}
+.lang-switcher { margin-right: 56px; }
 
-/* ======================
-   2) 主题切换按钮固定到右上角
-   ====================== */
+/* 主题切换按钮固定到右上角 */
 #aurora-theme-toggle {
   position: fixed;
   top: 12px;
   right: 18px;
-  z-index: 9999;        /* 盖住进度条/侧栏，避免被遮 */
+  z-index: 9999;
 }
 #aurora-theme-toggle #theme-switch-btn {
   border: 1px solid var(--border);
@@ -136,9 +119,7 @@ a:hover {
   transform: translateY(-1px);
 }
 
-/* ======================
-   3) 锚点跳转偏移：CSS 原生方案
-   ====================== */
+/* 锚点滚动偏移 */
 .markdown-section h1,
 .markdown-section h2,
 .markdown-section h3,
@@ -148,9 +129,7 @@ a:hover {
   scroll-margin-top: var(--anchor-offset);
 }
 
-/* ======================
-   4) 阅读进度条（固定顶部）
-   ====================== */
+/* 阅读进度条 */
 #reading-progress {
   position: fixed;
   top: 0;
@@ -162,12 +141,10 @@ a:hover {
   z-index: 9990;
 }
 
-/* ======================
-   5) 回到顶部按钮（不被遮挡）
-   ====================== */
+/* 回到顶部按钮 */
 #back-to-top {
   position: fixed;
-  right: 80px;     /* 让出右上角主题切换按钮的空间 */
+  right: 80px;
   bottom: 32px;
   z-index: 9998;
   width: 40px;
@@ -186,18 +163,9 @@ a:hover {
   pointer-events: auto;
 }
 
-/* ======================
-   6) 小屏优化
-   ====================== */
+/* 小屏优化 */
 @media (max-width: 768px) {
-  .app-nav {
-    min-height: 56px;
-  }
-  #aurora-theme-toggle {
-    top: 10px;
-    right: 14px;
-  }
-  #back-to-top {
-    right: 70px;
-  }
+  .app-nav { min-height: 56px; }
+  #aurora-theme-toggle { top: 10px; right: 14px; }
+  #back-to-top { right: 70px; }
 }
