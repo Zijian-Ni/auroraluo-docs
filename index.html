@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, viewport-fit=cover">
-    <meta name="color-scheme" content="light">
+    <meta name="color-scheme" content="light dark">
     <meta name="theme-color" content="#7c4dff">
     <title>Aurora Luo · Wiki</title>
     <meta name="description" content="Aurora Luo - QQ 群智能助理：AI 对话、知识检索、Bilibili、百科、菜单卡片、HTTP 扩展等">
@@ -27,16 +27,17 @@
 
     <!-- Custom -->
     <link rel="stylesheet" href="assets/css/custom.css?v=responsive-3">
-    <link rel="stylesheet" href="assets/css/addons.css?v=20251015-2">
+    <!-- 更新后的样式，包含标题偏移修复 -->
+    <link rel="stylesheet" href="assets/css/addons.css?v=20251015-3">
   </head>
   <body>
-    <!-- 顶部阅读进度 -->
+    <!-- 顶部阅读进度（可选占位） -->
     <div id="reading-progress"></div>
 
     <!-- 回到顶部 -->
     <button id="back-to-top" aria-label="返回顶部" title="回到顶部">↑</button>
 
-    <!-- 右上角操作条（主题/搜索/设置/分享/打印） -->
+    <!-- 右上角操作条（搜索/主题/设置/分享/打印） -->
     <div id="aurora-theme-toggle">
       <button id="cmdk-open-btn" aria-label="快速跳转 (Ctrl/⌘+K)" title="快速跳转">🔎</button>
       <button id="theme-switch-btn" aria-label="切换主题" title="切换明/暗">🌓</button>
@@ -65,7 +66,7 @@
       };
     </script>
 
-    <!-- Docsify & Plugins -->
+    <!-- Docsify & Plugins（第三方） -->
     <script src="https://cdn.jsdelivr.net/npm/docsify@4"
             onerror="this.onerror=null;this.src='https://unpkg.com/docsify@4'"></script>
     <script src="https://cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"
@@ -90,18 +91,15 @@
             onerror="this.onerror=null;this.src='https://unpkg.com/docsify/lib/plugins/emoji.min.js'"></script>
     <script src="https://cdn.jsdelivr.net/npm/docsify-tabs/dist/docsify-tabs.min.js"
             onerror="this.onerror=null;this.src='https://unpkg.com/docsify-tabs/dist/docsify-tabs.min.js'"></script>
-
-    <!-- Mermaid -->
     <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"
             onerror="this.onerror=null;this.src='https://unpkg.com/mermaid/dist/mermaid.min.js'"></script>
-
-    <!-- NProgress -->
     <script src="https://cdn.jsdelivr.net/npm/nprogress/nprogress.js"
             onerror="this.onerror=null;this.src='https://unpkg.com/nprogress/nprogress.js'"></script>
 
-    <!-- 你的上一批增强（保持） -->
+    <!-- 你的增强脚本（保持 & 顺序尽量一致） -->
     <script src="assets/js/nprogress-plugin.js?v=1"></script>
-    <script src="assets/js/link-normalizer.js?v=1"></script>
+    <!-- ★ 修复侧栏小点跳转 & 统一锚点格式 -->
+    <script src="assets/js/link-normalizer.js?v=20251015-2"></script>
     <script src="assets/js/toc.js?v=1"></script>
     <script src="assets/js/anchors-copy.js?v=1"></script>
     <script src="assets/js/copy-anchors-markdown.js?v=1"></script>
@@ -112,13 +110,9 @@
     <script src="assets/js/line-numbers.js?v=1"></script>
     <script src="assets/js/collapse-all.js?v=1"></script>
     <script src="assets/js/scroll-spy.js?v=1"></script>
-    <!-- <script src="assets/js/dev-link-check.js?v=1"></script> -->
-    <script src="assets/js/pwa.js?v=1"></script>
 
-    <!-- 本次新增的通用 UI 工具 -->
+    <!-- 新增/修复的通用 UI 与功能 -->
     <script src="assets/js/ui-utils.js?v=1"></script>
-
-    <!-- 本次新增的大功能 -->
     <script src="assets/js/command-palette.js?v=1"></script>
     <script src="assets/js/preferences.js?v=1"></script>
     <script src="assets/js/reading-metrics.js?v=1"></script>
@@ -132,5 +126,13 @@
     <script src="assets/js/footnote-popover.js?v=1"></script>
     <script src="assets/js/glossary-tooltips.js?v=1"></script>
     <script src="assets/js/print-button.js?v=1"></script>
+
+    <!-- ★ 修复：黑白切换统一管理（手动优先级覆盖“跟随系统”） -->
+    <script src="assets/js/theme-manager.js?v=2"></script>
+    <!-- ★ 修复：Docsify 搜索框支持 Enter 直接跳到首条结果 -->
+    <script src="assets/js/search-enter.js?v=1"></script>
+
+    <!-- PWA（可留可去） -->
+    <script src="assets/js/pwa.js?v=1"></script>
   </body>
 </html>
