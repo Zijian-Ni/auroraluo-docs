@@ -1,20 +1,30 @@
-/* ==============================
-   Aurora Luo Docsify 自定义样式
-   - 默认亮色主题（可切暗色）
-   - 右上角“主题切换按钮”固定
-   - 锚点滚动偏移修复
-   - 阅读进度条 / 回到顶部（高 z-index）
-   - 毛玻璃与窄侧栏样式
-   ============================== */
+/* ===============================================
+   Aurora Luo Docsify · 响应式/多端适配版
+   - 玻璃拟态 + 阅读进度 + 回到顶部
+   - 右上主题按钮固定（刘海安全区）
+   - 桌面/平板/手机多断点优化
+   - 顶部下拉菜单在移动端溢出修复
+   =============================================== */
 
-/* 主题变量（亮 / 暗） */
+/* —— 安全区（iOS 刘海） —— */
+:root {
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+}
+
+/* —— 主题变量（亮 / 暗） —— */
 :root {
   --theme-color: #7c4dff;
 
-  /* 尺寸 */
-  --base-font-size: 17px;
+  /* 基础尺寸（用 clamp 适配不同屏幕） */
+  --base-font-size: clamp(15px, 0.95vw + 10px, 18px);
+  --page-gap: clamp(12px, 2vw, 24px);
+
+  /* 侧栏与内容宽度 */
   --sidebar-width: 280px;
-  --content-max-width: 920px;
+  --content-max: 980px;
 
   /* 亮色主题 */
   --bg: #f5f7fb;
@@ -27,24 +37,38 @@
   --link: #5b6cff;
   --link-hover: #3742fa;
 
-  /* 锚点偏移（导航高度 + 进度条 + 缓冲） */
-  --anchor-offset: 68px;
+  /* 顶部导航 / 下拉 */
+  --nav-bg: rgba(255,255,255,0.55);
+  --nav-text: #1b2430;
+  --dropdown-bg: rgba(255,255,255,0.92);
+  --dropdown-text: #1b2430;
+  --dropdown-shadow: 0 10px 30px rgba(0,0,0,.10);
+  --dropdown-hover-bg: rgba(124,77,255,0.12);
+
+  /* 锚点偏移（导航高度+进度条） */
+  --anchor-offset: 90px;
 }
 
-/* 暗色主题覆盖 */
-:root[data-theme='dark'] {
+:root[data-theme="dark"] {
   --bg: #0b0e12;
   --text: #e6edf3;
   --muted: #9aa7b2;
   --card: rgba(13, 17, 23, 0.55);
   --border: rgba(94, 104, 121, 0.25);
   --quote-bg: rgba(124, 77, 255, 0.12);
-  --code-bg: rgba(255, 255, 255, 0.05);
+  --code-bg: rgba(255, 255, 255, 0.03);
   --link: #8ea0ff;
   --link-hover: #b9c4ff;
+
+  --nav-bg: rgba(12,16,22,0.52);
+  --nav-text: #e6edf3;
+  --dropdown-bg: rgba(13,17,23,0.92);
+  --dropdown-text: #e6edf3;
+  --dropdown-shadow: 0 10px 30px rgba(0,0,0,.45);
+  --dropdown-hover-bg: rgba(255,255,255,0.06);
 }
 
-/* 基础排版与背景 */
+/* —— 全局背景与排版 —— */
 html, body {
   background:
     radial-gradient(650px 400px at 15% -10%, rgba(124,77,255,.10), transparent 60%),
@@ -52,28 +76,68 @@ html, body {
     linear-gradient(180deg, var(--bg), var(--bg));
   color: var(--text);
   font-size: var(--base-font-size);
+  -webkit-tap-highlight-color: transparent;
 }
 
-/* 内容区最大宽度 */
-.content {
-  max-width: var(--content-max-width);
+/* —— 顶部导航（玻璃态 + 固定） —— */
+.app-nav {
+  position: sticky; top: 0; left: 0; right: 0;
+  z-index: 10005;
+  background: var(--nav-bg) !important;
+  color: var(--nav-text) !important;
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: saturate(160%) blur(12px);
+  -webkit-backdrop-filter: saturate(160%) blur(12px);
+  display: flex; align-items: center; gap: 10px; flex-wrap: nowrap;
+  min-height: 52px; padding: calc(6px + var(--safe-top)) var(--page-gap) 6px var(--page-gap);
 }
+.app-nav a { color: var(--nav-text) !important; text-decoration: none; }
 
-/* 侧栏：毛玻璃 + 描边 */
+/* 顶部下拉（移动端尺寸/溢出修复） */
+.app-nav .dropdown, .app-nav .menu, .app-nav ul li > ul {
+  background: var(--dropdown-bg) !important;
+  color: var(--dropdown-text) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 12px !important;
+  box-shadow: var(--dropdown-shadow) !important;
+  backdrop-filter: blur(14px);
+  max-height: calc(100vh - var(--safe-top) - 90px);
+  overflow: auto;
+}
+.app-nav .menu a:hover { background: var(--dropdown-hover-bg) !important; }
+
+/* —— 右上角主题切换（固定 + 安全区） —— */
+#aurora-theme-toggle {
+  position: fixed;
+  top: calc(12px + var(--safe-top));
+  right: calc(18px + var(--safe-right));
+  z-index: 10010;
+}
+#theme-switch-btn {
+  width: 42px; height: 42px; border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--card); color: var(--text);
+  display: grid; place-items: center;
+  box-shadow: 0 8px 26px rgba(0,0,0,.12);
+  cursor: pointer; transition: all .2s ease;
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  font-size: 18px; line-height: 1;
+}
+#theme-switch-btn:hover { border-color: var(--theme-color); transform: translateY(-1px); }
+
+/* —— 侧栏（玻璃态 + 留白修复） —— */
 .sidebar {
-  width: var(--sidebar-width);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  background-color: var(--card);
-  border-right: 1px solid var(--border);
+  width: var(--sidebar-width) !important;
+  background: rgba(255,255,255,0); /* 背景统一由下面容器提供 */
+  color: var(--text);
   z-index: 10004;
 }
-.sidebar, .sidebar .sidebar-nav, .sidebar .app-name,
-.sidebar .app-name-link, .sidebar .search, .sidebar .search .input-wrap,
-.sidebar .links, .sidebar .app-sub-sidebar, .sidebar ul, .sidebar .menu {
-  background: transparent !important;
-  color: var(--text) !important;
-  border-color: var(--border) !important;
+.sidebar, .sidebar .sidebar-nav, .sidebar .app-name, .sidebar .search,
+.sidebar .links, .sidebar .app-sub-sidebar {
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  background: var(--card) !important;
+  border-right: 1px solid var(--border);
 }
 .sidebar .search .input-wrap input {
   background: var(--card) !important;
@@ -81,198 +145,105 @@ html, body {
   border: 1px solid var(--border) !important;
   border-radius: 10px;
 }
-.sidebar .search .clear-button, .sidebar .search .search-keyword {
-  color: var(--muted) !important;
-}
-.sidebar a, .sidebar li > a { color: var(--text) !important; border-radius: 8px; }
-.sidebar li > a:hover, .sidebar li > a:focus { background: rgba(124,77,255,0.08) !important; }
-.sidebar li.active > a { background: rgba(124,77,255,0.12) !important; color: var(--text) !important; }
-.sidebar .sidebar-nav > ul > li { border-bottom: 1px dashed var(--border) !important; }
-.sidebar .sidebar-nav .section-link, .sidebar .sidebar-nav .subtitle,
-.sidebar .sidebar-nav .app-sub-sidebar > li > p { color: var(--muted) !important; }
+.sidebar a { color: var(--text) !important; border-radius: 8px; }
+.sidebar li > a:hover { background: rgba(124,77,255,0.08) !important; }
 
-/* 顶部导航：毛玻璃 + 单行不换行 */
-.app-nav {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: nowrap;
-  min-height: 52px;
-  padding: 6px 12px;
-  background: rgba(255,255,255,0.55) !important;
-  color: var(--text) !important;
-  border-bottom: 1px solid var(--border);
-  backdrop-filter: saturate(160%) blur(12px);
-  -webkit-backdrop-filter: saturate(160%) blur(12px);
-  transition: background-color .25s ease, color .25s ease;
-  z-index: 10005;
-}
-:root[data-theme='dark'] .app-nav {
-  background: rgba(12,16,22,0.50) !important;
-  color: var(--text) !important;
-}
-.app-nav a { color: var(--text) !important; }
-
-/* 顶部导航下拉：毛玻璃 */
-.app-nav .dropdown,
-.app-nav .dropdown .menu,
-.app-nav .dropdown .dropdown-content,
-.app-nav .links .dropdown .menu,
-.app-nav .links li > ul,
-.app-nav ul li > ul,
-.app-nav .menu {
-  background: var(--card) !important;
-  color: var(--text) !important;
-  border: 1px solid var(--border) !important;
-  border-radius: 12px !important;
-  box-shadow: 0 10px 30px rgba(0,0,0,.10) !important;
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-}
-:root[data-theme='dark'] .app-nav .dropdown,
-:root[data-theme='dark'] .app-nav .menu { box-shadow: 0 10px 30px rgba(0,0,0,.45) !important; }
-.app-nav .dropdown a,
-.app-nav .links li > ul a,
-.app-nav ul li > ul a,
-.app-nav .menu a {
-  color: var(--text) !important;
-}
-.app-nav .dropdown a:hover,
-.app-nav .links li > ul a:hover,
-.app-nav ul li > ul a:hover,
-.app-nav .menu a:hover {
-  background: rgba(124,77,255,0.10) !important;
-}
-.app-nav ul li ul::before,
-.app-nav .dropdown .menu::before,
-.app-nav .links .dropdown .menu::before { display: none !important; }
-.app-nav .dropdown .menu, .app-nav ul li > ul { z-index: 10006 !important; }
-
-/* 卡片毛玻璃 */
-.markdown-section blockquote,
-.markdown-section .tip,
-.github-corner {
-  background-color: var(--card);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-}
-
-/* 内容区排版 */
+/* —— 内容区 —— */
+.content { max-width: none; padding: 0 var(--page-gap); }
 .markdown-section {
   line-height: 1.85;
-  font-size: var(--base-font-size);
+  color: var(--text);
+  max-width: min(100%, var(--content-max));
+  margin: 0 auto;
   background: transparent;
 }
 .markdown-section h1, .markdown-section h2, .markdown-section h3 {
-  margin-top: 2.2rem;
-  color: var(--text);
+  margin-top: 2.1rem;
 }
-.markdown-section a {
-  color: var(--link); text-decoration: none;
-  border-bottom: 1px dashed transparent;
-}
-.markdown-section a:hover {
-  color: var(--link-hover); border-bottom-color: var(--link-hover);
+.markdown-section blockquote {
+  border-left: 4px solid var(--theme-color);
+  background: var(--quote-bg); padding: .6rem 1rem; border-radius: 10px;
 }
 .markdown-section pre {
   background: var(--code-bg) !important;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 12px 14px;
+  border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px;
 }
 .markdown-section code:not(pre code) {
   background: var(--code-bg);
   border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 0 6px;
+  border-radius: 6px; padding: 0 6px;
 }
+.markdown-section a { color: var(--link); border-bottom: 1px dashed transparent; }
+.markdown-section a:hover { color: var(--link-hover); border-bottom-color: var(--link-hover); }
 
-/* 侧栏留白修复（与响应式） */
+/* —— 桌面布局：侧栏固定、消除左侧留白 —— */
 @media (min-width: 1300px) {
   .content { left: var(--sidebar-width) !important; transition: left .25s ease; }
   .app-nav { left: var(--sidebar-width) !important; transition: left .25s ease; }
   body.close .content { left: var(--sidebar-width) !important; }
   body.close .app-nav { left: var(--sidebar-width) !important; }
 }
-@media (max-width: 1299px) {
-  .content { left: 0 !important; transition: left .25s ease; }
-  .app-nav { left: 0 !important; transition: left .25s ease; }
+
+/* —— 平板：减小侧栏宽度 —— */
+@media (min-width: 992px) and (max-width: 1299px) {
+  :root { --sidebar-width: 240px; }
+  .content { left: var(--sidebar-width) !important; }
+  .app-nav { left: var(--sidebar-width) !important; }
+}
+
+/* —— 小平板与手机：侧栏覆盖式，内容不左移 —— */
+@media (max-width: 991.98px) {
+  :root { --sidebar-width: 0px; }
+  .content { left: 0 !important; }
+  .app-nav { left: 0 !important; }
   .sidebar { will-change: transform; transition: transform .25s ease; }
-  body.close .sidebar { transform: translateX(-100%); }
-  body:not(.close) .content { left: var(--sidebar-width) !important; }
-  body:not(.close) .app-nav { left: var(--sidebar-width) !important; }
+  body.close .sidebar { transform: translateX(-100%); }  /* 关闭=隐藏 */
+  body:not(.close) .sidebar { transform: translateX(0); } /* 打开=浮出 */
 }
 
-/* 锚点滚动偏移（CSS 原生方案） */
-.markdown-section h1,
-.markdown-section h2,
-.markdown-section h3,
-.markdown-section h4,
-.markdown-section h5,
-.markdown-section h6 {
-  scroll-margin-top: var(--anchor-offset);
+/* —— 手机：按钮与间距缩小，防遮挡 —— */
+@media (max-width: 767.98px) {
+  #theme-switch-btn { width: 38px; height: 38px; font-size: 16px; }
+  #aurora-theme-toggle { right: calc(14px + var(--safe-right)); top: calc(10px + var(--safe-top)); }
 }
 
-/* 顶部阅读进度条（高层级） */
+/* —— 锚点滚动偏移（兼容中文标题） —— */
+.markdown-section h1[id],
+.markdown-section h2[id],
+.markdown-section h3[id],
+.markdown-section h4[id],
+.markdown-section h5[id],
+.markdown-section h6[id] { scroll-margin-top: var(--anchor-offset); }
+
+/* —— 顶部阅读进度条 —— */
 #reading-progress {
-  position: fixed;
-  top: 0; left: 0;
-  height: 4px; width: 0%;
-  z-index: 10020;
+  position: fixed; top: 0; left: 0; height: 3px; width: 0%;
+  z-index: 10010;
   background: linear-gradient(90deg, var(--theme-color), #00d4ff);
   box-shadow: 0 0 6px rgba(124,77,255,.5);
 }
 
-/* 回到顶部按钮（玻璃态 + 高层级） */
+/* —— 回到顶部按钮（不遮挡，带安全区） —— */
 #back-to-top {
   position: fixed;
-  right: 80px;             /* 让出右上角主题按钮区域 */
-  bottom: 32px;
-  z-index: 10010;
-  width: 42px; height: 42px;
-  border-radius: 10px;
+  right: calc(18px + var(--safe-right));
+  bottom: calc(20px + var(--safe-bottom));
+  width: 42px; height: 42px; border-radius: 10px;
+  background: var(--card); color: var(--text);
   border: 1px solid var(--border);
-  background: var(--card);
-  color: var(--text);
-  cursor: pointer;
+  box-shadow: 0 8px 26px rgba(0,0,0,.12);
   display: grid; place-items: center;
   font-size: 18px; line-height: 1;
-  opacity: 0; visibility: hidden; transform: translateY(10px);
-  transition: all .25s ease;
+  cursor: pointer;
+  opacity: 0; visibility: hidden; transform: translateY(8px);
+  transition: all .22s ease;
   backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  z-index: 10010;
 }
 #back-to-top.show { opacity: 1; visibility: visible; transform: translateY(0); }
 #back-to-top:hover { border-color: var(--theme-color); }
 
-/* 小屏优化（避免遮挡） */
-@media (max-width: 768px) {
-  .app-nav { min-height: 56px; }
-  #aurora-theme-toggle { top: 10px; right: 14px; }
-  #back-to-top { right: 70px; bottom: 22px; }
-}
-
-/* 右上角主题切换按钮（固定） */
-#aurora-theme-toggle {
-  position: fixed;
-  top: 12px;
-  right: 18px;
-  z-index: 10030; /* 始终在最上层 */
-}
-#aurora-theme-toggle #theme-switch-btn {
-  border: 1px solid var(--border);
-  background: var(--card);
-  color: var(--text);
-  padding: 6px 10px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 16px; line-height: 1;
-  box-shadow: 0 8px 26px rgba(0,0,0,.12);
-  transition: transform .15s ease, border-color .2s ease;
-  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-}
-#aurora-theme-toggle #theme-switch-btn:hover {
-  transform: translateY(-1px);
-  border-color: var(--theme-color);
-}
+/* —— 细节：滚动条（可选） —— */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: rgba(0,0,0,.15); border-radius: 8px; }
+:root[data-theme="dark"] ::-webkit-scrollbar-thumb { background: rgba(255,255,255,.15); }
