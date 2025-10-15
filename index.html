@@ -5,19 +5,20 @@
     <title>Aurora Luo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- 主题样式（固定 https 源 + 回落） -->
+    <!-- Docsify 主题样式（多重回落） -->
     <link id="docsify-theme" rel="stylesheet"
       href="https://unpkg.com/docsify@4/themes/vue.css"
-      onerror="this.href='https://cdn.jsdelivr.net/npm/docsify@4/themes/vue.css'"/>
+      onerror="this.href='https://cdn.jsdelivr.net/npm/docsify@4/themes/vue.css';this.onerror=null;" />
 
-    <!-- 自定义样式：修正为实际路径 -->
+    <!-- 自定义样式：相对路径，适配 GitHub Pages 项目页二级路径 -->
     <link rel="stylesheet" href="assets/css/custom.css" />
   </head>
 
   <body>
+    <!-- Docsify 应用挂载点 -->
     <div id="app">加载中...</div>
 
-    <!-- 固定在右上角的主题切换 -->
+    <!-- 固定右上角主题切换 -->
     <div id="aurora-theme-toggle">
       <button id="theme-switch-btn" aria-label="切换主题">🌓</button>
     </div>
@@ -28,15 +29,63 @@
     <!-- 阅读进度条 -->
     <div id="reading-progress"></div>
 
-    <!-- ===== Docsify 核心（固定版本 + 回落） ===== -->
-    <script defer src="https://unpkg.com/docsify@4/lib/docsify.min.js"
-      onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js'"></script>
-    <script defer src="https://unpkg.com/docsify@4/lib/plugins/search.min.js"
-      onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.min.js'"></script>
-    <script defer src="https://unpkg.com/docsify-copy-code@3/dist/docsify-copy-code.min.js"
-      onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/docsify-copy-code@3/dist/docsify-copy-code.min.js'"></script>
+    <!-- ========= Docsify 核心：三重回落 ========= -->
+    <script>
+      (function loadScript(srcs, attr) {
+        function tryLoad(i) {
+          if (i >= srcs.length) return;
+          var s = document.createElement('script');
+          s.src = srcs[i];
+          if (attr && attr.defer) s.defer = true;
+          s.onerror = function(){ tryLoad(i+1); };
+          document.head.appendChild(s);
+        }
+        // docsify 主库
+        tryLoad(0);
+      })([
+        'https://unpkg.com/docsify@4/lib/docsify.min.js',
+        'https://cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js',
+        'https://cdnjs.cloudflare.com/ajax/libs/docsify/4.13.1/docsify.min.js'
+      ], {defer:true});
+    </script>
 
-    <!-- 站点配置：在 docsify 之前挂 config -->
+    <!-- 搜索插件 -->
+    <script>
+      (function loadScript(srcs) {
+        function tryLoad(i) {
+          if (i >= srcs.length) return;
+          var s = document.createElement('script');
+          s.src = srcs[i]; s.defer = true;
+          s.onerror = function(){ tryLoad(i+1); };
+          document.head.appendChild(s);
+        }
+        tryLoad(0);
+      })([
+        'https://unpkg.com/docsify@4/lib/plugins/search.min.js',
+        'https://cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.min.js',
+        'https://cdnjs.cloudflare.com/ajax/libs/docsify/4.13.1/plugins/search.min.js'
+      ]);
+    </script>
+
+    <!-- 复制代码按钮插件 -->
+    <script>
+      (function loadScript(srcs) {
+        function tryLoad(i) {
+          if (i >= srcs.length) return;
+          var s = document.createElement('script');
+          s.src = srcs[i]; s.defer = true;
+          s.onerror = function(){ tryLoad(i+1); };
+          document.head.appendChild(s);
+        }
+        tryLoad(0);
+      })([
+        'https://unpkg.com/docsify-copy-code@3/dist/docsify-copy-code.min.js',
+        'https://cdn.jsdelivr.net/npm/docsify-copy-code@3/dist/docsify-copy-code.min.js',
+        'https://cdnjs.cloudflare.com/ajax/libs/docsify-copy-code/3.0.0/docsify-copy-code.min.js'
+      ]);
+    </script>
+
+    <!-- ===== 先挂 Docsify 配置 ===== -->
     <script>
       window.$docsify = {
         name: 'Aurora Luo',
@@ -44,16 +93,17 @@
         loadSidebar: true,
         subMaxLevel: 2,
         auto2top: true,
-        routerMode: 'hash',
+        routerMode: 'hash',     // SPA hash 路由，适合 GitHub Pages
+        relativePath: true,     // 相对路径检索 README / _sidebar
         search: { paths: 'auto', placeholder: '搜索文档…', noData: '未找到结果' },
         plugins: [
           function (hook, vm) {
             function getAnchorOffset() {
               const nav = document.querySelector('.app-nav');
               const navH = nav ? nav.getBoundingClientRect().height : 52;
-              const bar = document.querySelector('#reading-progress') ||
-                          document.querySelector('.progress') ||
-                          document.querySelector('.progressbar');
+              const bar = document.querySelector('#reading-progress')
+                        || document.querySelector('.progress')
+                        || document.querySelector('.progressbar');
               const barH = bar ? bar.getBoundingClientRect().height : 6;
               return Math.round(navH + barH + 10);
             }
@@ -61,7 +111,6 @@
               if (!location.hash) return;
               const el = document.querySelector(decodeURIComponent(location.hash));
               if (!el) return;
-              // 让 docsify 自滚完成后再校正
               setTimeout(() => {
                 const y = Math.max(0, window.pageYOffset - getAnchorOffset());
                 window.scrollTo({ top: y }); // 同步滚动更稳
@@ -77,9 +126,9 @@
       };
     </script>
 
-    <!-- 功能脚本：主题切换 / 进度条 / 回顶 -->
+    <!-- ===== 站点功能脚本：主题切换 / 进度条 / 回顶 ===== -->
     <script>
-      // ===== 主题切换 =====
+      // 主题切换
       (function () {
         const btn = document.getElementById('theme-switch-btn');
         const KEY = 'aurora_theme';
@@ -105,12 +154,11 @@
         apply(getTheme());
         btn.addEventListener('click', toggle);
 
-        // 保护：若 DOM 被重绘，重新套用主题
         new MutationObserver(() => apply(getTheme()))
           .observe(document.body, { childList: true, subtree: true });
       })();
 
-      // ===== 阅读进度条 =====
+      // 阅读进度条
       (function () {
         const bar = document.getElementById('reading-progress');
         if (!bar) return;
@@ -127,7 +175,7 @@
         document.addEventListener('DOMContentLoaded', update);
       })();
 
-      // ===== 回到顶部（对外暴露刷新函数） =====
+      // 回到顶部（暴露刷新函数）
       (function () {
         const btn = document.getElementById('back-to-top');
         function updateVisibility() {
@@ -143,16 +191,18 @@
       })();
     </script>
 
-    <!-- 兜底提示：3 秒后还未加载，给出常见原因 -->
+    <!-- ===== 兜底提示：3 秒后仍未就绪，给出常见原因 ===== -->
     <script>
       setTimeout(() => {
+        // Docsify 挂载后会把 #app 内容替换为正文
         if (!window.Docsify) {
           const el = document.getElementById('app');
           el.innerHTML =
             '🚧 页面未能加载。常见原因：<br>' +
-            '1) CDN 被拦（已内置自动回落，请刷新再试）；<br>' +
-            '2) 用 file:// 打开，请使用本地服务器（如：<code>npx docsify serve .</code> 或 <code>python -m http.server 5500</code>）；<br>' +
-            '3) 根目录缺少 <code>README.md</code>。';
+            '1) CDN 被拦（已内置多重回落，可刷新 / 换网络）；<br>' +
+            '2) GitHub Pages 未指向正确分支/路径（Settings → Pages）；<br>' +
+            '3) 根目录缺少 <code>README.md</code>；<br>' +
+            '4) 未创建 <code>.nojekyll</code>。';
         }
       }, 3000);
     </script>
