@@ -1,14 +1,43 @@
-(function(){
-  var key='aurora_theme';
-  function apply(t){ document.documentElement.setAttribute('data-theme', t||'light'); }
-  function init(){
-    var t=localStorage.getItem(key)||'light'; apply(t);
-    if(!document.getElementById('theme-switch-btn')){
-      var btn=document.createElement('button'); btn.id='theme-switch-btn'; btn.textContent='🌓'; btn.title='切换主题';
-      btn.style.cssText='position:fixed;right:14px;top:14px;padding:6px 10px;border:1px solid rgba(0,0,0,.1);border-radius:8px;background:#fff;z-index:9999';
-      document.body.appendChild(btn);
-      btn.onclick=function(){ var cur=document.documentElement.getAttribute('data-theme')||'light'; var next=cur==='light'?'dark':'light'; localStorage.setItem(key,next); apply(next); };
-    }
+(function () {
+  const THEME_KEY = 'aurora:theme';         // 'light' | 'dark'
+  const PREFS_KEY = 'aurora:prefs';         // 里边可能有 autoDark:true/false
+  const root = document.documentElement;
+  const btn  = document.getElementById('theme-switch-btn');
+
+  function loadPrefs() {
+    try { return JSON.parse(localStorage.getItem(PREFS_KEY)) || {}; }
+    catch { return {}; }
   }
-  if (document.readyState!=='loading') init(); else document.addEventListener('DOMContentLoaded', init);
+  function savePrefs(p) { localStorage.setItem(PREFS_KEY, JSON.stringify(p)); }
+
+  function setTheme(mode) {
+    root.setAttribute('data-theme', mode);
+    localStorage.setItem(THEME_KEY, mode);
+    if (btn) btn.title = `切换明/暗（当前：${mode === 'dark' ? '深色' : '浅色'}）`;
+  }
+
+  function applyOnLoad() {
+    const prefs = loadPrefs();
+    if (prefs.autoDark && window.matchMedia) {
+      const mq = window.matchMedia('(prefers-color-scheme: dark)');
+      const sync = () => setTheme(mq.matches ? 'dark' : 'light');
+      sync();
+      mq.onchange = sync;
+      return;
+    }
+    const saved = localStorage.getItem(THEME_KEY) || 'light';
+    setTheme(saved);
+  }
+
+  function toggleManual() {
+    // 如果开启了“跟随系统”，用户手动点按钮则关闭自动，进入手动模式
+    const prefs = loadPrefs();
+    if (prefs.autoDark) { prefs.autoDark = false; savePrefs(prefs); }
+
+    const cur = (root.getAttribute('data-theme') || 'light').toLowerCase();
+    setTheme(cur === 'dark' ? 'light' : 'dark');
+  }
+
+  if (btn) btn.addEventListener('click', toggleManual);
+  applyOnLoad();
 })();
