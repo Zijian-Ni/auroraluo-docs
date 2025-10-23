@@ -1,4 +1,4 @@
-<!-- BEGIN:AURORA-API -->
+<!-- BEGIN:AURORA-MERGED -->
 * **API 参考**
   * [📖 模块目录（A–Z）](api/README.md)
   * [🔎 API 搜索](api/Search.md)
@@ -11,4 +11,4 @@
   * [🗺️ 规划与自动化](Planning-and-Automation.md)
   * [📈 分析与监控](Analytics-and-Monitoring.md)
   * [🛡️ 安全与归档策略](Security-and-Archive-Policy.md)
-<!-- END:AURORA-API -->
+<!-- END:AURORA-MERGED -->
