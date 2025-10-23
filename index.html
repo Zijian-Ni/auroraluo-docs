@@ -1,143 +1,36 @@
 <!DOCTYPE html>
 <html lang="zh-CN" data-theme="light">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, viewport-fit=cover">
-    <meta name="color-scheme" content="light dark">
-    <meta name="theme-color" content="#7c4dff">
-    <title>Aurora Luo · Wiki</title>
-    <meta name="description" content="Aurora Luo - QQ 群智能助理：AI 对话、知识检索、Bilibili、百科、菜单卡片、HTTP 扩展等">
-    <link rel="icon" href="data:,">
-    <link rel="manifest" href="manifest.webmanifest">
-
-    <!-- Docsify + Themeable -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css"
-          onerror="this.onerror=null;this.href='https://unpkg.com/docsify@4/lib/themes/vue.css'">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable/dist/css/theme-simple.css"
-          onerror="this.onerror=null;this.href='https://unpkg.com/docsify-themeable/dist/css/theme-simple.css'">
-
-    <!-- Prism line-numbers -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.css"
-          onerror="this.onerror=null;this.href='https://unpkg.com/prismjs/plugins/line-numbers/prism-line-numbers.css'">
-
-    <!-- NProgress -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress/nprogress.css"
-          onerror="this.onerror=null;this.href='https://unpkg.com/nprogress/nprogress.css'">
-
-    <!-- Custom -->
-    <link rel="stylesheet" href="assets/css/custom.css?v=responsive-3">
-    <!-- 更新后的样式，包含标题偏移修复 -->
-    <link rel="stylesheet" href="assets/css/addons.css?v=20251015-3">
-      <link rel="stylesheet" href="assets/css/auroraai-docs.css?v=1">
-  </head>
-  <body>
-    <!-- 顶部阅读进度（可选占位） -->
-    <div id="reading-progress"></div>
-
-    <!-- 回到顶部 -->
-    <button id="back-to-top" aria-label="返回顶部" title="回到顶部">↑</button>
-
-    <!-- 右上角操作条（搜索/主题/设置/分享/打印） -->
-    <div id="aurora-theme-toggle">
-      <button id="cmdk-open-btn" aria-label="快速跳转 (Ctrl/⌘+K)" title="快速跳转">🔎</button>
-      <button id="theme-switch-btn" aria-label="切换主题" title="切换明/暗">🌓</button>
-      <button id="prefs-btn" aria-label="偏好设置" title="偏好设置">⚙️</button>
-      <button id="share-btn" aria-label="分享本页" title="分享本页">📤</button>
-      <button id="print-btn" aria-label="打印本页" title="打印本页">🖨️</button>
-    </div>
-
-    <!-- Docsify 挂载 -->
-    <div id="app">加载中… Loading…</div>
-
-    <!-- Docsify 配置 -->
-    <script>
-      window.$docsify = {
-        name: 'Aurora Luo',
-        repo: '',
-        loadSidebar: true,
-        loadNavbar: true,
-        subMaxLevel: 3,
-        auto2top: true,
-        themeColor: '#7c4dff',
-        formatUpdated: '{MM}/{DD} {HH}:{mm}',
-        search: { paths: 'auto', placeholder: '搜索文档…', noData: '未找到结果', depth: 3 },
-        pagination: { previousText: '上一页', nextText: '下一页', crossChapter: true, crossChapterText: true },
-        tabs: { persist: true, sync: true, theme: 'classic', tabComments: true }
-      };
-    </script>
-
-    <!-- Docsify & Plugins（第三方） -->
-    <script src="https://cdn.jsdelivr.net/npm/tiny-pinyin/dist/tiny-pinyin.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/docsify@4"
-            onerror="this.onerror=null;this.src='https://unpkg.com/docsify@4'"></script>
-    <script src="https://cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"
-            onerror="this.onerror=null;this.src='https://unpkg.com/docsify/lib/plugins/search.min.js'"></script>
-    <script src="https://cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"
-            onerror="this.onerror=null;this.src='https://unpkg.com/docsify/lib/plugins/zoom-image.min.js'"></script>
-    <script src="https://cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"
-            onerror="this.onerror=null;this.src='https://unpkg.com/docsify-copy-code/dist/docsify-copy-code.min.js'"></script>
-    <script src="https://cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"
-            onerror="this.onerror=null;this.src='https://unpkg.com/docsify-pagination/dist/docsify-pagination.min.js'"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-bash.min.js"
-            onerror="this.onerror=null;this.src='https://unpkg.com/prismjs/components/prism-bash.min.js'"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-json.min.js"
-            onerror="this.onerror=null;this.src='https://unpkg.com/prismjs/components/prism-json.min.js'"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-python.min.js"
-            onerror="this.onerror=null;this.src='https://unpkg.com/prismjs/components/prism-python.min.js'"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.min.js"
-            onerror="this.onerror=null;this.src='https://unpkg.com/prismjs/plugins/line-numbers/prism-line-numbers.min.js'"></script>
-    <script src="https://cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"
-            onerror="this.onerror=null;this.src='https://unpkg.com/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js'"></script>
-    <script src="https://cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"
-            onerror="this.onerror=null;this.src='https://unpkg.com/docsify/lib/plugins/emoji.min.js'"></script>
-    <script src="https://cdn.jsdelivr.net/npm/docsify-tabs/dist/docsify-tabs.min.js"
-            onerror="this.onerror=null;this.src='https://unpkg.com/docsify-tabs/dist/docsify-tabs.min.js'"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"
-            onerror="this.onerror=null;this.src='https://unpkg.com/mermaid/dist/mermaid.min.js'"></script>
-    <script src="https://cdn.jsdelivr.net/npm/nprogress/nprogress.js"
-            onerror="this.onerror=null;this.src='https://unpkg.com/nprogress/nprogress.js'"></script>
-
-    <!-- 你的增强脚本（保持 & 顺序尽量一致） -->
-    <script src="assets/js/nprogress-plugin.js?v=1"></script>
-    <!-- ★ 修复侧栏小点跳转 & 统一锚点格式 -->
-    <script src="assets/js/link-normalizer.js?v=20251015-2"></script>
-    <script src="assets/js/nav-align.js?v=1"></script>
-    <script src="assets/js/toc.js?v=1"></script>
-    <script src="assets/js/anchors-copy.js?v=1"></script>
-    <script src="assets/js/copy-anchors-markdown.js?v=1"></script>
-    <script src="assets/js/shortcuts.js?v=1"></script>
-    <script src="assets/js/lazyload.js?v=1"></script>
-    <script src="assets/js/mermaid-init.js?v=1"></script>
-    <script src="assets/js/external-links.js?v=1"></script>
-    <script src="assets/js/line-numbers.js?v=1"></script>
-    <script src="assets/js/collapse-all.js?v=1"></script>
-    <script src="assets/js/scroll-spy.js?v=1"></script>
-
-    <!-- 新增/修复的通用 UI 与功能 -->
-    <script src="assets/js/ui-utils.js?v=1"></script>
-    <script src="assets/js/command-palette-advanced.js?v=2"></script>
-    <script src="assets/js/search-highlight.js?v=1"></script>
-    <script src="assets/js/preferences.js?v=1"></script>
-    <script src="assets/js/reading-metrics.js?v=1"></script>
-    <script src="assets/js/scroll-restore.js?v=1"></script>
-    <script src="assets/js/annotations.js?v=1"></script>
-    <script src="assets/js/related-pages.js?v=1"></script>
-    <script src="assets/js/share.js?v=1"></script>
-    <script src="assets/js/sw-updates.js?v=1"></script>
-    <script src="assets/js/offline-indicator.js?v=1"></script>
-    <script src="assets/js/broken-image-handler.js?v=1"></script>
-    <script src="assets/js/footnote-popover.js?v=1"></script>
-    <script src="assets/js/glossary-tooltips.js?v=1"></script>
-    <script src="assets/js/print-button.js?v=1"></script>
-
-    <!-- ★ 修复：黑白切换统一管理（手动优先级覆盖“跟随系统”） -->
-    <script src="assets/js/theme-manager.js?v=2"></script>
-    <!-- ★ 修复：Docsify 搜索框支持 Enter 直接跳到首条结果 -->
-    <script src="assets/js/search-enter.js?v=1"></script>
-
-    <!-- PWA（可留可去） -->
-    <script src="assets/js/pwa.js?v=1"></script>
-      <script src="assets/js/inline-toc.js?v=1"></script>
-  </body>
+<head>
+<meta charset="UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+<title>Aurora Luo · Wiki</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable/dist/css/theme-simple.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.css">
+<link rel="stylesheet" href="assets/css/custom.css">
+<link rel="stylesheet" href="assets/css/addons.css">
+<link rel="stylesheet" href="assets/css/auroraai-docs.css">
+</head>
+<body>
+<div id="app">Loading…</div>
+<script>
+window.$docsify={name:'Aurora Luo',loadSidebar:true,loadNavbar:true,subMaxLevel:3,auto2top:true,themeColor:'#7c4dff',search:{paths:'auto',placeholder:'搜索文档…',noData:'未找到结果',depth:3}};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-bash.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-json.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-python.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/docsify-tabs/dist/docsify-tabs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>if(window.mermaid){window.mermaid.initialize({startOnLoad:true});}</script>
+<script src="assets/js/inline-toc.js"></script>
+<script src="assets/js/api-search.js"></script>
+</body>
 </html>
