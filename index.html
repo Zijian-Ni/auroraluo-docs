@@ -1,18 +1,27 @@
-<!DOCTYPE html><html><head><meta charset='utf-8'><title>Docs</title>
-  <link rel="stylesheet" href="assets/css/auroraai-docs.css">
-</head><body><div id='app'></div>
-  <script src="assets/js/theme-manager.js"></script>
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Aurora Luo · Docs</title>
 
-  <script src="assets/js/link-normalizer.js"></script>
+    <!-- 必需：Docsify 主题样式（没有它侧边栏/正文都不会有样式） -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css" />
 
-  <script src="assets/js/inline-toc.js"></script>
+    <!-- 你的样式（可选） -->
+    <link rel="stylesheet" href="assets/css/auroraai-docs.css" />
+  </head>
+  <body>
+    <!-- Docsify 挂载点 -->
+    <div id="app">Loading…</div>
 
-  <script src="assets/js/api-search.js"></script>
-
+    <!-- Docsify 配置 -->
     <script>
       window.$docsify = {
         name: 'Aurora Luo',
-        homepage: 'README.md',
+        homepage: 'README.md',        // 首页文档（必须存在）
         loadSidebar: true,
         loadNavbar: true,
         subMaxLevel: 3,
@@ -21,4 +30,19 @@
         alias: { '/.*/_sidebar.md': '/_sidebar.md', '/.*/_navbar.md': '/_navbar.md' }
       };
     </script>
-    </body></html>
+
+    <!-- 必需：Docsify 核心脚本（没有它不会渲染 Markdown） -->
+    <script src="https://cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
+
+    <!-- 可选：搜索 / 图片缩放 / 复制代码等插件 -->
+    <script src="https://cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
+
+    <!-- 你的增强：主题切换 / 锚点修复 / 本页 TOC / API 搜索（这些文件需存在于 assets/js/ 下） -->
+    <script src="assets/js/theme-manager.js"></script>
+    <script src="assets/js/link-normalizer.js"></script>
+    <script src="assets/js/inline-toc.js"></script>
+    <script src="assets/js/api-search.js"></script>
+  </body>
+</html>
