@@ -12,3 +12,17 @@
   * [人格与心情](Persona-and-Mood.md)
   * [语音与声音偏好](Voice-and-TTS.md)
   * [AI 绘图](Image-Generation.md)
+
+
+* 深入
+  * [OCR](OCR.md)
+  * [视觉 · 图像](Vision-and-Images.md)
+  * [记忆系统](Memory-System.md)
+  * [知识库 · API](Knowledge-Base-API.md)
+  * [命令与动作](Commands-and-Actions.md)
+  * [规划与自动化](Planning-and-Automation.md)
+  * [分析与监控](Analytics-and-Monitoring.md)
+  * [安全与归档](Security-and-Archive-Policy.md)
+  * [Minecraft 集成](Minecraft-Integration.md)
+* API
+  * [模块索引](api/Module-Index.md)
