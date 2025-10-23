@@ -18,7 +18,7 @@ embed_texts(...)
 </div>
 
 ## 常见场景
-- 与 <code>memory_manager</code> / <code>vector_index</code> / <code>planner</</code> 协作；
+- 与 <code>memory_manager</code> / <code>vector_index</code> / <code>planner</code> 协作；
 - 配合 <code>archive_policy</code> 做安全控制；
 - 作为上游/下游在“识别→检索→规划→执行”链路中协作。
 
