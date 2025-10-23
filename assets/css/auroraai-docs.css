@@ -1,8 +1,0 @@
-:root{--card-bg:rgba(255,255,255,.7);--card-border:rgba(0,0,0,.06);--callout-note:#2d7ef7;--callout-tip:#22a06b;--callout-warn:#f5a524}
-.doc-card{border:1px solid var(--card-border);border-radius:14px;padding:16px;backdrop-filter:blur(8px);box-shadow:0 6px 18px rgba(0,0,0,.06);margin:1rem 0;background:var(--card-bg)}
-.callout{border-left:6px solid var(--callout-note);padding:12px 14px;border-radius:8px;margin:1rem 0;background:rgba(45,126,247,.06)}
-.callout.tip{border-left-color:var(--callout-tip);background:rgba(34,160,107,.08)}.callout.warn{border-left-color:var(--callout-warn);background:rgba(245,165,36,.08)}
-.markdown-section img,.markdown-section pre code{border-radius:10px}
-.markdown-section h1,.markdown-section h2{scroll-margin-top:72px}
-#inline-toc{margin-top:12px}
-#api-search{display:flex;flex-direction:column;gap:10px}#api-search input{padding:10px 12px;border-radius:10px;border:1px solid rgba(0,0,0,.12)}.api-hit{padding:10px 12px;border:1px solid rgba(0,0,0,.06);border-radius:10px}.api-hit small{opacity:.7}
