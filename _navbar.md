@@ -16,6 +16,11 @@
   * [🎨 AI 绘图](Image-Generation.md)
 
 * 💫 Aurora AI Assistant（详细拆解）
+  * [1️⃣ 角色与基础约束](1-role-constraint.md)
+  * [2️⃣ 多模型调度](2-model-scheduler.md)
+  * [3️⃣ Prompt 结构](3-prompt-structure.md)
   * [4️⃣ 记忆与画像](4-memory-persona.md)
-  * [6️⃣ 调试与降级机制](6-debug-degrade.md)
-  * [8️⃣ 调试与测试建议](8-debug-tips.md)
+  * [5️⃣ 模块与提示](5-modules.md)
+  * [6️⃣ 调试与降级](6-debug-degrade.md)
+  * [7️⃣ 调用流程摘要](7-callflow.md)
+  * [8️⃣ 调试建议](8-debug-tips.md)
