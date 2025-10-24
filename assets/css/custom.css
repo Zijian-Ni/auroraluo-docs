@@ -342,3 +342,11 @@ body:not(.close) { overflow-x: hidden; }
 body.sidebar-open #sidebar-mask {
   opacity: 1;
 }
+
+/* 🚫 隐藏 Docsify 默认的灰色汉堡按钮 */
+.sidebar-toggle-button {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
