@@ -3,7 +3,7 @@
    =========================== */
 
 :root {
-  --header-offset: 96px; /* 顶部固定元素总高度，必要时可微调 */
+  --header-offset: 18px; /* ✅ 调低为无顶栏模式 */
   --aside-width: 280px;
   --toc-width: 260px;
   --z-toc: 10002;
@@ -13,7 +13,7 @@
   --content-max: 860px;
 }
 
-/* --- 核心修复：标题锚点统一偏移（避免被顶栏挡住） --- */
+/* --- 标题锚点统一偏移（不再为顶栏留 96px 空隙） --- */
 .markdown-section h1[id],
 .markdown-section h2[id],
 .markdown-section h3[id],
@@ -34,6 +34,16 @@
   height: var(--header-offset);
   margin-top: calc(-1 * var(--header-offset));
   visibility: hidden;
+}
+
+/* ✅ 彻底隐藏顶部导航栏（app-nav） */
+.app-nav,
+.app-nav.no-badge {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 /* —— 浮动 TOC —— */
@@ -65,8 +75,13 @@
 @media (max-width: 1200px) { #toc-float { display: none; } }
 
 /* —— 标题锚点复制 —— */
-.heading-anchor { margin-left: .35em; opacity: 0; transition: opacity .15s ease; text-decoration: none; font-size: .9em; }
-.heading-mdlink { margin-left: .25em; opacity: 0; transition: opacity .15s ease; text-decoration: none; font-size: .9em; }
+.heading-anchor, .heading-mdlink {
+  margin-left: .35em;
+  opacity: 0;
+  transition: opacity .15s ease;
+  text-decoration: none;
+  font-size: .9em;
+}
 h1:hover .heading-anchor, h2:hover .heading-anchor, h3:hover .heading-anchor,
 h4:hover .heading-anchor, h5:hover .heading-anchor, h6:hover .heading-anchor,
 h1:hover .heading-mdlink, h2:hover .heading-mdlink, h3:hover .heading-mdlink,
@@ -92,7 +107,7 @@ h4:hover .heading-mdlink, h5:hover .heading-mdlink, h6:hover .heading-mdlink { o
 .kbd-help td { padding: 6px 4px; border-bottom: 1px dashed rgba(0,0,0,.08); }
 .kbd-help .close { margin-top: 10px; float: right; border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; cursor: pointer; }
 
-/* —— 侧栏工具按钮（展开/折叠） —— */
+/* —— 侧栏工具按钮 —— */
 #sidebar-tools { display: flex; gap: 8px; align-items: center; margin: 8px 8px 10px 8px; }
 #sidebar-tools button { font-size: 12px; padding: 4px 8px; border-radius: 8px; border: 1px solid var(--border); background: var(--card); cursor: pointer; }
 
@@ -108,12 +123,35 @@ a[target="_blank"].external::after { content: "↗"; margin-left: .25em; font-si
   #cmdk, #prefs-panel, .annotation-bubble, .toast { display: none !important; }
 }
 
-/* —— 顶部操作条按钮 —— */
-#aurora-theme-toggle { position: fixed; right: 12px; top: 12px; z-index: var(--z-overlay); display: flex; gap: 8px; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
-#aurora-theme-toggle button { border: 1px solid var(--border, rgba(0,0,0,.08)); background: var(--card, rgba(255,255,255,.6)); border-radius: 10px; padding: 6px 10px; cursor: pointer; }
+/* —— 顶部操作条按钮（可选，保留 UI） —— */
+#aurora-theme-toggle {
+  position: fixed;
+  right: 12px;
+  top: 12px;
+  z-index: var(--z-overlay);
+  display: flex;
+  gap: 8px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+#aurora-theme-toggle button {
+  border: 1px solid var(--border, rgba(0,0,0,.08));
+  background: var(--card, rgba(255,255,255,.6));
+  border-radius: 10px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
 
 /* —— Toast —— */
-.toast { position: fixed; right: 18px; bottom: 18px; z-index: var(--z-toast); background: rgba(34,34,34,.95); color: #fff; border-radius: 10px; padding: 10px 14px; max-width: 70vw; box-shadow: 0 6px 30px rgba(0,0,0,.2); opacity: 0; transform: translateY(10px); transition: all .2s ease; }
+.toast {
+  position: fixed; right: 18px; bottom: 18px; z-index: var(--z-toast);
+  background: rgba(34,34,34,.95); color: #fff;
+  border-radius: 10px; padding: 10px 14px;
+  max-width: 70vw;
+  box-shadow: 0 6px 30px rgba(0,0,0,.2);
+  opacity: 0; transform: translateY(10px);
+  transition: all .2s ease;
+}
 .toast.show { opacity: 1; transform: translateY(0); }
 
 /* —— Command Palette —— */
@@ -132,7 +170,7 @@ a[target="_blank"].external::after { content: "↗"; margin-left: .25em; font-si
 #prefs-panel input[type="range"] { width: 160px; }
 #prefs-panel .small { font-size: 12px; opacity: .75; }
 
-/* 内容宽度/字号/换行类 */
+/* —— 内容宽度/字号/换行类 —— */
 .content-narrow .markdown-section { max-width: 720px; }
 .content-default .markdown-section { max-width: var(--content-max); }
 .content-wide .markdown-section    { max-width: 1080px; }
@@ -154,7 +192,7 @@ a[target="_blank"].external::after { content: "↗"; margin-left: .25em; font-si
 .annotations-panel .note:last-child { border-bottom: none; }
 .annotations-panel .note .meta { font-size: 12px; opacity: .6; }
 
-/* —— Snackbar—— */
+/* —— Snackbar —— */
 .snackbar { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); background: #222; color: #fff; padding: 10px 14px; border-radius: 10px; box-shadow: 0 6px 30px rgba(0,0,0,.25); z-index: var(--z-toast); display: none; }
 .snackbar.show { display: block; }
 .snackbar button { margin-left: 10px; background: #7c4dff; color: #fff; border: none; border-radius: 8px; padding: 4px 8px; cursor: pointer; }
@@ -171,22 +209,3 @@ abbr.glossary { text-decoration: underline dotted; cursor: help; }
 
 /* —— 小屏适配 —— */
 @media (max-width: 480px) { #cmdk { top: 10%; } }
-
-/* === 动态对齐顶栏到 Sidebar 右缘（由 JS 写入 --sidebar-offset） === */
-:root {
-  /* JS（nav-align.js）会根据 Sidebar 可见宽度实时更新该变量 */
-  --sidebar-offset: 0px;
-}
-
-/* 让 app-nav.no-badge 永远从 Sidebar 右缘开始，并占满剩余宽度 */
-.app-nav.no-badge {
-  margin-left: var(--sidebar-offset);
-  width: calc(100% - var(--sidebar-offset));
-  box-sizing: border-box;
-  transition: margin-left .2s ease, width .2s ease;
-}
-
-/* 避免内部元素撑破（可选，提升小屏表现） */
-.app-nav.no-badge * {
-  min-width: 0;
-}
