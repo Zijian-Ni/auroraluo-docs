@@ -1,24 +1,21 @@
 
 ---
 
-## 7) `7-callflow.md`
+## 8) `8-debug-tips.md`
 
 ```markdown
-# 7️⃣ 调用流程摘要
+# 8️⃣ 调试建议
 
-> 从“收到消息”到“最终回复”的最小闭环；可直接对照日志排查问题。
+> 一组“最常用”的定位套路，覆盖 Prompt、RAG、模型、插件四个层面。
 
-```mermaid
-flowchart TD
-    A[收到消息] --> B{命令 / 普通文本?}
-    B -- 命令 --> C[命令解析器]
-    B -- 普通文本 --> D[意图识别 intent.py]
-    D --> E[构建上下文: Persona/画像/MoE/历史/RAG/视觉摘要]
-    E --> F[render_system_prompt + 拼装各段]
-    F --> G{模型可用?}
-    G -- Seed 正常 --> H[调用 Seed]
-    G -- 超时/异常 --> I[回退 OpenAI]
-    H --> J[生成回复]
-    I --> J[生成回复]
-    J --> K[格式校验: 猫娘样式/引用/拒绝模板]
-    K --> L[输出到聊天]
+## 8.1 快速查看 Prompt
+- 调用 `get_full_prompt_v4()`，确认 System Prompt 是否**含有**：  
+  1) 角色 & 语气；2) 输出格式；3) 安全与拒绝模板；4) 调试提示；5) 动态 Persona Summary。
+
+## 8.2 环境检测
+- `diag.report()` 打印：文本模型、向量后端、数据库类型、公网入口、视觉优先级等。
+
+## 8.3 单元测试（建议）
+```bash
+python scripts/run_ai_tests.py
+# 检查：prompt 拼装 / RAG / MoE / vision / 降级
