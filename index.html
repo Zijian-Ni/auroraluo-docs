@@ -97,6 +97,33 @@
     <script src="https://cdn.jsdelivr.net/npm/nprogress/nprogress.js"
             onerror="this.onerror=null;this.src='https://unpkg.com/nprogress/nprogress.js'"></script>
 
+    <!-- Shim：在 docsify 就绪后把 vm 暴露为全局，兼容旧插件 -->
+<script>
+  (function () {
+    window.$docsify = window.$docsify || {};
+    var old = window.$docsify.plugins || [];
+    window.$docsify.plugins = [].concat(old, function (hook, vm) {
+      window.__DOCSIFY_VM__ = vm;
+      // 兼容旧代码：需要全局 vm 的，给它
+      try { Object.defineProperty(window, 'vm', { get: function(){ return window.__DOCSIFY_VM__; } }); } catch(e) { window.vm = vm; }
+      // 当 vm 就绪后再加载依赖 vm 的脚本
+      var needLater = [
+        'assets/js/scroll-restore.js?v=1',
+        'assets/js/anchors-copy.js?v=1',
+        'assets/js/copy-anchors-markdown.js?v=1',
+        'assets/js/scroll-spy.js?v=1',
+        'assets/js/related-pages.js?v=1'
+      ];
+      needLater.forEach(function (src) {
+        var s = document.createElement('script');
+        s.src = src; s.defer = true;
+        document.head.appendChild(s);
+      });
+    });
+  })();
+</script>
+
+
     <!-- 你的增强脚本（保持 & 顺序尽量一致） -->
     <script src="assets/js/nprogress-plugin.js?v=1"></script>
     <!-- ★ 修复侧栏小点跳转 & 统一锚点格式 -->
