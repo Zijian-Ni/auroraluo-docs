@@ -15,3 +15,12 @@
   * [💞 人格·好感度·心情](Persona-and-Mood.md)
   * [🔊 语音与声音偏好](Voice-and-TTS.md)
   * [🎨 AI 绘图](Image-Generation.md)
+* **Aurora AI Assistant（详细拆解）**
+  * [1️⃣ 角色与基础约束](docs/ai-overview/1-role-constraint.md)
+  * [2️⃣ 多模型调度](docs/ai-overview/2-model-scheduler.md)
+  * [3️⃣ Prompt 结构](docs/ai-overview/3-prompt-structure.md)
+  * [4️⃣ 记忆与画像](docs/ai-overview/4-memory-persona.md)
+  * [5️⃣ 模块与提示](docs/ai-overview/5-modules.md)
+  * [6️⃣ 调试与降级](docs/ai-overview/6-debug-degrade.md)
+  * [7️⃣ 调用流程摘要](docs/ai-overview/7-callflow.md)
+  * [8️⃣ 调试建议](docs/ai-overview/8-debug-tips.md)
