@@ -96,6 +96,48 @@
             onerror="this.onerror=null;this.src='https://unpkg.com/mermaid/dist/mermaid.min.js'"></script>
     <script src="https://cdn.jsdelivr.net/npm/nprogress/nprogress.js"
             onerror="this.onerror=null;this.src='https://unpkg.com/nprogress/nprogress.js'"></script>
+    <!-- 小屏抽屉按钮 & 遮罩（独立于任何其他脚本） -->
+<script>
+(function(){
+  function ensureUI() {
+    // 遮罩
+    if (!document.getElementById('sidebar-mask')) {
+      const mask = document.createElement('div');
+      mask.id = 'sidebar-mask';
+      document.body.appendChild(mask);
+      mask.addEventListener('click', () => document.body.classList.remove('sidebar-open'));
+    }
+    // ☰ 按钮
+    if (!document.getElementById('menu-toggle')) {
+      const btn = document.createElement('button');
+      btn.id = 'menu-toggle';
+      btn.textContent = '☰';
+      btn.title = '展开/收起菜单';
+      document.body.appendChild(btn);
+      btn.addEventListener('click', () => document.body.classList.toggle('sidebar-open'));
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    ensureUI();
+    // 小屏默认收起，桌面默认展开
+    if (window.innerWidth < 992) {
+      document.body.classList.remove('sidebar-open'); // 默认关闭
+    } else {
+      document.body.classList.remove('sidebar-open'); // 桌面不需要 class 也展开
+    }
+  });
+
+  // 视口变化时，自动调整默认状态（不影响用户切换后的状态）
+  window.addEventListener('resize', () => {
+    if (window.innerWidth < 992) {
+      // 保持关闭，防止首次进入横竖切换时遮住正文
+      document.body.classList.remove('sidebar-open');
+    }
+  }, { passive: true });
+})();
+</script>
+
 
     <!-- Shim：在 docsify 就绪后把 vm 暴露为全局，兼容旧插件 -->
 <script>
