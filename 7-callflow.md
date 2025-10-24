@@ -1,21 +1,24 @@
+# 7. 调用流程摘要
 
----
+> 从“收到消息”到“输出回复”的关键链路。**有了它，排错不迷路**。
 
-## 8) `8-debug-tips.md`
+```mermaid
+sequenceDiagram
+  autonumber
+  participant U as 用户/群
+  participant G as 入口(__init__)
+  participant I as 意图(intent)
+  participant M as 记忆/画像
+  participant R as 检索(RAG)
+  participant P as Prompt拼装
+  participant L as 模型调度(provider)
+  participant O as 输出/后处理
 
-```markdown
-# 8️⃣ 调试建议
-
-> 一组“最常用”的定位套路，覆盖 Prompt、RAG、模型、插件四个层面。
-
-## 8.1 快速查看 Prompt
-- 调用 `get_full_prompt_v4()`，确认 System Prompt 是否**含有**：  
-  1) 角色 & 语气；2) 输出格式；3) 安全与拒绝模板；4) 调试提示；5) 动态 Persona Summary。
-
-## 8.2 环境检测
-- `diag.report()` 打印：文本模型、向量后端、数据库类型、公网入口、视觉优先级等。
-
-## 8.3 单元测试（建议）
-```bash
-python scripts/run_ai_tests.py
-# 检查：prompt 拼装 / RAG / MoE / vision / 降级
+  U->>G: 文本/图片/命令
+  G->>I: 解析意图/槽位/风险
+  G->>M: 拉取 persona / episodic / semantic / group
+  G->>R: BM25+向量混合检索
+  G->>P: render_system_prompt + 上下文拼装
+  P->>L: Seed→OpenAI 调用（含降级）
+  L->>O: 结构化输出（含引用/计划/提示）
+  O->>U: 最终回复 + 下一步建议
