@@ -95,32 +95,32 @@
   window.$docsify.plugins = plugins;
 
   // 小屏注入 ☰ 按钮（可选）
-  function ensureMenuToggle() {
-    if (!INJECT_MENU_TOGGLE) return;
-    if (document.getElementById('menu-toggle')) return;
+  // function ensureMenuToggle() {
+  //   if (!INJECT_MENU_TOGGLE) return;
+  //   if (document.getElementById('menu-toggle')) return;
 
-    const btn = document.createElement('button');
-    btn.id = 'menu-toggle';
-    btn.textContent = '☰';
-    btn.title = '展开/收起菜单';
-    // 这里不写内联样式，交给 CSS（custom.css）统一控制显示/隐藏与美化
-    document.body.appendChild(btn);
+  //   const btn = document.createElement('button');
+  //   btn.id = 'menu-toggle';
+  //   btn.textContent = '☰';
+  //   btn.title = '展开/收起菜单';
+  //   // 这里不写内联样式，交给 CSS（custom.css）统一控制显示/隐藏与美化
+  //   document.body.appendChild(btn);
 
-    btn.addEventListener('click', () => {
-      document.body.classList.toggle('close');
-      // 展开/收起后重算一次
-      setTimeout(applyVars, 0);
-    });
+  //   btn.addEventListener('click', () => {
+  //     document.body.classList.toggle('close');
+  //     // 展开/收起后重算一次
+  //     setTimeout(applyVars, 0);
+  //   });
 
-    if (isMobile()) {
-      document.body.classList.add('close'); // 小屏默认收起
-    }
-  }
+  //   if (isMobile()) {
+  //     document.body.classList.add('close'); // 小屏默认收起
+  //   }
+  // }
 
   // 初始执行
   function boot() {
     initResizeObserver();
-    ensureMenuToggle();
+    // ensureMenuToggle();
     applyVars();
   }
 
