@@ -328,3 +328,17 @@ body:not(.close) { overflow-x: hidden; }
 .markdown-section h5[id],
 .markdown-section h6[id] { scroll-margin-top: var(--anchor-offset); }
 
+/* ✅ 半透明遮罩：仅做暗化视觉，不阻止滚动、不遮挡点击 */
+#sidebar-mask {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, .25);
+  z-index: 999;          /* 在侧栏下、正文上 */
+  opacity: 0;
+  pointer-events: none;  /* ✅ 允许滚动正文 */
+  transition: opacity .25s ease;
+}
+
+body.sidebar-open #sidebar-mask {
+  opacity: 1;
+}
