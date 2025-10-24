@@ -242,3 +242,89 @@ body:not(.close) { overflow-x: hidden; }
 
 /* ===== 兜底防御：别让其他主题把内容挤出“白框” ===== */
 .content { left: 0 !important; transform: none !important; }
+
+
+
+/* ====== 固定：正文不再跟随移动（禁用 left/transform 位移） ====== */
+.content {
+  margin-left: var(--sidebar-width) !important; /* 桌面给侧栏让位 */
+  left: 0 !important;
+  transform: none !important;
+  transition: none !important; /* 防止被脚本动态设置 left/transform 后产生动画 */
+  position: relative !important;
+}
+
+/* 兜底：有主题/脚本会改 content 的偏移，全部清掉 */
+@media (min-width: 992px) {
+  .content { margin-left: var(--sidebar-width) !important; }
+}
+
+/* ====== 侧栏永远固定在左侧，用 transform 控制显隐 ====== */
+.sidebar {
+  position: fixed !important;
+  top: 0; left: 0;
+  width: var(--sidebar-width) !important;
+  height: 100vh !important;
+  z-index: 1000;
+  transition: transform .28s ease !important;
+  will-change: transform;
+  /* 桌面默认展开 */
+  transform: translateX(0) !important;
+}
+
+/* ====== 小屏：正文占满宽度，侧栏抽屉式隐藏/显示 ====== */
+@media (max-width: 991.98px) {
+  .content {
+    margin-left: 0 !important;   /* 正文不让位，避免被遮挡/留白框 */
+  }
+  /* 默认隐藏到屏幕外；打开 class 时滑入 */
+  .sidebar {
+    transform: translateX(-100%) !important;  /* 默认隐藏 */
+  }
+  body.sidebar-open .sidebar {
+    transform: translateX(0) !important;      /* 展开 */
+  }
+
+  /* 左上角 ☰ 按钮（JS 注入 #menu-toggle） */
+  #menu-toggle {
+    position: fixed;
+    top: calc(12px + var(--safe-top));
+    left: calc(14px + var(--safe-left));
+    width: 42px; height: 42px;
+    z-index: 1101;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    display: grid; place-items: center;
+    font-size: 22px; line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 8px 26px rgba(0,0,0,.12);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  /* 展开时的遮罩（点击遮罩可收起） */
+  #sidebar-mask {
+    position: fixed; inset: 0; z-index: 1100;
+    background: rgba(0,0,0,.35);
+    display: none;
+  }
+  body.sidebar-open #sidebar-mask { display: block; }
+}
+
+/* ====== 顶部导航永远隐藏（保证你想要的“无顶栏”） ====== */
+.app-nav, .app-nav.no-badge {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important; margin: 0 !important; padding: 0 !important;
+}
+
+/* ====== 锚点偏移（无顶栏） ====== */
+:root { --anchor-offset: 18px; }
+.markdown-section h1[id],
+.markdown-section h2[id],
+.markdown-section h3[id],
+.markdown-section h4[id],
+.markdown-section h5[id],
+.markdown-section h6[id] { scroll-margin-top: var(--anchor-offset); }
+
