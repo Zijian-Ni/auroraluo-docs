@@ -350,3 +350,1030 @@ body.sidebar-open #sidebar-mask {
   opacity: 0 !important;
   pointer-events: none !important;
 }
+
+/* ===============================================
+   🎨 Aurora Luo 美化增强 - 动画与交互
+   =============================================== */
+
+/* —— Hero 区域样式 —— */
+.hero-section {
+  text-align: center;
+  padding: 4rem 2rem 3rem;
+  margin-bottom: 3rem;
+  background: linear-gradient(135deg, rgba(124, 77, 255, 0.08) 0%, rgba(0, 212, 255, 0.08) 100%);
+  border-radius: 24px;
+  border: 1px solid var(--border);
+  backdrop-filter: blur(10px);
+  animation: fadeInUp 0.8s ease-out;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 背景装饰动画 */
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(124, 77, 255, 0.1) 0%, transparent 70%);
+  animation: rotate 20s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.aurora-logo {
+  font-size: 5rem;
+  margin-bottom: 1rem;
+  animation: float 3s ease-in-out infinite;
+  display: inline-block;
+  filter: drop-shadow(0 0 20px rgba(124, 77, 255, 0.5));
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #7c4dff 0%, #00d4ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 3rem;
+  font-weight: 700;
+  margin: 1rem 0;
+  animation: gradientShift 3s ease infinite;
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes gradientShift {
+  0%, 100% { filter: hue-rotate(0deg); }
+  50% { filter: hue-rotate(20deg); }
+}
+
+.subtitle {
+  font-size: 1.3rem;
+  color: var(--muted);
+  margin-top: 0.5rem;
+  opacity: 0;
+  animation: fadeIn 1s ease-out 0.3s forwards;
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* —— 时间线样式 —— */
+.timeline {
+  position: relative;
+  padding: 2rem 0 2rem 2rem;
+  margin: 2rem 0;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--theme-color), #00d4ff);
+  border-radius: 3px;
+  box-shadow: 0 0 10px rgba(124, 77, 255, 0.3);
+}
+
+.timeline > p {
+  position: relative;
+  padding-left: 2rem;
+  margin: 2rem 0;
+  animation: slideInLeft 0.6s ease-out;
+}
+
+.timeline > p::before {
+  content: '';
+  position: absolute;
+  left: -0.6rem;
+  top: 0.3rem;
+  width: 1.2rem;
+  height: 1.2rem;
+  background: var(--theme-color);
+  border: 3px solid var(--card);
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px rgba(124, 77, 255, 0.2);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(124, 77, 255, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(124, 77, 255, 0);
+  }
+}
+
+/* —— 场景网格 —— */
+.scenario-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.scenario-grid > p {
+  background: var(--card);
+  padding: 1.5rem;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  transition: all 0.3s ease;
+  animation: fadeInUp 0.6s ease-out;
+  backdrop-filter: blur(10px);
+}
+
+.scenario-grid > p:hover {
+  transform: translateY(-8px) scale(1.02);
+  border-color: var(--theme-color);
+  box-shadow: 0 12px 40px rgba(124, 77, 255, 0.2);
+}
+
+.scenario-grid > p strong {
+  display: block;
+  font-size: 1.2rem;
+  margin-bottom: 0.8rem;
+  color: var(--theme-color);
+}
+
+/* —— 卡片增强 —— */
+.markdown-section > blockquote {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.markdown-section > blockquote:hover {
+  transform: translateX(8px);
+  border-left-width: 6px;
+  box-shadow: 0 8px 24px rgba(124, 77, 255, 0.15);
+}
+
+.markdown-section > blockquote::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, transparent, var(--theme-color), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.markdown-section > blockquote:hover::after {
+  opacity: 0.5;
+}
+
+/* —— 链接悬停效果 —— */
+.markdown-section a {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.markdown-section a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--theme-color), #00d4ff);
+  transition: width 0.3s ease;
+}
+
+.markdown-section a:hover::after {
+  width: 100%;
+}
+
+/* —— 代码块美化 —— */
+.markdown-section pre {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.markdown-section pre:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+/* —— 标题装饰 —— */
+.markdown-section h1,
+.markdown-section h2,
+.markdown-section h3 {
+  position: relative;
+  padding-left: 1rem;
+}
+
+.markdown-section h1::before,
+.markdown-section h2::before,
+.markdown-section h3::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 60%;
+  background: linear-gradient(180deg, var(--theme-color), #00d4ff);
+  border-radius: 2px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.markdown-section h1:hover::before,
+.markdown-section h2:hover::before,
+.markdown-section h3:hover::before {
+  opacity: 1;
+}
+
+/* —— 响应式优化 —— */
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 3rem 1.5rem 2rem;
+  }
+
+  .aurora-logo {
+    font-size: 3.5rem;
+  }
+
+  .gradient-text {
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    font-size: 1.1rem;
+  }
+
+  .scenario-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* —— 平滑滚动 —— */
+html {
+  scroll-behavior: smooth;
+}
+
+/* —— 选中文本样式 —— */
+::selection {
+  background: rgba(124, 77, 255, 0.3);
+  color: var(--text);
+}
+
+::-moz-selection {
+  background: rgba(124, 77, 255, 0.3);
+  color: var(--text);
+}
+
+/* ===============================================
+   📖 故事页面专属样式
+   =============================================== */
+
+/* —— 故事 Hero 区域 —— */
+.story-hero {
+  text-align: center;
+  padding: 4rem 2rem;
+  margin: 2rem 0;
+  background: linear-gradient(135deg, rgba(124, 77, 255, 0.05) 0%, rgba(0, 212, 255, 0.05) 100%);
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.aurora-animation {
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+  animation: auroral 3s ease-in-out infinite;
+  display: inline-block;
+}
+
+@keyframes auroral {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    filter: brightness(1);
+  }
+  50% {
+    transform: translateY(-10px) scale(1.1);
+    filter: brightness(1.3);
+  }
+}
+
+.story-title {
+  font-size: 2.5rem;
+  background: linear-gradient(135deg, #7c4dff 0%, #00d4ff 50%, #7c4dff 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientFlow 3s ease infinite;
+}
+
+@keyframes gradientFlow {
+  0%, 100% { background-position: 0% center; }
+  50% { background-position: 100% center; }
+}
+
+/* —— 角色卡片样式 —— */
+.character-card {
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 20px;
+  padding: 2.5rem;
+  margin: 2rem 0;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(124, 77, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.character-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #7c4dff, #00d4ff, #7c4dff);
+  background-size: 200% auto;
+  animation: gradientFlow 3s linear infinite;
+}
+
+.character-card h3 {
+  color: var(--theme-color);
+  margin-top: 1.5rem;
+  padding-left: 0 !important;
+}
+
+.character-card h3:first-child {
+  margin-top: 0;
+}
+
+.character-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.character-card li {
+  padding: 0.5rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.character-card li::before {
+  content: '✨';
+  position: absolute;
+  left: 0;
+  animation: twinkle 2s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* —— 故事结尾样式 —— */
+.story-end {
+  text-align: center;
+  padding: 3rem 2rem;
+  margin: 3rem 0;
+  background: linear-gradient(135deg, rgba(124, 77, 255, 0.08) 0%, rgba(0, 212, 255, 0.08) 100%);
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.story-end::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(124, 77, 255, 0.1) 0%, transparent 70%);
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+
+.story-end p {
+  position: relative;
+  z-index: 1;
+  font-size: 1.2rem;
+  margin: 0.5rem 0;
+  color: var(--muted);
+}
+
+.story-end p:first-child {
+  font-size: 1.5rem;
+  font-weight: bold;
+  background: linear-gradient(135deg, #7c4dff 0%, #00d4ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* —— 引用块增强（用于小落的信件） —— */
+.markdown-section blockquote > p:first-child > em:first-child {
+  display: block;
+  text-align: right;
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px dashed var(--border);
+}
+
+/* —— 章节标题样式 —— */
+.markdown-section h2 {
+  position: relative;
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+}
+
+.markdown-section h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 1rem;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--theme-color), transparent);
+}
+
+/* —— Mermaid 图表优化 —— */
+.markdown-section .mermaid {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  margin: 2rem 0;
+}
+
+/* —— 代码块（用于展示小落的代码） —— */
+.markdown-section pre code {
+  font-family: 'Fira Code', 'Consolas', 'Monaco', monospace;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+/* —— 特殊强调样式 —— */
+.markdown-section strong {
+  color: var(--theme-color);
+  font-weight: 600;
+}
+
+/* —— 列表项图标动画 —— */
+.markdown-section ul li {
+  position: relative;
+  transition: transform 0.2s ease;
+}
+
+.markdown-section ul li:hover {
+  transform: translateX(5px);
+}
+
+/* —— 响应式调整 —— */
+@media (max-width: 768px) {
+  .story-hero {
+    padding: 2.5rem 1.5rem;
+  }
+
+  .aurora-animation {
+    font-size: 3rem;
+  }
+
+  .story-title {
+    font-size: 1.8rem;
+  }
+
+  .character-card {
+    padding: 1.5rem;
+  }
+
+  .story-end {
+    padding: 2rem 1.5rem;
+  }
+}
+
+/* ===============================================
+   ✨ 特性展示页面样式
+   =============================================== */
+
+/* —— Features Hero —— */
+.features-hero {
+  text-align: center;
+  padding: 4rem 2rem 3rem;
+  margin-bottom: 3rem;
+  background: linear-gradient(135deg, rgba(124, 77, 255, 0.1) 0%, rgba(0, 212, 255, 0.1) 100%);
+  border-radius: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.features-hero::before {
+  content: '✨';
+  position: absolute;
+  font-size: 15rem;
+  opacity: 0.05;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: rotate 20s linear infinite;
+}
+
+.features-title {
+  font-size: 3rem;
+  background: linear-gradient(135deg, #7c4dff 0%, #00d4ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 1rem;
+}
+
+.features-subtitle {
+  font-size: 1.3rem;
+  color: var(--muted);
+}
+
+/* —— Feature Cards —— */
+.feature-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 2.5rem;
+  margin: 3rem 0;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, var(--theme-color), #00d4ff);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.feature-card:hover::before {
+  transform: scaleX(1);
+}
+
+.feature-card:hover {
+  border-color: var(--theme-color);
+  box-shadow: 0 16px 48px rgba(124, 77, 255, 0.15);
+  transform: translateY(-4px);
+}
+
+.feature-card h3 {
+  color: var(--theme-color);
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+/* —— Demo Boxes —— */
+.demo-box {
+  background: rgba(124, 77, 255, 0.05);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.chat-demo {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.user-msg,
+.bot-msg {
+  padding: 1rem 1.5rem;
+  border-radius: 18px;
+  max-width: 80%;
+  animation: slideIn 0.3s ease;
+}
+
+.user-msg {
+  background: linear-gradient(135deg, #7c4dff, #9d6fff);
+  color: white;
+  align-self: flex-end;
+  border-bottom-right-radius: 4px;
+}
+
+.bot-msg {
+  background: var(--card);
+  border: 1px solid var(--border);
+  align-self: flex-start;
+  border-bottom-left-radius: 4px;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* —— Memory Timeline —— */
+.memory-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.memory-item {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.memory-time {
+  background: var(--theme-color);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.memory-content {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 1rem;
+  border-radius: 12px;
+  flex: 1;
+}
+
+/* —— RAG Demo —— */
+.rag-demo {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.question {
+  background: linear-gradient(135deg, rgba(124, 77, 255, 0.1), rgba(0, 212, 255, 0.1));
+  padding: 1.5rem;
+  border-radius: 12px;
+  border-left: 4px solid var(--theme-color);
+  font-weight: 600;
+}
+
+.answer {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 1.5rem;
+  border-radius: 12px;
+  line-height: 1.8;
+}
+
+/* —— Persona Demo —— */
+.persona-demo {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.persona-card {
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.persona-card:hover {
+  border-color: var(--theme-color);
+  transform: scale(1.05);
+  box-shadow: 0 8px 24px rgba(124, 77, 255, 0.2);
+}
+
+.persona-type {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: var(--theme-color);
+}
+
+.persona-example {
+  font-style: italic;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* —— Plugins Grid —— */
+.plugins-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.plugins-grid > p {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.plugins-grid > p:hover {
+  border-color: var(--theme-color);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(124, 77, 255, 0.15);
+}
+
+.plugins-grid > p strong {
+  display: block;
+  font-size: 1.2rem;
+  color: var(--theme-color);
+  margin-bottom: 1rem;
+}
+
+/* —— Security Principles —— */
+.security-principles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.security-principles > p {
+  background: rgba(124, 77, 255, 0.05);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.security-principles > p strong {
+  display: block;
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+
+/* —— Comparison Table —— */
+.comparison-table {
+  margin: 2rem 0;
+}
+
+.comparison-table table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--card);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.comparison-table th {
+  background: linear-gradient(135deg, var(--theme-color), #00d4ff);
+  color: white;
+  padding: 1rem;
+  text-align: left;
+}
+
+.comparison-table td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.comparison-table tr:last-child td {
+  border-bottom: none;
+}
+
+.comparison-table tr:hover {
+  background: rgba(124, 77, 255, 0.05);
+}
+
+/* —— Metrics Grid —— */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.metric-card {
+  text-align: center;
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem;
+  transition: all 0.3s ease;
+}
+
+.metric-card:hover {
+  border-color: var(--theme-color);
+  transform: scale(1.05);
+  box-shadow: 0 8px 24px rgba(124, 77, 255, 0.2);
+}
+
+.metric-value {
+  font-size: 2.5rem;
+  font-weight: bold;
+  background: linear-gradient(135deg, #7c4dff, #00d4ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 0.5rem;
+}
+
+.metric-label {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+/* —— Roadmap —— */
+.roadmap {
+  background: linear-gradient(135deg, rgba(124, 77, 255, 0.08) 0%, rgba(0, 212, 255, 0.08) 100%);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 2rem;
+  margin: 2rem 0;
+}
+
+.roadmap p strong {
+  display: block;
+  font-size: 1.3rem;
+  color: var(--theme-color);
+  margin-bottom: 1rem;
+}
+
+/* —— Tips Section —— */
+.tips-section {
+  background: var(--card);
+  border-left: 4px solid var(--theme-color);
+  border-radius: 12px;
+  padding: 2rem;
+  margin: 2rem 0;
+}
+
+.tips-section p strong {
+  display: block;
+  font-size: 1.3rem;
+  color: var(--theme-color);
+  margin-bottom: 1.5rem;
+}
+
+.tips-section ol {
+  counter-reset: tips-counter;
+  list-style: none;
+  padding-left: 0;
+}
+
+.tips-section li {
+  counter-increment: tips-counter;
+  margin: 1.5rem 0;
+  padding-left: 3rem;
+  position: relative;
+}
+
+.tips-section li::before {
+  content: counter(tips-counter);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 2rem;
+  height: 2rem;
+  background: var(--theme-color);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+/* —— Special Features —— */
+.special-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.special-features > h3 {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--theme-color);
+}
+
+/* —— CTA Section —— */
+.cta-section {
+  text-align: center;
+  padding: 3rem 2rem;
+  margin: 3rem 0;
+  background: linear-gradient(135deg, rgba(124, 77, 255, 0.1) 0%, rgba(0, 212, 255, 0.1) 100%);
+  border-radius: 20px;
+  border: 2px solid var(--theme-color);
+}
+
+.cta-section h3 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: var(--theme-color);
+}
+
+.cta-section p {
+  font-size: 1.2rem;
+}
+
+.cta-section a {
+  color: var(--theme-color);
+  font-weight: bold;
+  text-decoration: none;
+  border-bottom: 2px solid var(--theme-color);
+  transition: all 0.3s ease;
+}
+
+.cta-section a:hover {
+  color: #00d4ff;
+  border-color: #00d4ff;
+}
+
+/* —— 响应式 —— */
+@media (max-width: 768px) {
+  .features-title {
+    font-size: 2rem;
+  }
+
+  .features-subtitle {
+    font-size: 1.1rem;
+  }
+
+  .feature-card {
+    padding: 1.5rem;
+  }
+
+  .user-msg,
+  .bot-msg {
+    max-width: 90%;
+  }
+
+  .memory-item {
+    flex-direction: column;
+  }
+
+  .metric-value {
+    font-size: 2rem;
+  }
+
+  .cta-section h3 {
+    font-size: 1.5rem;
+  }
+}
