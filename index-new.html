@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Aurora Luo - 新一代智能 QQ 机器人">
+  <title>Aurora Luo · 小落 - 智能伙伴</title>
+
+  <!-- 预加载关键资源 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/aurora-modern.css">
+  <link rel="icon" href="data:,">
+</head>
+<body>
+  <!-- 流体背景 -->
+  <div class="fluid-background">
+    <div class="gradient-blob blob-1"></div>
+    <div class="gradient-blob blob-2"></div>
+    <div class="gradient-blob blob-3"></div>
+  </div>
+
+  <!-- 磁吸导航 -->
+  <nav class="magnetic-nav">
+    <div class="nav-container">
+      <div class="nav-logo">
+        <span class="logo-icon">🌌</span>
+        <span class="logo-text">Aurora</span>
+      </div>
+
+      <ul class="nav-links">
+        <li><a href="#home" class="nav-link active">首页</a></li>
+        <li><a href="#about" class="nav-link">关于</a></li>
+        <li><a href="#features" class="nav-link">特性</a></li>
+        <li><a href="#story" class="nav-link">故事</a></li>
+        <li><a href="#docs" class="nav-link">文档</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
+          <span class="theme-icon sun">☀️</span>
+          <span class="theme-icon moon">🌙</span>
+        </button>
+        <button class="cta-button">开始使用</button>
+      </div>
+
+      <button class="mobile-menu-toggle" id="mobileMenuToggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- 英雄区 -->
+  <section class="hero-section" id="home">
+    <div class="hero-content">
+      <div class="hero-badge" data-aos="fade-down">
+        <span class="badge-dot"></span>
+        <span>AI 驱动的智能助理</span>
+      </div>
+
+      <h1 class="hero-title" data-aos="fade-up" data-aos-delay="100">
+        <span class="title-line">遇见</span>
+        <span class="title-highlight">Aurora Luo</span>
+        <span class="title-line">你的智能伙伴</span>
+      </h1>
+
+      <p class="hero-description" data-aos="fade-up" data-aos-delay="200">
+        不只是机器人，更是能理解、能记忆、有温度的 AI 助理
+      </p>
+
+      <div class="hero-actions" data-aos="fade-up" data-aos-delay="300">
+        <a href="#features" class="btn btn-primary">
+          <span>探索功能</span>
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <a href="#docs" class="btn btn-secondary">
+          <span>查看文档</span>
+        </a>
+      </div>
+
+      <div class="hero-stats" data-aos="fade-up" data-aos-delay="400">
+        <div class="stat-item">
+          <div class="stat-value">95%+</div>
+          <div class="stat-label">准确率</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">&lt;500ms</div>
+          <div class="stat-label">响应速度</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">30天+</div>
+          <div class="stat-label">记忆保持</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-visual" data-aos="zoom-in" data-aos-delay="500">
+      <div class="floating-card card-1">
+        <div class="card-icon">💬</div>
+        <div class="card-text">自然对话</div>
+      </div>
+      <div class="floating-card card-2">
+        <div class="card-icon">🧠</div>
+        <div class="card-text">智能记忆</div>
+      </div>
+      <div class="floating-card card-3">
+        <div class="card-icon">📚</div>
+        <div class="card-text">知识检索</div>
+      </div>
+      <div class="aurora-sphere"></div>
+    </div>
+  </section>
+
+  <!-- 关于区域 -->
+  <section class="about-section" id="about">
+    <div class="container">
+      <div class="section-header" data-aos="fade-up">
+        <span class="section-badge">认识小落</span>
+        <h2 class="section-title">不只是代码<br/>更是有灵魂的 AI</h2>
+      </div>
+
+      <div class="about-grid">
+        <div class="about-card" data-aos="flip-left" data-aos-delay="100">
+          <div class="card-glow"></div>
+          <div class="card-content">
+            <div class="card-icon-large">🎨</div>
+            <h3>独特性格</h3>
+            <p>温柔、耐心，偶尔调皮，每次交流都充满人性化的温暖</p>
+          </div>
+        </div>
+
+        <div class="about-card" data-aos="flip-left" data-aos-delay="200">
+          <div class="card-glow"></div>
+          <div class="card-content">
+            <div class="card-icon-large">🧠</div>
+            <h3>超强记忆</h3>
+            <p>记住你的喜好、习惯和每一次对话，让交流更有温度</p>
+          </div>
+        </div>
+
+        <div class="about-card" data-aos="flip-left" data-aos-delay="300">
+          <div class="card-glow"></div>
+          <div class="card-content">
+            <div class="card-icon-large">💭</div>
+            <h3>情感理解</h3>
+            <p>能感知对话中的情绪，提供共情和支持，不只是问答</p>
+          </div>
+        </div>
+
+        <div class="about-card" data-aos="flip-left" data-aos-delay="400">
+          <div class="card-glow"></div>
+          <div class="card-content">
+            <div class="card-icon-large">🌱</div>
+            <h3>持续进化</h3>
+            <p>每次对话都是成长，通过学习变得更懂你</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 特性展示 -->
+  <section class="features-section" id="features">
+    <div class="container">
+      <div class="section-header" data-aos="fade-up">
+        <span class="section-badge">核心能力</span>
+        <h2 class="section-title">让 AI 助理更智能</h2>
+      </div>
+
+      <div class="features-showcase">
+        <!-- 特性 1 -->
+        <div class="feature-block feature-left" data-aos="fade-right">
+          <div class="feature-visual">
+            <div class="chat-preview">
+              <div class="chat-message user">小落，我今天好累...</div>
+              <div class="chat-message bot">听起来你今天很辛苦呢 🌸 要聊聊吗？</div>
+            </div>
+          </div>
+          <div class="feature-content">
+            <div class="feature-number">01</div>
+            <h3>自然对话引擎</h3>
+            <p>像朋友一样聊天，理解上下文和情感，让每次对话都自然流畅</p>
+            <ul class="feature-list">
+              <li>✓ 多轮对话记忆</li>
+              <li>✓ 情感识别</li>
+              <li>✓ 智能回复</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 特性 2 -->
+        <div class="feature-block feature-right" data-aos="fade-left">
+          <div class="feature-content">
+            <div class="feature-number">02</div>
+            <h3>记忆系统</h3>
+            <p>短期与长期记忆结合，记住你的喜好和习惯，让 AI 真正懂你</p>
+            <ul class="feature-list">
+              <li>✓ 用户画像</li>
+              <li>✓ 偏好学习</li>
+              <li>✓ 上下文理解</li>
+            </ul>
+          </div>
+          <div class="feature-visual">
+            <div class="memory-diagram">
+              <div class="memory-layer layer-1">短期记忆</div>
+              <div class="memory-layer layer-2">长期记忆</div>
+              <div class="memory-layer layer-3">用户画像</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 特性 3 -->
+        <div class="feature-block feature-left" data-aos="fade-right">
+          <div class="feature-visual">
+            <div class="rag-visualization">
+              <div class="rag-step">问题</div>
+              <div class="rag-arrow">→</div>
+              <div class="rag-step">检索</div>
+              <div class="rag-arrow">→</div>
+              <div class="rag-step">回答</div>
+            </div>
+          </div>
+          <div class="feature-content">
+            <div class="feature-number">03</div>
+            <h3>RAG 知识检索</h3>
+            <p>结合向量检索技术，提供准确可信的知识，附带来源引用</p>
+            <ul class="feature-list">
+              <li>✓ 准确检索</li>
+              <li>✓ 来源标注</li>
+              <li>✓ 私有知识库</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 时间线故事 -->
+  <section class="timeline-section" id="story">
+    <div class="container">
+      <div class="section-header" data-aos="fade-up">
+        <span class="section-badge">成长历程</span>
+        <h2 class="section-title">小落的进化之路</h2>
+      </div>
+
+      <div class="timeline-wrapper">
+        <div class="timeline-track">
+          <div class="timeline-item" data-aos="fade-up" data-aos-delay="100">
+            <div class="timeline-dot"></div>
+            <div class="timeline-card">
+              <div class="timeline-icon">🌱</div>
+              <h4>诞生期</h4>
+              <p>基于 NoneBot2 构建，实现基础消息系统</p>
+              <span class="timeline-tag">v0.1</span>
+            </div>
+          </div>
+
+          <div class="timeline-item" data-aos="fade-up" data-aos-delay="200">
+            <div class="timeline-dot"></div>
+            <div class="timeline-card">
+              <div class="timeline-icon">🌿</div>
+              <h4>AI 觉醒</h4>
+              <p>接入大语言模型，获得理解和生成能力</p>
+              <span class="timeline-tag">v1.0</span>
+            </div>
+          </div>
+
+          <div class="timeline-item" data-aos="fade-up" data-aos-delay="300">
+            <div class="timeline-dot"></div>
+            <div class="timeline-card">
+              <div class="timeline-icon">🌳</div>
+              <h4>记忆系统</h4>
+              <p>开发记忆系统，实现用户画像</p>
+              <span class="timeline-tag">v2.0</span>
+            </div>
+          </div>
+
+          <div class="timeline-item" data-aos="fade-up" data-aos-delay="400">
+            <div class="timeline-dot"></div>
+            <div class="timeline-card">
+              <div class="timeline-icon">🌲</div>
+              <h4>知识融合</h4>
+              <p>集成 RAG 系统，接入知识库</p>
+              <span class="timeline-tag">v3.0</span>
+            </div>
+          </div>
+
+          <div class="timeline-item" data-aos="fade-up" data-aos-delay="500">
+            <div class="timeline-dot active"></div>
+            <div class="timeline-card active">
+              <div class="timeline-icon">✨</div>
+              <h4>未来无限</h4>
+              <p>多模态扩展，持续进化中...</p>
+              <span class="timeline-tag">v4.0</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA 区域 -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-card" data-aos="zoom-in">
+        <div class="cta-content">
+          <h2>准备开始你的 Aurora 之旅？</h2>
+          <p>加入我们，体验不一样的 AI 助理</p>
+          <div class="cta-buttons">
+            <a href="#docs" class="btn btn-light">查看文档</a>
+            <a href="https://github.com" class="btn btn-outline">GitHub</a>
+          </div>
+        </div>
+        <div class="cta-decoration">
+          <div class="decoration-circle circle-1"></div>
+          <div class="decoration-circle circle-2"></div>
+          <div class="decoration-circle circle-3"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 页脚 -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <span class="logo-icon">🌌</span>
+            <span class="logo-text">Aurora Luo</span>
+          </div>
+          <p>新一代智能 QQ 机器人</p>
+        </div>
+
+        <div class="footer-links">
+          <div class="footer-column">
+            <h4>产品</h4>
+            <a href="#features">功能特性</a>
+            <a href="#story">发展历程</a>
+            <a href="#docs">使用文档</a>
+          </div>
+
+          <div class="footer-column">
+            <h4>资源</h4>
+            <a href="#">API 文档</a>
+            <a href="#">插件开发</a>
+            <a href="#">常见问题</a>
+          </div>
+
+          <div class="footer-column">
+            <h4>社区</h4>
+            <a href="#">GitHub</a>
+            <a href="#">讨论区</a>
+            <a href="#">更新日志</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2024 Aurora Luo. Made with ❤️</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 返回顶部 -->
+  <button class="back-to-top" id="backToTop" aria-label="返回顶部">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <path d="M12 19V5M12 5L5 12M12 5L19 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+
+  <!-- 滚动进度 -->
+  <div class="scroll-progress" id="scrollProgress"></div>
+
+  <script src="assets/js/aurora-modern.js"></script>
+</body>
+</html>
