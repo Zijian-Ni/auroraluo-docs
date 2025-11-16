@@ -1377,3 +1377,492 @@ html {
     font-size: 1.5rem;
   }
 }
+
+/* ===============================================
+   ⚡ 性能优化与增强
+   =============================================== */
+
+/* —— 硬件加速 —— */
+.hero-section,
+.aurora-logo,
+.gradient-text,
+.feature-card,
+.scenario-grid > p,
+.metric-card,
+.persona-card,
+#back-to-top,
+#menu-toggle,
+#theme-switch-btn {
+  will-change: transform;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+/* —— 减少重绘 —— */
+.hero-section::before,
+.features-hero::before,
+.story-end::before {
+  will-change: transform, opacity;
+}
+
+/* —— 暗色模式优化 —— */
+:root[data-theme="dark"] {
+  /* 提高暗色模式对比度 */
+  --bg: #0a0d12;
+  --text: #e8edf3;
+  --muted: #a0aab8;
+  --card: rgba(18, 22, 28, 0.7);
+  --border: rgba(104, 114, 131, 0.3);
+  --quote-bg: rgba(124, 77, 255, 0.15);
+  --code-bg: rgba(255, 255, 255, 0.05);
+}
+
+/* 暗色模式下的粒子颜色 */
+:root[data-theme="dark"] #particles-canvas {
+  opacity: 0.25;
+  mix-blend-mode: screen;
+}
+
+/* 暗色模式下的卡片阴影 */
+:root[data-theme="dark"] .feature-card:hover,
+:root[data-theme="dark"] .scenario-grid > p:hover,
+:root[data-theme="dark"] .metric-card:hover {
+  box-shadow: 0 16px 48px rgba(124, 77, 255, 0.25);
+}
+
+/* 暗色模式下的代码块 */
+:root[data-theme="dark"] .markdown-section pre {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border-color: rgba(124, 77, 255, 0.2);
+}
+
+/* —— 打印优化 —— */
+@media print {
+  /* 隐藏不必要元素 */
+  #back-to-top,
+  #menu-toggle,
+  #aurora-theme-toggle,
+  #reading-progress,
+  #particles-canvas,
+  .sidebar,
+  #sidebar-mask {
+    display: none !important;
+  }
+
+  /* 重置布局 */
+  .content {
+    margin-left: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* 优化颜色 */
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  /* 去除动画 */
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* —— 减少动画（用户偏好） —— */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .hero-section::before,
+  .aurora-logo,
+  .timeline > p::before {
+    animation: none !important;
+  }
+
+  #particles-canvas {
+    display: none !important;
+  }
+}
+
+/* —— 触摸设备优化 —— */
+@media (hover: none) and (pointer: coarse) {
+  /* 移除悬停效果 */
+  .feature-card:hover::before,
+  .markdown-section blockquote:hover::after,
+  .markdown-section a:hover::after {
+    display: none;
+  }
+
+  /* 增大可点击区域 */
+  a, button {
+    min-height: 44px;
+    min-width: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* 移除 3D 效果 */
+  .scenario-grid > p,
+  .persona-card,
+  .metric-card {
+    transform: none !important;
+  }
+}
+
+/* —— 高对比度模式 —— */
+@media (prefers-contrast: high) {
+  :root {
+    --border: rgba(124, 77, 255, 0.5);
+    --text: #000;
+    --bg: #fff;
+  }
+
+  :root[data-theme="dark"] {
+    --border: rgba(124, 77, 255, 0.7);
+    --text: #fff;
+    --bg: #000;
+  }
+
+  .feature-card,
+  .scenario-grid > p {
+    border-width: 2px;
+  }
+}
+
+/* —— 加载状态 —— */
+.loading {
+  position: relative;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid var(--theme-color);
+  border-radius: 50%;
+  border-top-color: transparent;
+  animation: spin 0.6s linear infinite;
+}
+
+/* —— 焦点可见性 —— */
+*:focus-visible {
+  outline: 2px solid var(--theme-color);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* —— 图片优化 —— */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+img[data-src] {
+  background: linear-gradient(90deg, var(--card) 0%, rgba(124, 77, 255, 0.1) 50%, var(--card) 100%);
+  background-size: 200% 100%;
+  animation: skeleton 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* —— 提升滚动性能 —— */
+.sidebar,
+.content {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+/* —— 防止文本选择（按钮等） —— */
+button,
+.aurora-logo,
+#menu-toggle,
+#theme-switch-btn,
+#back-to-top {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+/* —— 小屏优化（额外断点） —— */
+@media (max-width: 480px) {
+  .hero-section {
+    padding: 2rem 1rem;
+  }
+
+  .aurora-logo {
+    font-size: 2.5rem;
+  }
+
+  .gradient-text {
+    font-size: 1.5rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .timeline {
+    padding-left: 1rem;
+  }
+
+  .timeline > p {
+    padding-left: 1.5rem;
+    font-size: 0.9rem;
+  }
+
+  .scenario-grid,
+  .plugins-grid,
+  .metrics-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .feature-card,
+  .character-card {
+    padding: 1rem;
+  }
+
+  .chat-demo .user-msg,
+  .chat-demo .bot-msg {
+    max-width: 95%;
+    font-size: 0.9rem;
+  }
+}
+
+/* —— 平板优化 —— */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .hero-section {
+    padding: 3.5rem 2rem;
+  }
+
+  .gradient-text {
+    font-size: 2.5rem;
+  }
+
+  .scenario-grid,
+  .plugins-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* —— 超大屏优化 —— */
+@media (min-width: 1920px) {
+  .content {
+    max-width: 1400px;
+    margin-left: calc(var(--sidebar-width) + (100vw - var(--sidebar-width) - 1400px) / 2);
+  }
+
+  .hero-section {
+    padding: 5rem 3rem;
+  }
+
+  .aurora-logo {
+    font-size: 6rem;
+  }
+
+  .gradient-text {
+    font-size: 3.5rem;
+  }
+}
+
+/* —— 工具提示 —— */
+[title] {
+  position: relative;
+  cursor: help;
+}
+
+/* —— 链接活动状态 —— */
+a:active {
+  transform: scale(0.98);
+}
+
+/* —— 按钮活动状态 —— */
+button:active {
+  transform: scale(0.95);
+}
+
+/* —— 优化表格 —— */
+.markdown-section table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2rem 0;
+  overflow-x: auto;
+  display: block;
+}
+
+.markdown-section table thead {
+  background: var(--theme-color);
+  color: white;
+}
+
+.markdown-section table th,
+.markdown-section table td {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border);
+}
+
+.markdown-section table tr:hover {
+  background: rgba(124, 77, 255, 0.05);
+}
+
+/* —— 优化列表 —— */
+.markdown-section ul,
+.markdown-section ol {
+  padding-left: 2rem;
+  line-height: 1.8;
+}
+
+.markdown-section li {
+  margin: 0.5rem 0;
+}
+
+/* —— 水平分隔线 —— */
+.markdown-section hr {
+  border: none;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--theme-color), transparent);
+  margin: 3rem 0;
+  opacity: 0.3;
+}
+
+/* —— 内联标记 —— */
+.markdown-section mark {
+  background: rgba(124, 77, 255, 0.2);
+  color: inherit;
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+/* —— 键盘按键样式 —— */
+.markdown-section kbd {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  box-shadow: 0 2px 0 var(--border);
+  padding: 0.2em 0.5em;
+  font-family: 'Consolas', 'Monaco', monospace;
+  font-size: 0.9em;
+}
+
+/* —— 注释样式 —— */
+.markdown-section .note,
+.markdown-section .tip,
+.markdown-section .warning {
+  padding: 1rem 1.5rem;
+  margin: 1.5rem 0;
+  border-left: 4px solid;
+  border-radius: 8px;
+  background: var(--card);
+}
+
+.markdown-section .note {
+  border-color: #3b82f6;
+  background: rgba(59, 130, 246, 0.1);
+}
+
+.markdown-section .tip {
+  border-color: #10b981;
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.markdown-section .warning {
+  border-color: #f59e0b;
+  background: rgba(245, 158, 11, 0.1);
+}
+
+/* —— 徽章 —— */
+.badge {
+  display: inline-block;
+  padding: 0.25em 0.6em;
+  font-size: 0.85em;
+  font-weight: 600;
+  line-height: 1;
+  color: white;
+  background: var(--theme-color);
+  border-radius: 12px;
+  vertical-align: middle;
+}
+
+/* —— 进度条 —— */
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: var(--card);
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 1rem 0;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--theme-color), #00d4ff);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+/* —— 骨架屏 —— */
+.skeleton {
+  background: linear-gradient(90deg, var(--card) 0%, rgba(124, 77, 255, 0.1) 50%, var(--card) 100%);
+  background-size: 200% 100%;
+  animation: skeleton 1.5s ease-in-out infinite;
+  border-radius: 8px;
+}
+
+.skeleton-text {
+  height: 1em;
+  margin: 0.5em 0;
+}
+
+.skeleton-title {
+  height: 2em;
+  width: 60%;
+  margin: 1em 0;
+}
+
+/* —— 空状态 —— */
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--muted);
+}
+
+.empty-state-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+/* —— 错误状态 —— */
+.error-message {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+}
+
+/* —— 成功状态 —— */
+.success-message {
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #10b981;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+}
