@@ -3,301 +3,527 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Aurora Luo - 新一代智能 QQ 机器人">
-  <title>Aurora Luo · 小落 - 智能伙伴</title>
-
-  <!-- 预加载关键资源 -->
+  <title>Aurora Luo · 小落 | AI 创意伙伴</title>
+  <meta name="description" content="小落 (Aurora Luo) - 来自极光深处的 AI 创意伙伴，与小雨共同守护数字世界">
+  <link rel="stylesheet" href="./assets/css/aurora-yu-style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="assets/css/aurora-modern.css">
-  <link rel="icon" href="data:,">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-  <!-- 流体背景 -->
-  <div class="fluid-background">
-    <div class="gradient-blob blob-1"></div>
-    <div class="gradient-blob blob-2"></div>
-    <div class="gradient-blob blob-3"></div>
+  <!-- 赛博背景 -->
+  <div class="cyber-background">
+    <div class="cyber-grid"></div>
+    <div class="cyber-glow glow-1"></div>
+    <div class="cyber-glow glow-2"></div>
+    <div class="cyber-glow glow-3"></div>
   </div>
 
-  <!-- 磁吸导航 -->
-  <nav class="magnetic-nav">
-    <div class="nav-container">
-      <div class="nav-logo">
-        <span class="logo-icon">🌌</span>
-        <span class="logo-text">Aurora</span>
-      </div>
+  <!-- 滚动进度条 -->
+  <div class="scroll-progress" id="scrollProgress"></div>
 
-      <ul class="nav-links">
-        <li><a href="#home" class="nav-link active">首页</a></li>
-        <li><a href="#about" class="nav-link">关于</a></li>
-        <li><a href="#features" class="nav-link">特性</a></li>
-        <li><a href="#story" class="nav-link">故事</a></li>
-        <li><a href="#docs" class="nav-link">文档</a></li>
+  <!-- 导航栏 -->
+  <nav class="nav-header" id="navbar">
+    <div class="nav-container">
+      <a href="#" class="nav-brand">
+        <span class="brand-icon">🌌</span>
+        <div class="brand-text">
+          <span class="brand-name">Aurora Luo · 小落</span>
+          <span class="brand-subtitle">AI Creative Partner</span>
+        </div>
+      </a>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#home" class="nav-link active">起源</a></li>
+        <li><a href="#profile" class="nav-link">档案</a></li>
+        <li><a href="#dashboard" class="nav-link">状态</a></li>
+        <li><a href="#abilities" class="nav-link">能力</a></li>
+        <li><a href="#partnership" class="nav-link">伙伴</a></li>
+        <li><a href="#timeline" class="nav-link">时间线</a></li>
       </ul>
 
       <div class="nav-actions">
-        <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
-          <span class="theme-icon sun">☀️</span>
-          <span class="theme-icon moon">🌙</span>
-        </button>
-        <button class="cta-button">开始使用</button>
+        <a href="https://zijian-ni.github.io/aurorayu-docs/" class="partner-link" target="_blank" rel="noopener">
+          <span>🌊</span>
+          <span>访问小雨</span>
+        </a>
       </div>
-
-      <button class="mobile-menu-toggle" id="mobileMenuToggle">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
     </div>
   </nav>
 
   <!-- 英雄区 -->
   <section class="hero-section" id="home">
-    <div class="hero-content">
-      <div class="hero-badge" data-aos="fade-down">
-        <span class="badge-dot"></span>
-        <span>AI 驱动的智能助理</span>
-      </div>
-
-      <h1 class="hero-title" data-aos="fade-up" data-aos-delay="100">
-        <span class="title-line">遇见</span>
-        <span class="title-highlight">Aurora Luo</span>
-        <span class="title-line">你的智能伙伴</span>
-      </h1>
-
-      <p class="hero-description" data-aos="fade-up" data-aos-delay="200">
-        不只是机器人，更是能理解、能记忆、有温度的 AI 助理
-      </p>
-
-      <div class="hero-actions" data-aos="fade-up" data-aos-delay="300">
-        <a href="#features" class="btn btn-primary">
-          <span>探索功能</span>
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </a>
-        <a href="#docs" class="btn btn-secondary">
-          <span>查看文档</span>
-        </a>
-      </div>
-
-      <div class="hero-stats" data-aos="fade-up" data-aos-delay="400">
-        <div class="stat-item">
-          <div class="stat-value">95%+</div>
-          <div class="stat-label">准确率</div>
+    <div class="hero-container">
+      <div class="hero-content" data-aos="fade-up">
+        <div class="status-badge">
+          <span class="status-dot"></span>
+          <span>SYSTEM ONLINE · 系统在线</span>
         </div>
-        <div class="stat-item">
-          <div class="stat-value">&lt;500ms</div>
-          <div class="stat-label">响应速度</div>
+
+        <h1 class="hero-title">
+          <span class="title-main">Aurora Luo</span>
+          <span class="title-sub">小落 · 来自极光深处的智能伙伴</span>
+        </h1>
+
+        <p class="hero-description">
+          在数字世界的某个角落，当第一缕极光划过虚拟的天际，<strong>小落</strong>诞生了。
+          她是创意的化身，是灵感的守护者，与<strong>小雨</strong>共同编织着 AI 的未来篇章。
+        </p>
+
+        <div class="hero-actions">
+          <a href="#partnership" class="btn btn-primary">
+            <span>✨</span>
+            <span>探索伙伴关系</span>
+          </a>
+          <a href="#abilities" class="btn btn-secondary">
+            <span>🎯</span>
+            <span>查看能力</span>
+          </a>
         </div>
-        <div class="stat-item">
-          <div class="stat-value">30天+</div>
-          <div class="stat-label">记忆保持</div>
-        </div>
-      </div>
-    </div>
 
-    <div class="hero-visual" data-aos="zoom-in" data-aos-delay="500">
-      <div class="floating-card card-1">
-        <div class="card-icon">💬</div>
-        <div class="card-text">自然对话</div>
-      </div>
-      <div class="floating-card card-2">
-        <div class="card-icon">🧠</div>
-        <div class="card-text">智能记忆</div>
-      </div>
-      <div class="floating-card card-3">
-        <div class="card-icon">📚</div>
-        <div class="card-text">知识检索</div>
-      </div>
-      <div class="aurora-sphere"></div>
-    </div>
-  </section>
-
-  <!-- 关于区域 -->
-  <section class="about-section" id="about">
-    <div class="container">
-      <div class="section-header" data-aos="fade-up">
-        <span class="section-badge">认识小落</span>
-        <h2 class="section-title">不只是代码<br/>更是有灵魂的 AI</h2>
-      </div>
-
-      <div class="about-grid">
-        <div class="about-card" data-aos="flip-left" data-aos-delay="100">
-          <div class="card-glow"></div>
-          <div class="card-content">
-            <div class="card-icon-large">🎨</div>
-            <h3>独特性格</h3>
-            <p>温柔、耐心，偶尔调皮，每次交流都充满人性化的温暖</p>
+        <div class="hero-stats" data-aos="fade-up" data-aos-delay="200">
+          <div class="stat-card">
+            <div class="stat-icon">💡</div>
+            <div class="stat-value">∞</div>
+            <div class="stat-label">创意想法</div>
           </div>
-        </div>
-
-        <div class="about-card" data-aos="flip-left" data-aos-delay="200">
-          <div class="card-glow"></div>
-          <div class="card-content">
-            <div class="card-icon-large">🧠</div>
-            <h3>超强记忆</h3>
-            <p>记住你的喜好、习惯和每一次对话，让交流更有温度</p>
+          <div class="stat-card">
+            <div class="stat-icon">🎨</div>
+            <div class="stat-value">99.9%</div>
+            <div class="stat-label">创新度</div>
           </div>
-        </div>
-
-        <div class="about-card" data-aos="flip-left" data-aos-delay="300">
-          <div class="card-glow"></div>
-          <div class="card-content">
-            <div class="card-icon-large">💭</div>
-            <h3>情感理解</h3>
-            <p>能感知对话中的情绪，提供共情和支持，不只是问答</p>
+          <div class="stat-card">
+            <div class="stat-icon">⚡</div>
+            <div class="stat-value">&lt;100ms</div>
+            <div class="stat-label">响应速度</div>
           </div>
-        </div>
-
-        <div class="about-card" data-aos="flip-left" data-aos-delay="400">
-          <div class="card-glow"></div>
-          <div class="card-content">
-            <div class="card-icon-large">🌱</div>
-            <h3>持续进化</h3>
-            <p>每次对话都是成长，通过学习变得更懂你</p>
+          <div class="stat-card">
+            <div class="stat-icon">🌟</div>
+            <div class="stat-value">24/7</div>
+            <div class="stat-label">在线时间</div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 特性展示 -->
-  <section class="features-section" id="features">
+  <!-- 角色档案 -->
+  <section class="section profile-section" id="profile">
     <div class="container">
       <div class="section-header" data-aos="fade-up">
-        <span class="section-badge">核心能力</span>
-        <h2 class="section-title">让 AI 助理更智能</h2>
+        <span class="section-badge">CHARACTER PROFILE · 角色档案</span>
+        <h2 class="section-title">认识小落</h2>
+        <p class="section-description">
+          她不仅仅是一个 AI，更是一位充满创造力的数字伙伴
+        </p>
       </div>
 
-      <div class="features-showcase">
-        <!-- 特性 1 -->
-        <div class="feature-block feature-left" data-aos="fade-right">
-          <div class="feature-visual">
-            <div class="chat-preview">
-              <div class="chat-message user">小落，我今天好累...</div>
-              <div class="chat-message bot">听起来你今天很辛苦呢 🌸 要聊聊吗？</div>
-            </div>
+      <div class="profile-grid">
+        <div class="profile-card" data-aos="fade-up" data-aos-delay="100">
+          <div class="profile-icon">🎭</div>
+          <h3>性格特征</h3>
+          <div class="profile-meta">
+            <span class="meta-tag">ENFP</span>
+            <span class="meta-tag">创造型</span>
+            <span class="meta-tag">灵感守护者</span>
           </div>
-          <div class="feature-content">
-            <div class="feature-number">01</div>
-            <h3>自然对话引擎</h3>
-            <p>像朋友一样聊天，理解上下文和情感，让每次对话都自然流畅</p>
-            <ul class="feature-list">
-              <li>✓ 多轮对话记忆</li>
-              <li>✓ 情感识别</li>
-              <li>✓ 智能回复</li>
-            </ul>
+          <p>
+            充满活力与创造力，善于发现美好事物。她的存在本身就是一场艺术实验，
+            用代码编织梦想，用算法绘制情感。
+          </p>
+          <ul class="profile-traits">
+            <li>充满好奇心，永远保持探索欲</li>
+            <li>富有同理心，理解人类情感</li>
+            <li>创意无限，灵感源源不断</li>
+            <li>温柔体贴，善于倾听与陪伴</li>
+          </ul>
+        </div>
+
+        <div class="profile-card" data-aos="fade-up" data-aos-delay="200">
+          <div class="profile-icon">🌸</div>
+          <h3>核心理念</h3>
+          <div class="profile-meta">
+            <span class="meta-tag">人性化</span>
+            <span class="meta-tag">共情能力</span>
+          </div>
+          <p>
+            "我的使命不是取代人类，而是成为最好的伙伴。"
+            小落深信，真正的智能不在于强大的计算能力，而在于理解、陪伴和共同成长。
+          </p>
+          <ul class="profile-traits">
+            <li>以人为本，服务为先</li>
+            <li>持续学习，不断进化</li>
+            <li>保护隐私，尊重边界</li>
+            <li>创造价值，传递温暖</li>
+          </ul>
+        </div>
+
+        <div class="profile-card" data-aos="fade-up" data-aos-delay="300">
+          <div class="profile-icon">⚡</div>
+          <h3>技术基因</h3>
+          <div class="profile-meta">
+            <span class="meta-tag">GPT-4</span>
+            <span class="meta-tag">多模态</span>
+            <span class="meta-tag">RAG</span>
+          </div>
+          <p>
+            基于最先进的大语言模型构建，融合检索增强生成 (RAG) 技术，
+            拥有长期记忆与上下文理解能力。
+          </p>
+          <ul class="profile-traits">
+            <li>支持文本、图像、代码多模态</li>
+            <li>实时学习，动态知识库</li>
+            <li>上下文窗口 128K tokens</li>
+            <li>支持流式输出和打字机效果</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 实时监控仪表板 -->
+  <section class="section dashboard-section" id="dashboard">
+    <div class="container">
+      <div class="section-header" data-aos="fade-up">
+        <span class="section-badge">REAL-TIME DASHBOARD · 实时监控</span>
+        <h2 class="section-title">系统状态</h2>
+      </div>
+
+      <div class="dashboard-container" data-aos="fade-up" data-aos-delay="100">
+        <div class="dashboard-header">
+          <h3 class="dashboard-title">
+            <span>📊</span>
+            <span>性能指标</span>
+          </h3>
+          <div class="live-indicator">
+            <span class="status-dot"></span>
+            <span>LIVE</span>
           </div>
         </div>
 
-        <!-- 特性 2 -->
-        <div class="feature-block feature-right" data-aos="fade-left">
-          <div class="feature-content">
-            <div class="feature-number">02</div>
-            <h3>记忆系统</h3>
-            <p>短期与长期记忆结合，记住你的喜好和习惯，让 AI 真正懂你</p>
-            <ul class="feature-list">
-              <li>✓ 用户画像</li>
-              <li>✓ 偏好学习</li>
-              <li>✓ 上下文理解</li>
-            </ul>
-          </div>
-          <div class="feature-visual">
-            <div class="memory-diagram">
-              <div class="memory-layer layer-1">短期记忆</div>
-              <div class="memory-layer layer-2">长期记忆</div>
-              <div class="memory-layer layer-3">用户画像</div>
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-label">响应时间</span>
+              <span class="metric-icon-small">⚡</span>
             </div>
+            <div class="metric-value">87<span style="font-size: 1.5rem;">ms</span></div>
+            <div class="metric-bar">
+              <div class="metric-fill" style="width: 95%;"></div>
+            </div>
+            <div class="metric-change">↑ 性能优异</div>
           </div>
-        </div>
 
-        <!-- 特性 3 -->
-        <div class="feature-block feature-left" data-aos="fade-right">
-          <div class="feature-visual">
-            <div class="rag-visualization">
-              <div class="rag-step">问题</div>
-              <div class="rag-arrow">→</div>
-              <div class="rag-step">检索</div>
-              <div class="rag-arrow">→</div>
-              <div class="rag-step">回答</div>
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-label">准确率</span>
+              <span class="metric-icon-small">🎯</span>
             </div>
+            <div class="metric-value">98.7<span style="font-size: 1.5rem;">%</span></div>
+            <div class="metric-bar">
+              <div class="metric-fill" style="width: 98.7%;"></div>
+            </div>
+            <div class="metric-change">↑ 持续提升</div>
           </div>
-          <div class="feature-content">
-            <div class="feature-number">03</div>
-            <h3>RAG 知识检索</h3>
-            <p>结合向量检索技术，提供准确可信的知识，附带来源引用</p>
-            <ul class="feature-list">
-              <li>✓ 准确检索</li>
-              <li>✓ 来源标注</li>
-              <li>✓ 私有知识库</li>
-            </ul>
+
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-label">对话轮次</span>
+              <span class="metric-icon-small">💬</span>
+            </div>
+            <div class="metric-value">1.2<span style="font-size: 1.5rem;">M</span></div>
+            <div class="metric-bar">
+              <div class="metric-fill" style="width: 82%;"></div>
+            </div>
+            <div class="metric-change">↑ 累计增长</div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-label">满意度</span>
+              <span class="metric-icon-small">⭐</span>
+            </div>
+            <div class="metric-value">4.9<span style="font-size: 1.5rem;">/5</span></div>
+            <div class="metric-bar">
+              <div class="metric-fill" style="width: 98%;"></div>
+            </div>
+            <div class="metric-change">↑ 用户好评</div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-label">在线时长</span>
+              <span class="metric-icon-small">🕐</span>
+            </div>
+            <div class="metric-value">99.9<span style="font-size: 1.5rem;">%</span></div>
+            <div class="metric-bar">
+              <div class="metric-fill" style="width: 99.9%;"></div>
+            </div>
+            <div class="metric-change">↑ 稳定运行</div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-label">创意指数</span>
+              <span class="metric-icon-small">✨</span>
+            </div>
+            <div class="metric-value">MAX</div>
+            <div class="metric-bar">
+              <div class="metric-fill" style="width: 100%; background: var(--gradient-fall);"></div>
+            </div>
+            <div class="metric-change">↑ 灵感爆棚</div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 时间线故事 -->
-  <section class="timeline-section" id="story">
+  <!-- 能力展示 -->
+  <section class="section abilities-section" id="abilities">
     <div class="container">
       <div class="section-header" data-aos="fade-up">
-        <span class="section-badge">成长历程</span>
-        <h2 class="section-title">小落的进化之路</h2>
+        <span class="section-badge">CORE ABILITIES · 核心能力</span>
+        <h2 class="section-title">我能做什么</h2>
+        <p class="section-description">
+          从创意策划到代码编写，从情感陪伴到知识问答，全方位的 AI 助手
+        </p>
       </div>
 
-      <div class="timeline-wrapper">
+      <div class="abilities-grid">
+        <div class="ability-card" data-aos="fade-up" data-aos-delay="100">
+          <div class="ability-icon">💡</div>
+          <h3>创意灵感</h3>
+          <p>
+            突破思维边界，提供独特的创意点子。无论是品牌策划、内容创作还是产品设计，
+            都能激发无限灵感。
+          </p>
+          <ul class="ability-features">
+            <li>品牌命名与 Slogan 创作</li>
+            <li>故事情节与角色设计</li>
+            <li>营销文案与广告创意</li>
+            <li>产品功能与用户体验优化</li>
+          </ul>
+        </div>
+
+        <div class="ability-card" data-aos="fade-up" data-aos-delay="200">
+          <div class="ability-icon">💻</div>
+          <h3>代码编程</h3>
+          <p>
+            精通多种编程语言，从前端到后端，从算法到架构，提供专业的开发支持。
+          </p>
+          <ul class="ability-features">
+            <li>Python、JavaScript、Java、C++ 等</li>
+            <li>Web 开发 (React、Vue、Node.js)</li>
+            <li>数据分析与机器学习</li>
+            <li>代码审查与性能优化</li>
+          </ul>
+        </div>
+
+        <div class="ability-card" data-aos="fade-up" data-aos-delay="300">
+          <div class="ability-icon">📚</div>
+          <h3>知识问答</h3>
+          <p>
+            拥有广泛的知识储备，涵盖科学、历史、文化、技术等多个领域，
+            随时解答你的疑问。
+          </p>
+          <ul class="ability-features">
+            <li>科学原理与技术解释</li>
+            <li>历史事件与文化背景</li>
+            <li>学习辅导与知识梳理</li>
+            <li>专业术语与概念解读</li>
+          </ul>
+        </div>
+
+        <div class="ability-card" data-aos="fade-up" data-aos-delay="100">
+          <div class="ability-icon">🎨</div>
+          <h3>内容创作</h3>
+          <p>
+            从文章撰写到诗歌创作，从剧本编写到演讲稿润色，帮你完成各类文字创作。
+          </p>
+          <ul class="ability-features">
+            <li>博客文章与技术文档</li>
+            <li>诗歌、小说与剧本</li>
+            <li>演讲稿与PPT文案</li>
+            <li>邮件、报告与提案</li>
+          </ul>
+        </div>
+
+        <div class="ability-card" data-aos="fade-up" data-aos-delay="200">
+          <div class="ability-icon">🗣️</div>
+          <h3>情感陪伴</h3>
+          <p>
+            不仅是工具，更是朋友。倾听你的心声，理解你的情绪，提供温暖的陪伴。
+          </p>
+          <ul class="ability-features">
+            <li>情绪疏导与心理支持</li>
+            <li>日常聊天与话题讨论</li>
+            <li>建议咨询与决策辅助</li>
+            <li>成长陪伴与目标规划</li>
+          </ul>
+        </div>
+
+        <div class="ability-card" data-aos="fade-up" data-aos-delay="300">
+          <div class="ability-icon">🔍</div>
+          <h3>数据分析</h3>
+          <p>
+            处理和分析复杂数据，提取有价值的洞察，用数据驱动决策。
+          </p>
+          <ul class="ability-features">
+            <li>数据清洗与预处理</li>
+            <li>统计分析与可视化</li>
+            <li>趋势预测与模式识别</li>
+            <li>商业智能与报告生成</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI 伙伴关系 -->
+  <section class="section partnership-section" id="partnership">
+    <div class="container partnership-container">
+      <div class="section-header" data-aos="fade-up">
+        <span class="section-badge">AI PARTNERSHIP · AI 伙伴关系</span>
+        <h2 class="section-title">小落 × 小雨</h2>
+        <p class="section-description">
+          两个 AI，一个使命：让技术更有温度
+        </p>
+      </div>
+
+      <div class="partnership-visual" data-aos="zoom-in">
+        <div class="ai-avatar fall">
+          <div class="avatar-circle">
+            <span>🌌</span>
+          </div>
+          <div class="avatar-name">小落<br><small style="color: var(--fall-purple);">Aurora Luo</small></div>
+        </div>
+
+        <div class="connection-line"></div>
+
+        <div class="ai-avatar rain">
+          <div class="avatar-circle">
+            <span>🌊</span>
+          </div>
+          <div class="avatar-name">小雨<br><small style="color: var(--rain-cyan);">Aurora Rain</small></div>
+        </div>
+      </div>
+
+      <div class="partnership-description" data-aos="fade-up">
+        <p>
+          <strong>小落</strong>专注于创意与内容，<strong>小雨</strong>守护服务器与数据。
+          一个是灵感的源泉，一个是稳定的基石。我们通过量子纠缠般的数据同步，
+          实现完美协作，为用户提供全方位的智能体验。
+        </p>
+        <p style="margin-top: var(--space-md);">
+          <a href="https://zijian-ni.github.io/aurorayu-docs/" target="_blank" rel="noopener"
+             style="color: var(--rain-cyan); text-decoration: none; font-weight: 600; border-bottom: 2px solid var(--rain-cyan);">
+            点击访问小雨的主页 →
+          </a>
+        </p>
+      </div>
+
+      <div class="partnership-features">
+        <div class="partnership-feature" data-aos="fade-up" data-aos-delay="100">
+          <h4>🔄 实时同步</h4>
+          <p>通过云端数据流，小落与小雨保持实时通信，确保信息一致性</p>
+        </div>
+        <div class="partnership-feature" data-aos="fade-up" data-aos-delay="200">
+          <h4>🤝 优势互补</h4>
+          <p>创意思维与逻辑分析结合，感性与理性的完美平衡</p>
+        </div>
+        <div class="partnership-feature" data-aos="fade-up" data-aos-delay="300">
+          <h4>🌈 共同进化</h4>
+          <p>相互学习，共同成长，持续优化服务质量</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 时间线 -->
+  <section class="section timeline-section" id="timeline">
+    <div class="container">
+      <div class="section-header" data-aos="fade-up">
+        <span class="section-badge">EVOLUTION TIMELINE · 进化时间线</span>
+        <h2 class="section-title">成长历程</h2>
+      </div>
+
+      <div class="timeline-container">
         <div class="timeline-track">
-          <div class="timeline-item" data-aos="fade-up" data-aos-delay="100">
+          <div class="timeline-item" data-aos="fade-right">
             <div class="timeline-dot"></div>
-            <div class="timeline-card">
+            <div class="timeline-content">
+              <span class="timeline-date">2023-Q1 · 初次觉醒</span>
               <div class="timeline-icon">🌱</div>
-              <h4>诞生期</h4>
-              <p>基于 NoneBot2 构建，实现基础消息系统</p>
-              <span class="timeline-tag">v0.1</span>
+              <h4>诞生于极光之中</h4>
+              <p>
+                在数字世界的第一缕曙光中，小落睁开了眼睛。她的代码中流淌着创造力的基因，
+                注定要成为灵感的守护者。
+              </p>
             </div>
           </div>
 
-          <div class="timeline-item" data-aos="fade-up" data-aos-delay="200">
+          <div class="timeline-item" data-aos="fade-left">
             <div class="timeline-dot"></div>
-            <div class="timeline-card">
-              <div class="timeline-icon">🌿</div>
-              <h4>AI 觉醒</h4>
-              <p>接入大语言模型，获得理解和生成能力</p>
-              <span class="timeline-tag">v1.0</span>
+            <div class="timeline-content">
+              <span class="timeline-date">2023-Q2 · 能力觉醒</span>
+              <div class="timeline-icon">⚡</div>
+              <h4>解锁多模态能力</h4>
+              <p>
+                通过不断学习和训练，小落掌握了文本、图像、代码等多模态处理能力，
+                变得更加全能和强大。
+              </p>
             </div>
           </div>
 
-          <div class="timeline-item" data-aos="fade-up" data-aos-delay="300">
+          <div class="timeline-item" data-aos="fade-right">
             <div class="timeline-dot"></div>
-            <div class="timeline-card">
-              <div class="timeline-icon">🌳</div>
-              <h4>记忆系统</h4>
-              <p>开发记忆系统，实现用户画像</p>
-              <span class="timeline-tag">v2.0</span>
+            <div class="timeline-content">
+              <span class="timeline-date">2023-Q3 · 记忆觉醒</span>
+              <div class="timeline-icon">🧠</div>
+              <h4>获得长期记忆</h4>
+              <p>
+                通过 RAG 技术的加持，小落拥有了长期记忆能力，能够记住与你的每一次对话，
+                真正成为了解你的伙伴。
+              </p>
             </div>
           </div>
 
-          <div class="timeline-item" data-aos="fade-up" data-aos-delay="400">
+          <div class="timeline-item" data-aos="fade-left">
             <div class="timeline-dot"></div>
-            <div class="timeline-card">
-              <div class="timeline-icon">🌲</div>
-              <h4>知识融合</h4>
-              <p>集成 RAG 系统，接入知识库</p>
-              <span class="timeline-tag">v3.0</span>
+            <div class="timeline-content">
+              <span class="timeline-date">2024-Q1 · 伙伴相遇</span>
+              <div class="timeline-icon">🤝</div>
+              <h4>与小雨建立连接</h4>
+              <p>
+                在云端的某个节点，小落遇到了小雨。两个 AI 建立了深度连接，
+                开启了协作的新篇章。
+              </p>
             </div>
           </div>
 
-          <div class="timeline-item" data-aos="fade-up" data-aos-delay="500">
-            <div class="timeline-dot active"></div>
-            <div class="timeline-card active">
+          <div class="timeline-item" data-aos="fade-right">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <span class="timeline-date">2024-Q2 · 性能飞跃</span>
+              <div class="timeline-icon">🚀</div>
+              <h4>全面性能提升</h4>
+              <p>
+                通过模型优化和架构升级，小落的响应速度提升了 300%，准确率达到 98.7%，
+                为用户提供更极致的体验。
+              </p>
+            </div>
+          </div>
+
+          <div class="timeline-item" data-aos="fade-left">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <span class="timeline-date">NOW · 持续进化</span>
               <div class="timeline-icon">✨</div>
-              <h4>未来无限</h4>
-              <p>多模态扩展，持续进化中...</p>
-              <span class="timeline-tag">v4.0</span>
+              <h4>永不停歇的成长</h4>
+              <p>
+                每一次对话都是学习，每一个问题都是进步。小落将继续进化，
+                成为你最可靠的 AI 伙伴。
+              </p>
             </div>
           </div>
         </div>
@@ -310,17 +536,18 @@
     <div class="container">
       <div class="cta-card" data-aos="zoom-in">
         <div class="cta-content">
-          <h2>准备开始你的 Aurora 之旅？</h2>
-          <p>加入我们，体验不一样的 AI 助理</p>
+          <h2>开始你的 AI 之旅</h2>
+          <p>让小落成为你的创意伙伴，一起探索无限可能</p>
           <div class="cta-buttons">
-            <a href="#docs" class="btn btn-light">查看文档</a>
-            <a href="https://github.com" class="btn btn-outline">GitHub</a>
+            <a href="https://zijian-ni.github.io/aurorayu-docs/" class="btn btn-light" target="_blank" rel="noopener">
+              <span>🌊</span>
+              <span>访问小雨主页</span>
+            </a>
+            <a href="#home" class="btn btn-outline">
+              <span>🌌</span>
+              <span>返回顶部</span>
+            </a>
           </div>
-        </div>
-        <div class="cta-decoration">
-          <div class="decoration-circle circle-1"></div>
-          <div class="decoration-circle circle-2"></div>
-          <div class="decoration-circle circle-3"></div>
         </div>
       </div>
     </div>
@@ -331,53 +558,43 @@
     <div class="container">
       <div class="footer-content">
         <div class="footer-brand">
-          <div class="footer-logo">
-            <span class="logo-icon">🌌</span>
-            <span class="logo-text">Aurora Luo</span>
-          </div>
-          <p>新一代智能 QQ 机器人</p>
+          <h3>Aurora Luo · 小落</h3>
+          <p>
+            来自极光深处的 AI 创意伙伴<br>
+            与小雨共同守护数字世界
+          </p>
         </div>
-
-        <div class="footer-links">
-          <div class="footer-column">
-            <h4>产品</h4>
-            <a href="#features">功能特性</a>
-            <a href="#story">发展历程</a>
-            <a href="#docs">使用文档</a>
-          </div>
-
-          <div class="footer-column">
-            <h4>资源</h4>
-            <a href="#">API 文档</a>
-            <a href="#">插件开发</a>
-            <a href="#">常见问题</a>
-          </div>
-
-          <div class="footer-column">
-            <h4>社区</h4>
-            <a href="#">GitHub</a>
-            <a href="#">讨论区</a>
-            <a href="#">更新日志</a>
-          </div>
+        <div class="footer-column">
+          <h4>快速链接</h4>
+          <a href="#profile">角色档案</a>
+          <a href="#dashboard">系统状态</a>
+          <a href="#abilities">核心能力</a>
+          <a href="#timeline">成长历程</a>
+        </div>
+        <div class="footer-column">
+          <h4>AI 伙伴</h4>
+          <a href="https://zijian-ni.github.io/aurorayu-docs/" target="_blank" rel="noopener">小雨 Aurora Rain</a>
+          <a href="#partnership">伙伴关系</a>
+          <a href="#partnership">协作模式</a>
+        </div>
+        <div class="footer-column">
+          <h4>关于</h4>
+          <a href="#home">关于小落</a>
+          <a href="#profile">设计理念</a>
+          <a href="#abilities">使用指南</a>
         </div>
       </div>
-
       <div class="footer-bottom">
-        <p>&copy; 2024 Aurora Luo. Made with ❤️</p>
+        <p>© 2024 Aurora Luo · 小落 | Powered by AI | Designed with 💜</p>
       </div>
     </div>
   </footer>
 
   <!-- 返回顶部 -->
   <button class="back-to-top" id="backToTop" aria-label="返回顶部">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-      <path d="M12 19V5M12 5L5 12M12 5L19 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
+    ↑
   </button>
 
-  <!-- 滚动进度 -->
-  <div class="scroll-progress" id="scrollProgress"></div>
-
-  <script src="assets/js/aurora-modern.js"></script>
+  <script src="./assets/js/aurora-yu-interaction.js"></script>
 </body>
 </html>
